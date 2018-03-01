@@ -43,9 +43,10 @@ public class User extends Actor {
 	private Collection<RSVP>		rsvp;
 	private Collection<Question>	question;
 	private Collection<Answer>		answer;
+	private Collection<Request> requests;
 
 	@Valid
-	@OneToMany()
+	@OneToMany
 	public Collection<Comment> getComment() {
 		return this.comment;
 	}
@@ -92,6 +93,16 @@ public class User extends Actor {
 
 	public void setAnswer(Collection<Answer> answer) {
 		this.answer = answer;
+	}
+	
+	@Valid
+	@OneToMany
+	public Collection<Request> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(Collection<Request> requests) {
+		this.requests = requests;
 	}
 
 }
