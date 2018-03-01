@@ -12,7 +12,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Category {
+public class Category extends DomainEntity  {
 
 	// Attributes ------------------------------------------------------
 
@@ -39,15 +39,15 @@ public class Category {
 
 	// Relationships --------------------------------------------------
 	
-	private Collection<Service> services;
+	private Collection<Services> services;
 
 	@Valid
 	@OneToMany(mappedBy = "category")
-	public Collection<Service> getServices() {
+	public Collection<Services> getServices() {
 		return services;
 	}
 
-	public void setServices(Collection<Service> services) {
+	public void setServices(Collection<Services> services) {
 		this.services = services;
 	}
 	

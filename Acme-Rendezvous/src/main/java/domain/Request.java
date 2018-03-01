@@ -7,7 +7,7 @@ import javax.validation.Valid;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Request {
+public class Request extends DomainEntity  {
 
 	// Attributes -------------------------------------------------------------
 
