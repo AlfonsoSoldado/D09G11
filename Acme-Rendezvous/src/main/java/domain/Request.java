@@ -3,6 +3,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -34,7 +35,18 @@ public class Request extends DomainEntity  {
 	}
 
 	// Relationships --------------------------------------------------
+
+	private Services services;
 	
+	@Valid
+	@OneToOne(optional = false)
+	public Services getServices() {
+		return services;
+	}
+
+	public void setServices(Services services) {
+		this.services = services;
+	}
 	
 
 }

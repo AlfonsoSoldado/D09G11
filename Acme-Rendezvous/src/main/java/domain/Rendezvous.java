@@ -10,6 +10,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
@@ -106,6 +107,7 @@ public class Rendezvous extends DomainEntity {
 	private Collection<User>			attendant;
 	private Collection<Announcement>	announcement;
 	private Collection<Rendezvous>		similar;
+	private Services 					services;
 
 	@Valid
 	@OneToMany
@@ -141,6 +143,16 @@ public class Rendezvous extends DomainEntity {
 	}
 	public void setSimilar(final Collection<Rendezvous> similar) {
 		this.similar = similar;
+	}
+	
+	@Valid
+	@OneToOne(optional = true, mappedBy = "rendezvous")
+	public Services getServices() {
+		return services;
+	}
+	
+	public void setServices(Services services) {
+		this.services = services;
 	}
 
 }

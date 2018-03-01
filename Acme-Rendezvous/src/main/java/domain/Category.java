@@ -54,6 +54,7 @@ public class Category extends DomainEntity  {
 		this.services = services;
 	}
 	
+	@Valid
 	@ManyToOne(optional = true)
 	public Category getCategoryParent() {
 		return categoryParent;

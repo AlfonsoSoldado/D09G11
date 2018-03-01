@@ -4,6 +4,7 @@ import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -60,6 +61,7 @@ public class Services extends DomainEntity  {
 	
 	private Manager manager;
 	private Category category;
+	private Rendezvous rendezvous;
 
 	@Valid
 	@NotNull
@@ -80,6 +82,16 @@ public class Services extends DomainEntity  {
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	@Valid
+	@OneToOne(optional = false)
+	public Rendezvous getRendezvous() {
+		return rendezvous;
+	}
+
+	public void setRendezvous(Rendezvous rendezvous) {
+		this.rendezvous = rendezvous;
 	}
 	
 }
