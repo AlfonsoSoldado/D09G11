@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 
@@ -40,6 +41,8 @@ public class Category extends DomainEntity  {
 	// Relationships --------------------------------------------------
 	
 	private Collection<Services> services;
+	private Category categoryParent;
+	private Collection<Category> categories;
 
 	@Valid
 	@OneToMany(mappedBy = "category")
@@ -49,6 +52,25 @@ public class Category extends DomainEntity  {
 
 	public void setServices(Collection<Services> services) {
 		this.services = services;
+	}
+	
+	@ManyToOne(optional = true)
+	public Category getCategoryParent() {
+		return categoryParent;
+	}
+
+	public void setCategoryParent(Category categoryParent) {
+		this.categoryParent = categoryParent;
+	}
+	
+	@Valid
+	@OneToMany(mappedBy = "categoryParent")
+	public Collection<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(Collection<Category> categories) {
+		this.categories = categories;
 	}
 	
 }
