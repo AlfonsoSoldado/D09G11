@@ -1,0 +1,22 @@
+#./src/main/resources/Entities.map
+#Tue Feb 27 17:24:46 CET 2018
+Announcement2=32
+Announcement1=31
+admin1=22
+question2=38
+question1=37
+answer2=40
+answer1=39
+userAccount3=24
+userAccount2=23
+userAccount1=21
+rendezvous2=28
+rendezvous1=27
+comment4=36
+RSVP2=30
+comment3=35
+RSVP1=29
+comment2=34
+comment1=33
+user2=26
+user1=25

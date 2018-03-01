@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- 
+ * tiles_es.xml
+ *
+ * Copyright (C) 2017 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ -->
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+      
+<tiles-definitions>
+
+	<definition name="rendezvous/list" extends="master.page">	
+		<put-attribute name="title" value="Lista de rendezvous" />
+		<put-attribute name="body" value="/views/rendezvous/list.jsp" />
+	</definition>
+	
+	<definition name="rendezvous/listSimilar" extends="master.page">	
+		<put-attribute name="title" value="Lista de rendezvous similar" />
+		<put-attribute name="body" value="/views/rendezvous/listSimilar.jsp" />
+	</definition>
+	
+	<definition name="rendezvous/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar rendezvous" />
+		<put-attribute name="body" value="/views/rendezvous/edit.jsp" />
+	</definition>
+	
+	<definition name="rendezvous/administrator/edit" extends="master.page">	
+		<put-attribute name="title" value="Editar rendezvous" />
+		<put-attribute name="body" value="/views/rendezvous/edit.jsp" />
+	</definition>
+	
+	<definition name="rendezvous/create" extends="master.page">	
+		<put-attribute name="title" value="Crear rendezvous" />
+		<put-attribute name="body" value="/views/rendezvous/edit.jsp" />
+	</definition>
+	
+	<definition name="rendezvous/listByUser" extends="master.page">	
+		<put-attribute name="title" value="Lista de rendezvous por usuarios" />
+		<put-attribute name="body" value="/views/rendezvous/listByUser.jsp" />
+	</definition>
+	
+	<definition name="rendezvous/user/listMyRendezvous" extends="master.page">	
+		<put-attribute name="title" value="Mis rendezvous" />
+		<put-attribute name="body" value="/views/rendezvous/listMyRendezvous.jsp" />
+	</definition>
+	
+		
+	<definition name="rendezvous/user/listAttendRendezvous" extends="master.page">	
+		<put-attribute name="title" value="Rendezvous asistidos" />
+		<put-attribute name="body" value="/views/rendezvous/listAttendRendezvous.jsp" />
+	</definition>
+	
+</tiles-definitions>
