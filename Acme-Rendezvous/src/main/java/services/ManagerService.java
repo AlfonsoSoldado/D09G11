@@ -3,6 +3,7 @@ package services;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -51,6 +52,12 @@ public class ManagerService {
 	public Manager save(Manager manager) {
 		Assert.notNull(manager);
 		Manager res;
+		if (manager.getId() == 0) {
+			String pass = manager.getUserAccount().getPassword();
+			final Md5PasswordEncoder code = new Md5PasswordEncoder();
+			pass = code.encodePassword(pass, null);
+			manager.getUserAccount().setPassword(pass);
+		}
 		res = this.managerRepository.save(manager);
 		return res;
 	}

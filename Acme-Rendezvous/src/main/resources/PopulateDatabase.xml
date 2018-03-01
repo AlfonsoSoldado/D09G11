@@ -57,6 +57,30 @@
 		</property>
 	</bean>
 
+	<bean id="userAccount4" class="security.UserAccount">
+		<property name="username" value="manager1" />
+		<property name="password" value="c240642ddef994358c96da82c0361a58" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MANAGER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount5" class="security.UserAccount">
+		<property name="username" value="manager2" />
+		<property name="password" value="8df5127cd164b5bc2d2b78410a7eea0c" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MANAGER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 
 	<bean id="user1" class="domain.User">
 		<property name="name" value="Javi" />
@@ -98,6 +122,12 @@
 			<list>
 				<ref bean="answer1" />
 
+			</list>
+		</property>
+
+		<property name="requests">
+			<list>
+				<ref bean="request1" />
 			</list>
 		</property>
 	</bean>
@@ -142,7 +172,37 @@
 
 			</list>
 		</property>
+
+		<property name="requests">
+			<list>
+				<ref bean="request2" />
+			</list>
+		</property>
 	</bean>
+
+	<!-- MANAGERS -->
+
+	<bean id="manager1" class="domain.Manager">
+		<property name="name" value="Alfonso" />
+		<property name="surname" value="Soldado Caro" />
+		<property name="email" value="alfonso@gmail.com" />
+		<property name="phoneNumber" value="666666666" />
+		<property name="postalAddress" value="41007" />
+		<property name="VAT" value="123123EFS1345" />
+		<property name="userAccount" ref="userAccount4" />
+	</bean>
+
+	<bean id="manager2" class="domain.Manager">
+		<property name="name" value="Daniel" />
+		<property name="surname" value="Rodríguez López" />
+		<property name="email" value="dani@gmail.com" />
+		<property name="phoneNumber" value="666666666" />
+		<property name="postalAddress" value="41008" />
+		<property name="VAT" value="FFFAS1356AS12" />
+		<property name="userAccount" ref="userAccount5" />
+	</bean>
+
+	<!-- RENDEZVOUS -->
 
 	<bean id="rendezvous1" class="domain.Rendezvous">
 		<property name="name" value="rendezvous1" />
@@ -177,6 +237,7 @@
 				<ref bean="rendezvous2" />
 			</list>
 		</property>
+		<property name="services" ref="services1"/>
 	</bean>
 
 
@@ -213,8 +274,10 @@
 				<ref bean="rendezvous1" />
 			</list>
 		</property>
+		<property name="services" ref="services2"/>
 	</bean>
 
+	<!-- RSVP -->
 
 	<bean id="RSVP1" class="domain.RSVP">
 		<property name="confirmed" value="true" />
@@ -226,6 +289,8 @@
 		<property name="rendezvous" ref="rendezvous2" />
 
 	</bean>
+
+	<!-- GPS -->
 
 	<bean id="gps1" class="domain.GPS">
 		<property name="latitude" value="10.0" />
@@ -241,6 +306,8 @@
 		<property name="namePlace" value="gps2" />
 
 	</bean>
+
+	<!-- ANNOUNCEMENTS -->
 
 	<bean id="Announcement1" class="domain.Announcement">
 		<property name="title" value="Announcement1" />
@@ -259,6 +326,8 @@
 		<property name="rendezvous" ref="rendezvous2" />
 
 	</bean>
+
+	<!-- COMMENTS -->
 
 	<bean id="comment1" class="domain.Comment">
 		<property name="text"
@@ -326,6 +395,8 @@
 
 	</bean>
 
+	<!-- QUESTIONS -->
+
 	<bean id="question1" class="domain.Question">
 		<property name="text"
 			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod?" />
@@ -348,6 +419,7 @@
 		<property name="rendezvous" ref="rendezvous2" />
 	</bean>
 
+	<!-- ANSWERS -->
 
 	<bean id="answer1" class="domain.Answer">
 		<property name="text"
@@ -360,6 +432,107 @@
 			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod?" />
 		<property name="question" ref="question2" />
 
+	</bean>
+
+	<!-- CATEGORY -->
+
+	<bean id="category1" class="domain.Category">
+		<property name="name" value="Football" />
+		<property name="description"
+			value="This is the description of the Football category" />
+		<property name="services">
+			<list>
+				<ref bean="services1" />
+			</list>
+		</property>
+		<property name="categoryParent"><null/></property>
+		<property name="categories">
+			<list>
+				<ref bean="category2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="category2" class="domain.Category">
+		<property name="name" value="Sevilla FC" />
+		<property name="description"
+			value="This is the description of the Sevilla FC category" />
+		<property name="services">
+			<list>
+				<ref bean="services2" />
+			</list>
+		</property>
+		<property name="categoryParent" ref="category1" />
+		<property name="categories">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<!-- CREDIT CARD -->
+
+	<bean id="creditCard1" class="domain.CreditCard">
+		<property name="holderName" value="BBVA" />
+		<property name="brandName" value="MasterCard" />
+		<property name="number" value="4099537775843795" />
+		<property name="expirationMonth" value="02" />
+		<property name="expirationYear" value="2019" />
+		<property name="CVV" value="123" />
+	</bean>
+
+	<bean id="creditCard2" class="domain.CreditCard">
+		<property name="holderName" value="Caixa" />
+		<property name="brandName" value="VISA" />
+		<property name="number" value="38642556792047" />
+		<property name="expirationMonth" value="05" />
+		<property name="expirationYear" value="2020" />
+		<property name="CVV" value="223" />
+	</bean>
+
+	<!-- REQUEST -->
+
+	<bean id="request1" class="domain.Request">
+		<property name="creditCard" ref="creditCard1" />
+		<property name="comment" value="This is an optional comment" />
+		<property name="services" ref="services1"/>
+	</bean>
+	
+	<bean id="request2" class="domain.Request">
+		<property name="creditCard" ref="creditCard2" />
+		<property name="comment" value="This is an optional comment" />
+		<property name="services" ref="services2"/>
+	</bean>
+	
+	<!-- SERVICES -->
+	
+	<bean id="services1" class="domain.Services">
+		<property name="name" value="Express service" />
+		<property name="description" value="This is a description" />
+		<property name="picture" value="http://www.google.com" />
+		<property name="canceled" value="false" />
+		<property name="manager" ref="manager1" />
+		<property name="category" ref="category1" />
+		<property name="rendezvous" ref="rendezvous1" />
+	</bean>	
+	
+	<bean id="services2" class="domain.Services">
+		<property name="name" value="Extra service" />
+		<property name="description" value="This is a description" />
+		<property name="picture" value="http://www.google.es" />
+		<property name="canceled" value="false" />
+		<property name="manager" ref="manager2" />
+		<property name="category" ref="category2" />
+		<property name="rendezvous" ref="rendezvous2" />
+	</bean>
+
+	<!-- FRANCHISE -->
+
+	<bean id="franchise1" class="domain.Franchise">
+		<property name="businessName" value="Adventure meetups" />
+		<property name="banner" value="https://tinyurl.com/adventure-meetup" />
+		<property name="welcomeMessage"
+			value="Your place to organise your adventure meetups!" />
 	</bean>
 
 
