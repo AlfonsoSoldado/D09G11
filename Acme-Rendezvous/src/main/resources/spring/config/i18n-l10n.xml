@@ -27,6 +27,7 @@
 		<value>/views/administrator/messages</value>
 		<value>/views/comment/messages</value>
 		<value>/views/RSVP/messages</value>
+		<value>/views/services/messages</value>
 
 	</util:list>
 

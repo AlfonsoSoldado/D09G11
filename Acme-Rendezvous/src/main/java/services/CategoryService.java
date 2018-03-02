@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 
 import repositories.CategoryRepository;
 import domain.Category;
+import domain.Services;
 
 @Service
 @Transactional
@@ -61,6 +62,8 @@ public class CategoryService {
 		Assert.isTrue(this.categoryRepository.exists(category.getId()));
 		this.categoryRepository.delete(category);
 	}
+
+	
 
 	// Other business method --------------------------------------------------
 

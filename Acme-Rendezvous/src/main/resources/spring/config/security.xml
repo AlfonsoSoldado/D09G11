@@ -90,6 +90,14 @@
 			access="isAuthenticated()" />
 		<security:intercept-url pattern="/user/displayByComment.do"
 			access="isAuthenticated()" />
+		<security:intercept-url pattern="/services/list.do"
+			access="isAuthenticated()" />
+
+
+		<security:intercept-url pattern="/services/manager/listMyServices.do"
+			access="hasRole('MANAGER')" />
+		<security:intercept-url pattern="/services/manager/edit.do"
+			access="hasRole('MANAGER')" />
 
 		<security:intercept-url pattern="/administrator/display.do"
 			access="hasRole('ADMIN')" />

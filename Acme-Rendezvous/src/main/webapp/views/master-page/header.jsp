@@ -26,21 +26,21 @@
 		<security:authorize access="hasRole('ADMIN')">
 			<li><a class="fNiv"><spring:message
 						code="master.page.administrator" /></a>
-				
+
 				<ul>
 					<li class="arrow"></li>
-					
+
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
 				</ul></li>
-				
-			
+
+
 			<li><a class="fNiv" href="rendezvous/list.do"><spring:message
 						code="master.page.rendezvous" /></a></li>
 			<li><a class="fNiv" href="user/list.do"><spring:message
 						code="master.page.user.list" /></a></li>
-						
-						<li><a class="fNiv" href="administrator/display.do"><spring:message
+
+			<li><a class="fNiv" href="administrator/display.do"><spring:message
 						code="master.page.admin.display" /></a></li>
 		</security:authorize>
 
@@ -58,11 +58,13 @@
 				</ul></li>
 			<li><a class="fNiv" href="rendezvous/list.do"><spring:message
 						code="master.page.rendezvous" /></a></li>
-			<li><a class="fNiv" href="announcement/user/streamAnnouncement.do"><spring:message
+			<li><a class="fNiv"
+				href="announcement/user/streamAnnouncement.do"><spring:message
 						code="master.page.myAnnouncements" /></a></li>
 			<li><a class="fNiv" href="rendezvous/user/listMyRendezvous.do"><spring:message
 						code="master.page.myRendezvous" /></a></li>
-			<li><a class="fNiv" href="rendezvous/user/listAttendRendezvous.do"><spring:message
+			<li><a class="fNiv"
+				href="rendezvous/user/listAttendRendezvous.do"><spring:message
 						code="master.page.attendedRendezvous" /></a></li>
 			<li><a class="fNiv" href="user/list.do"><spring:message
 						code="master.page.user.list" /></a></li>
@@ -80,7 +82,16 @@
 			<li><a class="fNiv" href="user/list.do"><spring:message
 						code="master.page.user.list" /></a></li>
 		</security:authorize>
-
+		<security:authorize access="hasRole('MANAGER')">
+			<li><a class="fNiv" href="security/login.do"><spring:message
+						code="master.page.login" /></a></li>
+			<li><a class="fNiv" href="user/register_User.do"><spring:message
+						code="master.page.register.user" /></a></li>
+			<li><a class="fNiv" href="rendezvous/list.do"><spring:message
+						code="master.page.rendezvous" /></a></li>
+			<li><a class="fNiv" href="user/list.do"><spring:message
+						code="master.page.user.list" /></a></li>
+		</security:authorize>
 	</ul>
 </div>
 

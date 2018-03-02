@@ -152,4 +152,8 @@ public class RendezvousService {
 		this.validator.validate(res, binding);
 		return res;
 	}
+
+	public Collection<Rendezvous> findRendezvousNotCancelled() {
+		return this.rendezvousRepository.findRendezvousNotCancelled();
+	}
 }

@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 
-import repositories.ServicesRepository;
+import domain.Manager;
 import domain.Services;
+import repositories.ServicesRepository;
 
 @Service
 @Transactional
@@ -19,6 +21,14 @@ public class ServicesService {
 	@Autowired
 	private ServicesRepository servicesRepository;
 
+	@Autowired
+	private ManagerService managerService;
+
+	@Autowired
+	private ActorService actorService;
+	
+	@Autowired
+	private CategoryService categoryService;
 	// Supporting services ----------------------------------------------------
 
 	// Constructor ------------------------------------------------------------
@@ -51,6 +61,19 @@ public class ServicesService {
 	public Services save(Services services) {
 		Assert.notNull(services);
 		Services res;
+		if (services.getId() != 0) {
+			Services oldServices = this.findOne(services.getId());
+			if (!oldServices.getCategory().equals(services.getCategory())) {
+				
+				Collection<Services> servicesCategory =oldServices.getCategory().getServices();
+				servicesCategory.remove(oldServices);
+				oldServices.getCategory().setServices(servicesCategory);
+				//---------
+			
+			
+			}
+		}
+
 		res = this.servicesRepository.save(services);
 		return res;
 	}
@@ -63,5 +86,30 @@ public class ServicesService {
 	}
 
 	// Other business method --------------------------------------------------
+
+	public Collection<Services> servicesAviables() {
+		return this.servicesRepository.servicesAviables();
+	}
+
+	public Collection<Services> servicesByManager(Manager manager) {
+		this.managerService.checkAuthority();
+		return this.servicesRepository.servicesByManager(manager.getId());
+	}
+
+	public Services reconstruct(Services services, BindingResult binding) {
+		Services res;
+		Services serviceFinal;
+		if (services.getId() == 0) {
+			res = services;
+		} else {
+			serviceFinal = this.findOne(services.getId());
+			services.setManager((Manager) this.actorService.findByPrincipal());
+			services.setRendezvous(serviceFinal.getRendezvous());
+			services.setCategory(serviceFinal.getCategory());
+			res = services;
+		}
+
+		return res;
+	}
 
 }
