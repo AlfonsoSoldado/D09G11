@@ -26,7 +26,7 @@ public class ServicesService {
 
 	@Autowired
 	private ActorService actorService;
-	
+
 	@Autowired
 	private CategoryService categoryService;
 	// Supporting services ----------------------------------------------------
@@ -58,20 +58,15 @@ public class ServicesService {
 		return res;
 	}
 
+	//TODO
 	public Services save(Services services) {
 		Assert.notNull(services);
 		Services res;
 		if (services.getId() != 0) {
 			Services oldServices = this.findOne(services.getId());
-			if (!oldServices.getCategory().equals(services.getCategory())) {
-				
-				Collection<Services> servicesCategory =oldServices.getCategory().getServices();
-				servicesCategory.remove(oldServices);
-				oldServices.getCategory().setServices(servicesCategory);
-				//---------
-			
-			
-			}
+
+			// ---------
+
 		}
 
 		res = this.servicesRepository.save(services);

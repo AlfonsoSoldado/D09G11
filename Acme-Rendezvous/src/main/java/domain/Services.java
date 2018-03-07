@@ -1,19 +1,23 @@
 package domain;
 
+import java.util.Collection;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Services extends DomainEntity  {
+public class Services extends DomainEntity {
 
 	// Attributes -------------------------------------------------------------
 
@@ -58,9 +62,9 @@ public class Services extends DomainEntity  {
 	}
 
 	// Relationships --------------------------------------------------
-	
+
 	private Manager manager;
-	private Category category;
+	private Collection<Category> category;
 	private Rendezvous rendezvous;
 
 	@Valid
@@ -73,14 +77,15 @@ public class Services extends DomainEntity  {
 	public void setManager(Manager manager) {
 		this.manager = manager;
 	}
-	
+
 	@Valid
-	@ManyToOne(optional = false)
-	public Category getCategory() {
+	@Size(max = 3)
+	@ManyToMany
+	public Collection<Category> getCategory() {
 		return category;
 	}
 
-	public void setCategory(Category category) {
+	public void setCategory(Collection<Category> category) {
 		this.category = category;
 	}
 
@@ -93,5 +98,5 @@ public class Services extends DomainEntity  {
 	public void setRendezvous(Rendezvous rendezvous) {
 		this.rendezvous = rendezvous;
 	}
-	
+
 }

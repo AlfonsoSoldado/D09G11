@@ -4,23 +4,25 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.validation.Valid;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Access(AccessType.PROPERTY)
-public class Category extends DomainEntity  {
+public class Category extends DomainEntity {
 
 	// Attributes ------------------------------------------------------
 
 	private String name;
 	private String description;
+	private int level;
 
 	@NotBlank
+	@Column(unique = true)
 	public String getName() {
 		return name;
 	}
@@ -38,14 +40,20 @@ public class Category extends DomainEntity  {
 		this.description = description;
 	}
 
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
 	// Relationships --------------------------------------------------
-	
+
 	private Collection<Services> services;
-	private Category categoryParent;
-	private Collection<Category> categories;
 
 	@Valid
-	@OneToMany(mappedBy = "category")
+	@ManyToMany(mappedBy = "category")
 	public Collection<Services> getServices() {
 		return services;
 	}
@@ -53,25 +61,5 @@ public class Category extends DomainEntity  {
 	public void setServices(Collection<Services> services) {
 		this.services = services;
 	}
-	
-	@Valid
-	@ManyToOne(optional = true)
-	public Category getCategoryParent() {
-		return categoryParent;
-	}
 
-	public void setCategoryParent(Category categoryParent) {
-		this.categoryParent = categoryParent;
-	}
-	
-	@Valid
-	@OneToMany(mappedBy = "categoryParent")
-	public Collection<Category> getCategories() {
-		return categories;
-	}
-
-	public void setCategories(Collection<Category> categories) {
-		this.categories = categories;
-	}
-	
 }
