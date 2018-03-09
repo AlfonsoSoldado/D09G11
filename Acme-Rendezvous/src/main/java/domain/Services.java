@@ -66,6 +66,7 @@ public class Services extends DomainEntity {
 	private Manager manager;
 	private Collection<Category> category;
 	private Rendezvous rendezvous;
+	
 
 	@Valid
 	@NotNull

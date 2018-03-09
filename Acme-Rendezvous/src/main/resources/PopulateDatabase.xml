@@ -125,11 +125,6 @@
 			</list>
 		</property>
 
-		<property name="requests">
-			<list>
-				<ref bean="request1" />
-			</list>
-		</property>
 	</bean>
 
 	<bean id="user2" class="domain.User">
@@ -173,11 +168,6 @@
 			</list>
 		</property>
 
-		<property name="requests">
-			<list>
-				<ref bean="request2" />
-			</list>
-		</property>
 	</bean>
 
 	<!-- MANAGERS -->
@@ -238,6 +228,11 @@
 			</list>
 		</property>
 		<property name="services" ref="services1" />
+		<property name="requests">
+			<list>
+				<ref bean="request1" />
+			</list>
+		</property>
 	</bean>
 
 
@@ -275,6 +270,11 @@
 			</list>
 		</property>
 		<property name="services" ref="services2" />
+		<property name="requests">
+			<list>
+				<ref bean="request2" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- RSVP -->

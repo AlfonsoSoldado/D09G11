@@ -27,20 +27,20 @@ public class Rendezvous extends DomainEntity {
 
 	// Attributes -------------------------------------------------------------
 
-	private String	name;
-	private String	description;
-	private Date	moment;
-	private GPS		gpsCoordinate;
-	private String	picture;
-	private boolean	finalMode;
-	private boolean	adultOnly;
-	private boolean	deleted;
-
+	private String name;
+	private String description;
+	private Date moment;
+	private GPS gpsCoordinate;
+	private String picture;
+	private boolean finalMode;
+	private boolean adultOnly;
+	private boolean deleted;
 
 	@NotBlank
 	public String getName() {
 		return this.name;
 	}
+
 	public void setName(final String name) {
 		this.name = name;
 	}
@@ -49,10 +49,11 @@ public class Rendezvous extends DomainEntity {
 	public String getDescription() {
 		return this.description;
 	}
+
 	public void setDescription(final String description) {
 		this.description = description;
 	}
-	
+
 	@Future
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -60,6 +61,7 @@ public class Rendezvous extends DomainEntity {
 	public Date getMoment() {
 		return this.moment;
 	}
+
 	public void setMoment(final Date moment) {
 		this.moment = moment;
 	}
@@ -67,6 +69,7 @@ public class Rendezvous extends DomainEntity {
 	public GPS getGpsCoordinate() {
 		return this.gpsCoordinate;
 	}
+
 	public void setGpsCoordinate(final GPS gpsCoordinate) {
 		this.gpsCoordinate = gpsCoordinate;
 	}
@@ -75,6 +78,7 @@ public class Rendezvous extends DomainEntity {
 	public String getPicture() {
 		return this.picture;
 	}
+
 	public void setPicture(final String picture) {
 		this.picture = picture;
 	}
@@ -82,6 +86,7 @@ public class Rendezvous extends DomainEntity {
 	public boolean getFinalMode() {
 		return this.finalMode;
 	}
+
 	public void setFinalMode(final boolean finalMode) {
 		this.finalMode = finalMode;
 	}
@@ -89,6 +94,7 @@ public class Rendezvous extends DomainEntity {
 	public boolean getAdultOnly() {
 		return this.adultOnly;
 	}
+
 	public void setAdultOnly(final boolean adultOnly) {
 		this.adultOnly = adultOnly;
 	}
@@ -96,24 +102,36 @@ public class Rendezvous extends DomainEntity {
 	public boolean getDeleted() {
 		return this.deleted;
 	}
+
 	public void setDeleted(final boolean deleted) {
 		this.deleted = deleted;
 	}
 
+	// Relationships -------------------------------------------------
 
-	//Relationships -------------------------------------------------
+	private Collection<Comment> comment;
+	private Collection<User> attendant;
+	private Collection<Announcement> announcement;
+	private Collection<Rendezvous> similar;
+	private Services services;
+	private Collection<Request> requests;
 
-	private Collection<Comment>			comment;
-	private Collection<User>			attendant;
-	private Collection<Announcement>	announcement;
-	private Collection<Rendezvous>		similar;
-	private Services 					services;
+	@Valid
+	@OneToMany()
+	public Collection<Request> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(Collection<Request> requests) {
+		this.requests = requests;
+	}
 
 	@Valid
 	@OneToMany
 	public Collection<Comment> getComment() {
 		return this.comment;
 	}
+
 	public void setComment(final Collection<Comment> comment) {
 		this.comment = comment;
 	}
@@ -123,6 +141,7 @@ public class Rendezvous extends DomainEntity {
 	public Collection<User> getAttendant() {
 		return this.attendant;
 	}
+
 	public void setAttendant(final Collection<User> attendant) {
 		this.attendant = attendant;
 	}
@@ -132,6 +151,7 @@ public class Rendezvous extends DomainEntity {
 	public Collection<Announcement> getAnnouncement() {
 		return this.announcement;
 	}
+
 	public void setAnnouncement(final Collection<Announcement> announcement) {
 		this.announcement = announcement;
 	}
@@ -141,16 +161,17 @@ public class Rendezvous extends DomainEntity {
 	public Collection<Rendezvous> getSimilar() {
 		return this.similar;
 	}
+
 	public void setSimilar(final Collection<Rendezvous> similar) {
 		this.similar = similar;
 	}
-	
+
 	@Valid
 	@OneToOne(optional = true, mappedBy = "rendezvous")
 	public Services getServices() {
 		return services;
 	}
-	
+
 	public void setServices(Services services) {
 		this.services = services;
 	}

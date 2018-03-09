@@ -31,14 +31,15 @@
 		<img class="imagenesServices" src="${row.picture}">
 	</display:column>
 	<acme:column code="services.canceled" property="canceled" />
+	<acme:column property="category" code="services.category" />
+
 	<display:column>
 		<jstl:if test="${row.canceled == false}">
 			<acme:links url="services/manager/edit.do?servicesId=${row.id }"
 				code="services.edit" />
 		</jstl:if>
 	</display:column>
-		<acme:column property="category.name" code="services.category" />
-	
+
 </display:table>
 
 <acme:links url="services/manager/create.do" code="services.create" />
