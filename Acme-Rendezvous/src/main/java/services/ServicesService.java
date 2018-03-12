@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 
+import repositories.ServicesRepository;
 import domain.Manager;
 import domain.Services;
-import repositories.ServicesRepository;
 
 @Service
 @Transactional
@@ -27,8 +28,6 @@ public class ServicesService {
 	@Autowired
 	private ActorService actorService;
 
-	@Autowired
-	private CategoryService categoryService;
 	// Supporting services ----------------------------------------------------
 
 	// Constructor ------------------------------------------------------------
@@ -104,6 +103,12 @@ public class ServicesService {
 			res = services;
 		}
 
+		return res;
+	}
+	
+	public Collection<Services> ServicesByRendezvous(int rendezvousId){
+		Collection<Services> res = new ArrayList<Services>();
+		res = servicesRepository.servicesByRendezvous(rendezvousId);
 		return res;
 	}
 
