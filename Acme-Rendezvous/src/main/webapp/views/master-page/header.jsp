@@ -16,8 +16,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<a href="/Acme-Rendezvous"><img src="images/logo.png"
-		alt="Acme-Rendezvous Co., Inc." /></a>
+	<a href="/Acme-Rendezvous"><img src="${bannerShowImage}" alt="Acme-Rendezvous Co., Inc." /></a>
 </div>
 
 <div>
@@ -29,12 +28,10 @@
 
 				<ul>
 					<li class="arrow"></li>
-
-					<li><a href="j_spring_security_logout"><spring:message
-								code="master.page.logout" /> </a></li>
+					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
+					<li><a href="administrator/franchise.do"><spring:message code="master.page.franchise" /></a></li>
 				</ul></li>
-
-
+				
 			<li><a class="fNiv" href="rendezvous/list.do"><spring:message
 						code="master.page.rendezvous" /></a></li>
 			<li><a class="fNiv" href="user/list.do"><spring:message
