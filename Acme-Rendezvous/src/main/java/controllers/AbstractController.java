@@ -11,13 +11,21 @@
 package controllers;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
+
+import services.FranchiseService;
+import domain.Franchise;
 
 @Controller
 public class AbstractController {
+	
+	@Autowired
+	private FranchiseService franchiseService;
 
 	// Panic handler ----------------------------------------------------------
 
@@ -31,6 +39,18 @@ public class AbstractController {
 		result.addObject("stackTrace", ExceptionUtils.getStackTrace(oops));
 
 		return result;
+	}
+	
+	@ModelAttribute(value = "bannerShowImage")
+	protected String banner(){
+		String banner;
+		Franchise franchise;
+		
+		Integer id = franchiseService.resId();
+		franchise = franchiseService.findOne(id);
+		banner = franchise.getBanner();
+		
+		return banner;
 	}
 
 }

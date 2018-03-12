@@ -63,5 +63,11 @@ public class FranchiseService {
 	}
 
 	// Other business method --------------------------------------------------
+	
+	public Integer resId() {
+		Integer res;
+		res = franchiseRepository.resId();
+		return res;
+	}
 
 }
