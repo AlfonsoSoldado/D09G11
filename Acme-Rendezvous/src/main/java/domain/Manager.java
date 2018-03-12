@@ -14,7 +14,7 @@ public class Manager extends Actor {
 
 	private String VAT;
 
-//	@NotBlank
+	@NotBlank
 	public String getVAT() {
 		return VAT;
 	}

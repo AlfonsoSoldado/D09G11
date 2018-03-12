@@ -48,7 +48,7 @@ public class ManagerService {
 		authority.setAuthority(Authority.MANAGER);
 		userAccount.addAuthority(authority);
 		manager.setUserAccount(userAccount);
-		manager.setVAT(generatedVAT());
+		manager.setVAT(this.generatedVAT());
 		return manager;
 	}
 
@@ -114,12 +114,11 @@ public class ManagerService {
 		
 		letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789-_/";
 		r = new Random();
-		
 		VAT = String.valueOf(letters.charAt(r.nextInt(letters.length())));
 		
 		for (int i = 0; i < 8; i++)
 			VAT = VAT + letters.charAt(r.nextInt(letters.length()));
-
+		System.out.println(VAT);
 		return VAT;
 	}
 
@@ -130,7 +129,7 @@ public class ManagerService {
 		if (res.getId() == 0) {
 			UserAccount userAccount;
 			Authority authority;
-			String VAT = "";
+			String VAT = this.generatedVAT();
 			userAccount = managerForm.getManager().getUserAccount();
 			authority = new Authority();
 			managerForm.getManager().setUserAccount(userAccount);
@@ -156,7 +155,7 @@ public class ManagerService {
 		if (manager.getId() == 0) {
 			UserAccount userAccount;
 			Authority authority;
-			String VAT = "";
+			String VAT = this.generatedVAT();
 			userAccount = manager.getUserAccount();
 			manager.setUserAccount(userAccount);
 			authority = new Authority();
