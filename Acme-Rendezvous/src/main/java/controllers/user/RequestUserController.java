@@ -40,30 +40,22 @@ public class RequestUserController extends AbstractController{
 		public ModelAndView create(@RequestParam final int servicesId) {
 			ModelAndView res;
 			
-//			res = new ModelAndView("redirect:../../");
-//			
-//			User user = userService.findByPrincipal();
-//			
-//			Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
-//			rendezvous = user.getRendezvous();
-//			
-//			for(Rendezvous r: rendezvous){
-//				if (this.servicesService.findOne(servicesId) == null || !(r.getServices().equals(servicesService.findOne(servicesId))))
-//					res = new ModelAndView("redirect:../../");
-//				else {
-//					final Request request = this.requestService.create();
-//					request.setServices(this.servicesService.findOne(servicesId));
-//					res = this.createEditModelAndView(request);
-//				}
-//			}		
-
-			if (this.servicesService.findOne(servicesId) == null)
-				res = new ModelAndView("redirect:../../");
-			else {
-				final Request request = this.requestService.create();
-				request.setServices(this.servicesService.findOne(servicesId));
-				res = this.createEditModelAndView(request);
-			}
+			res = new ModelAndView("redirect:../../");
+			
+			User user = userService.findByPrincipal();
+			
+			Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
+			rendezvous = user.getRendezvous();
+			
+			for(Rendezvous r: rendezvous){
+				if (this.servicesService.findOne(servicesId) == null || !(r.getServices().equals(servicesService.findOne(servicesId))))
+					res = new ModelAndView("redirect:../../");
+				else {
+					final Request request = this.requestService.create();
+					request.setServices(this.servicesService.findOne(servicesId));
+					res = this.createEditModelAndView(request);
+				}
+			}		
 			
 			return res;
 		}
@@ -85,6 +77,21 @@ public class RequestUserController extends AbstractController{
 			return res;
 		}
 		
+		// Deleting --------------------------------------------------------------
+
+		@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+		public ModelAndView delete(@Valid final Request request,
+				final BindingResult binding) {
+			ModelAndView res;
+			try {
+				this.requestService.delete(request);
+				res = new ModelAndView("redirect:../../");
+			} catch (final Throwable oops) {
+				res = this.createEditModelAndView(request, "request.commit.error");
+			}
+			return res;
+		}
+		
 		// Ancillary methods --------------------------------------------------
 
 		protected ModelAndView createEditModelAndView(final Request request) {
@@ -100,8 +107,8 @@ public class RequestUserController extends AbstractController{
 			
 					
 			result = new ModelAndView("request/user/edit");
+			result.addObject("request", request);
 			result.addObject("message", message);
-			result.addObject("requestUri", "request/user/edit.do");
 
 			return result;
 		}
