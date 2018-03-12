@@ -19,8 +19,8 @@ public class Manager extends Actor {
 		return VAT;
 	}
 
-	public void setVAT(String vAT) {
-		VAT = vAT;
+	public void setVAT(String VAT) {
+		this.VAT = VAT;
 	}
 
 	// Relationships --------------------------------------------------
