@@ -28,6 +28,7 @@
 		<value>/views/comment/messages</value>
 		<value>/views/RSVP/messages</value>
 		<value>/views/services/messages</value>
+		<value>/views/request/messages</value>
 
 	</util:list>
 

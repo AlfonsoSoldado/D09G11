@@ -30,12 +30,6 @@
 	<display:column>
 		<img class="imagenesServices" src="${row.picture}">
 	</display:column>
-	
-	<display:column>
-		<acme:links
-			url="request/user/edit.do?servicesId=${row.id}"
-			code="services.request" />
-	</display:column>
 </display:table>
 
 

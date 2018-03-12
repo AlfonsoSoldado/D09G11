@@ -39,7 +39,7 @@ public class Request extends DomainEntity  {
 	private Services services;
 	
 	@Valid
-	@OneToOne(optional = false)
+	@OneToOne(optional = true)
 	public Services getServices() {
 		return services;
 	}

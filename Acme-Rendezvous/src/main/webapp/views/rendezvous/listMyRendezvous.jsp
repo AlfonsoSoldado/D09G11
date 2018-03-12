@@ -48,9 +48,11 @@
 	<spring:message code="rendezvous.moment" var="moment" />
 	<display:column property="moment" title="${moment }"
 		class="${row.deleted }" />
-		
-	<spring:message code="rendezvous.gpsCoordinate.name" var="gpsCoordinates"/>
-	<display:column property="gpsCoordinate.namePlace" title="${gpsCoordinates }" class="${row.deleted }"/>
+
+	<spring:message code="rendezvous.gpsCoordinate.name"
+		var="gpsCoordinates" />
+	<display:column property="gpsCoordinate.namePlace"
+		title="${gpsCoordinates }" class="${row.deleted }" />
 
 	<spring:message code="rendezvous.finalMode" var="finalMode" />
 	<display:column property="finalMode" title="${finalMode }"
@@ -59,46 +61,55 @@
 	<spring:message code="rendezvous.deleted" var="deleted" />
 	<display:column property="deleted" title="${deleted}" sortable="false"
 		class="${row.deleted }" />
-		
-		<spring:message code="rendezvous.picture" var="picture"/>
-		<display:column><img class="imagenesComment" src="${row.picture}"></display:column>
-		
-		
+
+	<spring:message code="rendezvous.picture" var="picture" />
+	<display:column>
+		<img class="imagenesComment" src="${row.picture}">
+	</display:column>
+
+
 	<display:column>
 		<jstl:if test="${row.deleted == false}">
 			<acme:links url="rendezvous/listSimilar.do?rendezvousId=${row.id }"
-			code="rendezvous.similar" />
+				code="rendezvous.similar" />
 		</jstl:if>
 	</display:column>
 	<display:column>
 		<jstl:if test="${row.deleted == false}">
 			<acme:links url="announcement/list.do?rendezvousId=${row.id}"
-			code="rendezvous.announcement" />
+				code="rendezvous.announcement" />
 		</jstl:if>
 	</display:column>
 	<display:column>
 		<jstl:if test="${row.deleted == false}">
 			<acme:links url="announcement/user/create.do?rendezvousId=${row.id}"
-			code="rendezvous.announcement.create" />
+				code="rendezvous.announcement.create" />
 		</jstl:if>
 	</display:column>
 	<display:column>
 		<jstl:if test="${row.deleted == false}">
 			<acme:links url="question/listByUser.do?rendezvousId=${row.id}"
-			code="rendezvous.question" />
+				code="rendezvous.question" />
 		</jstl:if>
 	</display:column>
 	<display:column>
 		<jstl:if test="${row.deleted == false}">
 			<acme:links url="question/user/create.do?rendezvousId=${row.id}"
-			code="rendezvous.question.create" />
+				code="rendezvous.question.create" />
 		</jstl:if>
 	</display:column>
 	<display:column>
-			<jstl:if test="${row.deleted == false}">
-				<acme:links url="user/listAttendant.do?rendezvousId=${row.id}" code="rendezvous.listAttendant" />
-			</jstl:if>
-		</display:column>
+		<jstl:if test="${row.deleted == false}">
+			<acme:links url="user/listAttendant.do?rendezvousId=${row.id}"
+				code="rendezvous.listAttendant" />
+		</jstl:if>
+	</display:column>
+
+
+	<display:column>
+		<acme:links url="request/user/edit.do?rendezvousId=${row.id}"
+			code="rendezvous.request" />
+	</display:column>
 
 </display:table>
 

@@ -24,8 +24,14 @@
 
 		<form:hidden path="id" />
 		<form:hidden path="version" />
+		<form:hidden path="services" />
 
-		<acme:textbox path="creditCard" code="request.creditCard" />
+		<acme:textbox path="creditCard.holderName" code="request.creditCard.holderName" />
+		<acme:textbox path="creditCard.brandName" code="request.creditCard.brandName" />
+		<acme:textbox path="creditCard.number" code="request.creditCard.number" />
+		<acme:textbox path="creditCard.expirationMonth" code="request.creditCard.expirationMonth" />
+		<acme:textbox path="creditCard.expirationYear" code="request.creditCard.expirationYear" />
+		<acme:textbox path="creditCard.CVV" code="request.creditCard.CVV" />
 		<acme:textbox path="comment" code="request.comment" />
 		
 

@@ -9,6 +9,7 @@ import org.springframework.util.Assert;
 
 import repositories.RequestRepository;
 import domain.Request;
+import domain.Services;
 
 @Service
 @Transactional
@@ -30,8 +31,11 @@ public class RequestService {
 	// Simple CRUD methods ----------------------------------------------------
 
 	public Request create() {
-		Request request;
+		final Request request;
+		Services services = new Services();
+		
 		request = new Request();
+		request.setServices(services);
 		return request;
 	}
 
