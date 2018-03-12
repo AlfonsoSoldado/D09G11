@@ -55,7 +55,7 @@ public class FranchiseAdministratorController extends AbstractController {
 		else
 			try {
 				this.franchiseService.save(franchise);
-				res = new ModelAndView("redirect:../../");
+				res = new ModelAndView("redirect:../");
 			} catch (final Throwable oops) {
 				res = this.createEditModelAndView(franchise, "administrator.commit.error");
 			}
