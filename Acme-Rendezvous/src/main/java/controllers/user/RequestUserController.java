@@ -22,7 +22,7 @@ import domain.Request;
 import domain.User;
 
 @Controller
-@RequestMapping("/request")
+@RequestMapping("/request/user")
 public class RequestUserController extends AbstractController{
 
 	@Autowired
@@ -36,27 +36,35 @@ public class RequestUserController extends AbstractController{
 	
 	// Creation ---------------------------------------------------------------
 
-		@RequestMapping(value = "/create", method = RequestMethod.GET)
+		@RequestMapping(value = "/edit", method = RequestMethod.GET)
 		public ModelAndView create(@RequestParam final int servicesId) {
 			ModelAndView res;
 			
-			res = new ModelAndView("redirect:../../");
-			
-			User user = userService.findByPrincipal();
-			
-			Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
-			rendezvous = user.getRendezvous();
-			
-			for(Rendezvous r: rendezvous){
-				if (this.servicesService.findOne(servicesId) == null || !(r.getServices().equals(servicesService.findOne(servicesId))))
-					res = new ModelAndView("redirect:../../");
-				else {
-					final Request request = this.requestService.create();
-					request.setServices(this.servicesService.findOne(servicesId));
-					res = this.createEditModelAndView(request);
-				}
-			}		
+//			res = new ModelAndView("redirect:../../");
+//			
+//			User user = userService.findByPrincipal();
+//			
+//			Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
+//			rendezvous = user.getRendezvous();
+//			
+//			for(Rendezvous r: rendezvous){
+//				if (this.servicesService.findOne(servicesId) == null || !(r.getServices().equals(servicesService.findOne(servicesId))))
+//					res = new ModelAndView("redirect:../../");
+//				else {
+//					final Request request = this.requestService.create();
+//					request.setServices(this.servicesService.findOne(servicesId));
+//					res = this.createEditModelAndView(request);
+//				}
+//			}		
 
+			if (this.servicesService.findOne(servicesId) == null)
+				res = new ModelAndView("redirect:../../");
+			else {
+				final Request request = this.requestService.create();
+				request.setServices(this.servicesService.findOne(servicesId));
+				res = this.createEditModelAndView(request);
+			}
+			
 			return res;
 		}
 		
@@ -91,9 +99,9 @@ public class RequestUserController extends AbstractController{
 			ModelAndView result;
 			
 					
-			result = new ModelAndView("request/edit");
+			result = new ModelAndView("request/user/edit");
 			result.addObject("message", message);
-			result.addObject("requestUri", "request/edit.do");
+			result.addObject("requestUri", "request/user/edit.do");
 
 			return result;
 		}

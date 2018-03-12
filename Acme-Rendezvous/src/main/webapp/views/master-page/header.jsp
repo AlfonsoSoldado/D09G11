@@ -70,6 +70,8 @@
 						code="master.page.user.list" /></a></li>
 			<li><a class="fNiv" href="RSVP/user/create.do"><spring:message
 						code="master.page.rsvp" /></a></li>
+			<li><a class="fNiv" href="services/list.do"><spring:message
+						code="master.page.services" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">
