@@ -14,13 +14,13 @@ public class Manager extends Actor {
 
 	private String VAT;
 
-	@NotBlank
+//	@NotBlank
 	public String getVAT() {
 		return VAT;
 	}
 
-	public void setVAT(String vAT) {
-		VAT = vAT;
+	public void setVAT(String VAT) {
+		this.VAT = VAT;
 	}
 
 	// Relationships --------------------------------------------------

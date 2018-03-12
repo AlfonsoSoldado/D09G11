@@ -42,6 +42,8 @@
 
 		<security:intercept-url pattern="/user/register_User.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/manager/register_Manager.do"
+			access="permitAll" />
 		<security:intercept-url pattern="/rendezvous/list.do"
 			access="permitAll" />
 		<security:intercept-url pattern="/rendezvous/listSimilar.do"

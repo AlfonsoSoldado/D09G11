@@ -77,6 +77,8 @@
 						code="master.page.login" /></a></li>
 			<li><a class="fNiv" href="user/register_User.do"><spring:message
 						code="master.page.register.user" /></a></li>
+			<li><a class="fNiv" href="manager/register_Manager.do"><spring:message
+						code="master.page.register.manager" /></a></li>
 			<li><a class="fNiv" href="rendezvous/list.do"><spring:message
 						code="master.page.rendezvous" /></a></li>
 			<li><a class="fNiv" href="user/list.do"><spring:message
