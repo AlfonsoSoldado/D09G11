@@ -20,5 +20,8 @@ public interface ServicesRepository extends JpaRepository<Services, Integer> {
 	@Query("select m from Services m where m.manager.id=?1")
 	Collection<Services> servicesByManager(int id);
 	
+	@Query("select s from Services s where s.rendezvous.id=?1")
+	Collection<Services> servicesByRendezvous(int id);
+	
 	
 }

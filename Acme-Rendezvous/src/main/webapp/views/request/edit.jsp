@@ -1,5 +1,5 @@
 <%--
- * list.jsp
+ * edit.jsp
  *
  * Copyright (C) 2017 Universidad de Sevilla
  * 
@@ -11,32 +11,29 @@
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
-<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<display:table pagesize="5" class="displaytag" keepStatus="true"
-	name="services" requestURI="${requestURI}" id="row">
+<form:form action="request/user/edit.do" modelAttribute="request">
+	<security:authorize access="hasRole('USER')">
 
-	<acme:column property="name" code="services.name" />
-	<acme:column property="description" code="services.description" />
-	<acme:column property="rendezvous.name" code="services.rendezvous" />
+		<form:hidden path="id" />
+		<form:hidden path="version" />
 
-	<spring:message code="services.picture" var="picture" />
-	<display:column>
-		<img class="imagenesServices" src="${row.picture}">
-	</display:column>
-	
-	<display:column>
-		<acme:links
-			url="request/user/edit.do?servicesId=${row.id}"
-			code="services.request" />
-	</display:column>
-</display:table>
+		<acme:textbox path="creditCard" code="request.creditCard" />
+		<acme:textbox path="comment" code="request.comment" />
+		
 
+		<acme:submit name="save" code="request.submit" />
+		<acme:cancel url="services/list.do" code="request.cancel" />
+		<acme:delete confirmationCode="request.confirmationCode"
+			buttonCode="request.delete" id="${request.id }" />
+	</security:authorize>
+</form:form>
 
 

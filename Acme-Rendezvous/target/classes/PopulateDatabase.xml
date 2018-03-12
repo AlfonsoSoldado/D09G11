@@ -125,11 +125,6 @@
 			</list>
 		</property>
 
-		<property name="requests">
-			<list>
-				<ref bean="request1" />
-			</list>
-		</property>
 	</bean>
 
 	<bean id="user2" class="domain.User">
@@ -173,11 +168,6 @@
 			</list>
 		</property>
 
-		<property name="requests">
-			<list>
-				<ref bean="request2" />
-			</list>
-		</property>
 	</bean>
 
 	<!-- MANAGERS -->
@@ -237,7 +227,12 @@
 				<ref bean="rendezvous2" />
 			</list>
 		</property>
-		<property name="services" ref="services1"/>
+		<property name="services" ref="services1" />
+		<property name="requests">
+			<list>
+				<ref bean="request1" />
+			</list>
+		</property>
 	</bean>
 
 
@@ -274,7 +269,12 @@
 				<ref bean="rendezvous1" />
 			</list>
 		</property>
-		<property name="services" ref="services2"/>
+		<property name="services" ref="services2" />
+		<property name="requests">
+			<list>
+				<ref bean="request2" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- RSVP -->
@@ -445,12 +445,7 @@
 				<ref bean="services1" />
 			</list>
 		</property>
-		<property name="categoryParent"><null/></property>
-		<property name="categories">
-			<list>
-				<ref bean="category2" />
-			</list>
-		</property>
+		<property name="level" value="1" />
 	</bean>
 
 	<bean id="category2" class="domain.Category">
@@ -462,12 +457,8 @@
 				<ref bean="services2" />
 			</list>
 		</property>
-		<property name="categoryParent" ref="category1" />
-		<property name="categories">
-			<list>
+		<property name="level" value="2" />
 
-			</list>
-		</property>
 	</bean>
 
 	<!-- CREDIT CARD -->
@@ -495,34 +486,42 @@
 	<bean id="request1" class="domain.Request">
 		<property name="creditCard" ref="creditCard1" />
 		<property name="comment" value="This is an optional comment" />
-		<property name="services" ref="services1"/>
+		<property name="services" ref="services1" />
 	</bean>
-	
+
 	<bean id="request2" class="domain.Request">
 		<property name="creditCard" ref="creditCard2" />
 		<property name="comment" value="This is an optional comment" />
-		<property name="services" ref="services2"/>
+		<property name="services" ref="services2" />
 	</bean>
-	
+
 	<!-- SERVICES -->
-	
+
 	<bean id="services1" class="domain.Services">
 		<property name="name" value="Express service" />
 		<property name="description" value="This is a description" />
 		<property name="picture" value="http://www.google.com" />
 		<property name="canceled" value="false" />
 		<property name="manager" ref="manager1" />
-		<property name="category" ref="category1" />
+		<property name="category">
+			<list>
+				<ref bean="category1" />
+			</list>
+		</property>
 		<property name="rendezvous" ref="rendezvous1" />
-	</bean>	
-	
+	</bean>
+
 	<bean id="services2" class="domain.Services">
 		<property name="name" value="Extra service" />
 		<property name="description" value="This is a description" />
 		<property name="picture" value="http://www.google.es" />
 		<property name="canceled" value="false" />
 		<property name="manager" ref="manager2" />
-		<property name="category" ref="category2" />
+		<property name="category">
+			<list>
+				<ref bean="category2" />
+			</list>
+		</property>
 		<property name="rendezvous" ref="rendezvous2" />
 	</bean>
 
