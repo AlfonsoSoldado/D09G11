@@ -160,4 +160,8 @@ public class RendezvousService {
 	public Collection<Rendezvous> findRendezvousWithServices(){
 		return this.rendezvousRepository.findRendezvousWithServices();
 	}
+	
+	public Rendezvous findRendezvousByServices(int servicesId){
+		return this.rendezvousRepository.findRendezvousByServices(servicesId);
+	}
 }

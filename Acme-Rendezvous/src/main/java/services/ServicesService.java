@@ -10,8 +10,10 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 
 import repositories.ServicesRepository;
+import domain.Category;
 import domain.Manager;
 import domain.Rendezvous;
+import domain.Request;
 import domain.Services;
 
 @Service
@@ -29,6 +31,12 @@ public class ServicesService {
 	@Autowired
 	private ActorService actorService;
 
+	@Autowired
+	private RendezvousService rendezvousService;
+	
+	@Autowired
+	private CategoryService categoryService;
+	
 	// Supporting services ----------------------------------------------------
 
 	// Constructor ------------------------------------------------------------
@@ -45,12 +53,15 @@ public class ServicesService {
 		
 		Rendezvous r;
 		r = new Rendezvous();
+		Collection<Category> category;
+		category = new ArrayList<Category>();
 
 		Manager manager = managerService.findByPrincipal();
 		
 		services.setRendezvous(r);
 		services.setManager(manager);
 		services.setCanceled(false);
+		services.setCategory(category);
 		
 		return services;
 	}
@@ -90,6 +101,28 @@ public class ServicesService {
 		Assert.notNull(services);
 		Assert.isTrue(services.getId() != 0);
 		Assert.isTrue(this.servicesRepository.exists(services.getId()));
+		
+		Request request;
+		request = this.requestByServices(services.getId());
+		
+		request.setServices(null);
+		
+		Rendezvous rendezvous;
+		rendezvous = rendezvousService.findRendezvousByServices(services.getId());
+		
+		rendezvous.setServices(null);
+		
+		Collection<Category> category = new ArrayList<Category>();
+		category = categoryService.findCategoryByServices(services.getId());
+		
+		for(Category c: category){
+			Collection<Services> ss = new ArrayList<Services>();
+			ss = c.getServices();
+			ss.remove(services);
+			
+			c.setServices(ss);
+		}
+		
 		this.servicesRepository.delete(services);
 	}
 
@@ -125,5 +158,8 @@ public class ServicesService {
 		res = servicesRepository.servicesByRendezvous(rendezvousId);
 		return res;
 	}
-
+	
+	public Request requestByServices(int servicesId){
+		return servicesRepository.requestByServices(servicesId);
+	}
 }
