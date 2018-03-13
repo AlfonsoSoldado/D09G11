@@ -156,4 +156,5 @@ public class RendezvousService {
 	public Collection<Rendezvous> findRendezvousNotCancelled() {
 		return this.rendezvousRepository.findRendezvousNotCancelled();
 	}
+	
 }

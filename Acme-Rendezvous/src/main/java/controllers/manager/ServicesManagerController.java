@@ -1,5 +1,6 @@
 package controllers.manager;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.validation.Valid;
@@ -12,16 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import controllers.AbstractController;
-import domain.Category;
-import domain.Manager;
-import domain.Rendezvous;
-import domain.Services;
 import services.ActorService;
 import services.CategoryService;
 import services.ManagerService;
 import services.RendezvousService;
 import services.ServicesService;
+import controllers.AbstractController;
+import domain.Category;
+import domain.Manager;
+import domain.Rendezvous;
+import domain.Services;
 
 @Controller
 @RequestMapping("/services/manager")
@@ -41,6 +42,19 @@ public class ServicesManagerController extends AbstractController {
 
 	@Autowired
 	private ManagerService managerService;
+	
+	// Creation ---------------------------------------------------------------
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create() {
+		ModelAndView res;
+		
+		Services services = this.servicesService.create();
+			
+		res = this.createEditModelAndView(services);
+
+		return res;
+	}
 
 	@RequestMapping(value = "/listMyServices", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -51,7 +65,7 @@ public class ServicesManagerController extends AbstractController {
 
 		result = new ModelAndView("services/listMyServices");
 		result.addObject("services", services);
-		result.addObject("requestURI", "services/listMyServices.do");
+		result.addObject("requestURI", "services/manager/listMyServices.do");
 
 		return result;
 	}
@@ -76,18 +90,20 @@ public class ServicesManagerController extends AbstractController {
 		ModelAndView res;
 		this.managerService.checkAuthority();
 		services = this.servicesService.reconstruct(services, binding);
+		
+		Manager manager = managerService.findByPrincipal();
+		services.setManager(manager);
+		
 		if (binding.hasErrors())
-			res = this.createEditModelAndView(services, "rendezvous.params.error");
+			res = this.createEditModelAndView(services, "services.params.error");
 		else
 			try {
-				Services saved = this.servicesService.save(services);
-
-				if (services.getId() == 0) {
-					
-				}
-
+				this.servicesService.save(services);
+				
 				res = new ModelAndView("redirect:../../");
 			} catch (final Throwable oops) {
+				System.out.println(oops.getMessage());
+				System.out.println(oops.getCause());
 				res = this.createEditModelAndView(services, "services.commit.error");
 			}
 		return res;
@@ -116,8 +132,21 @@ public class ServicesManagerController extends AbstractController {
 	protected ModelAndView createEditModelAndView(final Services services, final String message) {
 		ModelAndView result;
 
+		Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
+		Collection<Category> category = new ArrayList<Category>();
+		
+		rendezvous = this.rendezvousService.findRendezvousNotCancelled();
+		for(Rendezvous r: rendezvous){
+			if(r.getServices() != null){
+				rendezvous.remove(r);
+			}
+		}
+		category = categoryService.findAll();
+		
 		result = new ModelAndView("services/manager/edit");
 		result.addObject("services", services);
+		result.addObject("rendezvous", rendezvous);
+		result.addObject("categories", category);
 		result.addObject("message", message);
 		result.addObject("requestUri", "services/manager/edit.do");
 

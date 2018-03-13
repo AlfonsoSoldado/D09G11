@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 
 import repositories.ServicesRepository;
 import domain.Manager;
+import domain.Rendezvous;
 import domain.Services;
 
 @Service
@@ -41,6 +42,15 @@ public class ServicesService {
 	public Services create() {
 		Services services;
 		services = new Services();
+		
+		Rendezvous r;
+		r = new Rendezvous();
+
+		Manager manager = managerService.findByPrincipal();
+		
+		services.setRendezvous(r);
+		services.setManager(manager);
+		
 		return services;
 	}
 
@@ -61,14 +71,13 @@ public class ServicesService {
 	public Services save(Services services) {
 		Assert.notNull(services);
 		Services res;
-		if (services.getId() != 0) {
-			Services oldServices = this.findOne(services.getId());
-
-			// ---------
-
-		}
+		
+		Rendezvous r = services.getRendezvous();
 
 		res = this.servicesRepository.save(services);
+		
+		r.setServices(res);
+		
 		return res;
 	}
 
