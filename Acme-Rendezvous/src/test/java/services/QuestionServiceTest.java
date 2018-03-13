@@ -32,6 +32,56 @@ public class QuestionServiceTest extends AbstractTest {
 	@Autowired
 	private AnswerService answerService;
 	
+	// Positive test cases ----------------------------------------------------------
+	
+	@Test
+	public void testUserQuestion() {
+		super.authenticate("user1");
+		Question question;
+		Rendezvous rendezvous;
+		Answer questionAnswer;
+		Collection<Answer> answers;
+
+		rendezvous = this.rendezvousService.findOne(this.getEntityId("rendezvous1"));
+		questionAnswer = this.answerService.findOne(this.getEntityId("answer1"));
+		answers = new ArrayList<Answer>();
+		
+		question = this.questionService.create();
+		question.setText("This is a question");
+		question.setRendezvous(rendezvous);
+		answers.add(questionAnswer);
+		question.setAnswer(answers);
+
+		this.questionService.save(question);
+
+		super.unauthenticate();
+	}
+	
+	// Negative test cases ----------------------------------------------------------
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testUserNotAuthenticatedQuestion() {
+		super.authenticate(null);
+		Question question;
+		Rendezvous rendezvous;
+		Answer questionAnswer;
+		Collection<Answer> answers;
+
+		rendezvous = this.rendezvousService.findOne(this.getEntityId("rendezvous1"));
+		questionAnswer = this.answerService.findOne(this.getEntityId("answer1"));
+		answers = new ArrayList<Answer>();
+
+		question = this.questionService.create();
+		question.setText("This is a question");
+		question.setRendezvous(rendezvous);
+		answers.add(questionAnswer);
+		question.setAnswer(answers);
+
+		this.questionService.save(question);
+
+		super.unauthenticate();
+	}
+	
 	// Creating and saving a question -----------------------------------------
 	
 	@Test
@@ -39,8 +89,8 @@ public class QuestionServiceTest extends AbstractTest {
 		final Object testingData[][] = {
 				{// User1 create a question for one of his rendezvous.
 					"question1", "answer1", "rendezvous1", null}, 
-//					{// User1 create a question for another rendezvous.
-//					"question2", "answer2", "rendezvous2", IllegalArgumentException.class}
+					{// User1 create a question for another rendezvous.
+					"question2", "answer2", "rendezvous2", IllegalArgumentException.class}
 			};
 			for (int i = 0; i < testingData.length; i++)
 				this.templateQuestionCreateSave((String) testingData[i][0], 
