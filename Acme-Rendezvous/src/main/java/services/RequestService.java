@@ -98,4 +98,10 @@ public class RequestService {
 		
 		return requests;
 	}
+	
+	public Collection<Request> findRequestByUser(int userId){
+		Collection<Request> requests = new ArrayList<Request>();
+		requests = requestRepository.findRequestByUser(userId);
+		return requests;
+	}
 }

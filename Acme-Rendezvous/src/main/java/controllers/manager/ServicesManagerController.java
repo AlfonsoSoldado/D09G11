@@ -46,7 +46,7 @@ public class ServicesManagerController extends AbstractController {
 	// Creation ---------------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int servicesId) {
 		ModelAndView res;
 		
 		Services services = this.servicesService.create();

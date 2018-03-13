@@ -42,8 +42,13 @@ public class RequestUserController extends AbstractController {
 	public ModelAndView list(final String message) {
 		ModelAndView result;
 		Collection<Request> request;
+		
+		User user;
+		user = userService.findByPrincipal();
+		int userId = user.getId();
 
-		request = this.requestService.findAll();
+//		request = this.requestService.findAll();
+		request = this.requestService.findRequestByUser(userId);
 
 		result = new ModelAndView("request/list");
 		result.addObject("request", request);
