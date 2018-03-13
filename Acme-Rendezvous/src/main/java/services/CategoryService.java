@@ -9,7 +9,6 @@ import org.springframework.util.Assert;
 
 import repositories.CategoryRepository;
 import domain.Category;
-import domain.Services;
 
 @Service
 @Transactional
@@ -67,4 +66,7 @@ public class CategoryService {
 
 	// Other business method --------------------------------------------------
 
+	public Collection<Category> findCategoryByServices(int servicesId){
+		return this.categoryRepository.findCategoryByServices(servicesId);
+	}
 }
