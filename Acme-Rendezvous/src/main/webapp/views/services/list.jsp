@@ -28,7 +28,7 @@
 
 	<spring:message code="services.picture" var="picture" />
 	<display:column>
-		<img class="imagenesServices" src="${row.picture}">
+		<img class="imagenesComment" src="${row.picture}">
 	</display:column>
 </display:table>
 

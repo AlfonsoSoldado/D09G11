@@ -35,5 +35,8 @@ public interface RendezvousRepository extends JpaRepository<Rendezvous, Integer>
 
 	@Query("select r from Rendezvous r where r.deleted=false")
 	Collection<Rendezvous> findRendezvousNotCancelled();
+	
+	@Query("select r from Rendezvous r where r.services.id!=0")
+	Collection<Rendezvous> findRendezvousWithServices();
 
 }

@@ -50,6 +50,7 @@ public class ServicesService {
 		
 		services.setRendezvous(r);
 		services.setManager(manager);
+		services.setCanceled(false);
 		
 		return services;
 	}
@@ -73,6 +74,10 @@ public class ServicesService {
 		Services res;
 		
 		Rendezvous r = services.getRendezvous();
+		
+		if(services.getId() == 0){
+			services.setCanceled(false);
+		}
 
 		res = this.servicesRepository.save(services);
 		

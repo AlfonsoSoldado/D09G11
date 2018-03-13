@@ -136,11 +136,8 @@ public class ServicesManagerController extends AbstractController {
 		Collection<Category> category = new ArrayList<Category>();
 		
 		rendezvous = this.rendezvousService.findRendezvousNotCancelled();
-		for(Rendezvous r: rendezvous){
-			if(r.getServices() != null){
-				rendezvous.remove(r);
-			}
-		}
+		rendezvous.removeAll(this.rendezvousService.findRendezvousWithServices());
+		
 		category = categoryService.findAll();
 		
 		result = new ModelAndView("services/manager/edit");

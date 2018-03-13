@@ -28,7 +28,7 @@
 
 	<spring:message code="services.picture" var="picture" />
 	<display:column>
-		<img class="imagenesServices" src="${row.picture}">
+		<img class="imagenesComment" src="${row.picture}">
 	</display:column>
 	<acme:column code="services.canceled" property="canceled" />
 	<acme:column property="category" code="services.category" />

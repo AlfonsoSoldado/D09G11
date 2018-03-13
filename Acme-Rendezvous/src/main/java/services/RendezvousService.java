@@ -157,4 +157,7 @@ public class RendezvousService {
 		return this.rendezvousRepository.findRendezvousNotCancelled();
 	}
 	
+	public Collection<Rendezvous> findRendezvousWithServices(){
+		return this.rendezvousRepository.findRendezvousWithServices();
+	}
 }
