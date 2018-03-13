@@ -138,4 +138,9 @@ public class QuestionService {
 		this.validator.validate(res, binding);
 		return res;
 	}
+	
+	public void flush() {
+		this.questionRepository.flush();
+	}
+	
 }
