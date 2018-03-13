@@ -13,7 +13,6 @@ import services.CommentService;
 import services.RendezvousService;
 import utilities.AbstractTest;
 import domain.Comment;
-import domain.Rendezvous;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
