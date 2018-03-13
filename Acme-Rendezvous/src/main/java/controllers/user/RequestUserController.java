@@ -24,6 +24,8 @@ import domain.User;
 @Controller
 @RequestMapping("/request/user")
 public class RequestUserController extends AbstractController {
+	
+	private int rId;
 
 	@Autowired
 	private RequestService requestService;
@@ -39,10 +41,11 @@ public class RequestUserController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int rendezvousId) {
 		ModelAndView res;
-		
-		Rendezvous r = rendezvousService.findOne(rendezvousId);
 
 		User user = userService.findByPrincipal();
+		
+		rId = rendezvousId;
+		Rendezvous r = rendezvousService.findOne(rId);
 
 		Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
 		rendezvous = user.getRendezvous();
@@ -51,12 +54,6 @@ public class RequestUserController extends AbstractController {
 			res = new ModelAndView("redirect:../../");
 		else {
 			final Request request = this.requestService.create();
-			Collection<Request> requests = new ArrayList<Request>();
-			
-			requests = r.getRequests();
-			requests.add(request);
-			
-			r.setRequests(requests);
 			
 			res = this.createEditModelAndView(request);
 		}
@@ -73,12 +70,9 @@ public class RequestUserController extends AbstractController {
 			res = this.createEditModelAndView(request, "request.params.error");
 		else
 			try {
-				this.requestService.save(request);
-				res = new ModelAndView("redirect:list.do");
+				this.requestService.save(request, rId);				
+				res = new ModelAndView("redirect:../list.do?rendezvousId=" + rId);
 			} catch (final Throwable oops) {
-				System.out.println(oops.getLocalizedMessage());
-				System.out.println(oops.getMessage());
-				System.out.println(oops.getCause());
 				res = this.createEditModelAndView(request,
 						"request.commit.error");
 			}
