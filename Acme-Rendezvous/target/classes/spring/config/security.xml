@@ -96,6 +96,8 @@
 			access="isAuthenticated()" />
 		<security:intercept-url pattern="/request/user/edit.do"
 			access="hasRole('USER')" />
+		<security:intercept-url pattern="/request/list.do"
+			access="isAuthenticated()" />
 
 		<security:intercept-url pattern="/services/manager/listMyServices.do"
 			access="hasRole('MANAGER')" />

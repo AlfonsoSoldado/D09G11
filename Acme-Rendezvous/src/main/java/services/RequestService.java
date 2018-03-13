@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.RequestRepository;
+import domain.Rendezvous;
 import domain.Request;
 import domain.Services;
 
@@ -22,6 +24,9 @@ public class RequestService {
 
 	// Supporting services ----------------------------------------------------
 
+	@Autowired
+	private RendezvousService rendezvousService;
+	
 	// Constructor ------------------------------------------------------------
 
 	public RequestService() {
@@ -58,6 +63,23 @@ public class RequestService {
 		res = this.requestRepository.save(request);
 		return res;
 	}
+	
+	public Request save(Request request, int rendezvousId) {
+		Assert.notNull(request);
+		Request res;
+		res = this.requestRepository.save(request);
+		
+		Rendezvous r = rendezvousService.findOne(rendezvousId);
+		
+		Collection<Request> requests = new ArrayList<Request>();
+		
+		requests = r.getRequests();
+		requests.add(res);
+		
+		r.setRequests(requests);
+		
+		return res;
+	}
 
 	public void delete(Request request) {
 		Assert.notNull(request);
@@ -68,4 +90,12 @@ public class RequestService {
 
 	// Other business method --------------------------------------------------
 
+	
+	public Collection<Request> findRequestByRendezvous(int rendezvousId){
+		Collection<Request> requests = new ArrayList<Request>();
+		
+		requests = requestRepository.findRequestByRendezvous(rendezvousId);
+		
+		return requests;
+	}
 }
