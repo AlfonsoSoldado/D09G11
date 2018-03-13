@@ -69,6 +69,8 @@
 						code="master.page.rsvp" /></a></li>
 			<li><a class="fNiv" href="services/list.do"><spring:message
 						code="master.page.services" /></a></li>
+			<li><a class="fNiv" href="request/user/list.do"><spring:message
+						code="master.page.request" /></a></li>
 		</security:authorize>
 		
 		
@@ -92,6 +94,8 @@
 						code="master.page.services" /></a></li>
 			<li><a class="fNiv" href="services/manager/listMyServices.do"><spring:message
 						code="master.page.myServices" /></a></li>
+			<li><a class="fNiv" href="request/manager/list.do"><spring:message
+						code="master.page.request" /></a></li>
 		</security:authorize>
 		
 

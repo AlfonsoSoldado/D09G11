@@ -98,6 +98,8 @@
 	
 		<security:intercept-url pattern="/request/user/edit.do"
 			access="hasRole('USER')" />
+		<security:intercept-url pattern="/request/user/list.do"
+			access="hasRole('USER')" />
 
 
 		<security:intercept-url pattern="/services/manager/listMyServices.do"
@@ -107,6 +109,8 @@
 		<security:intercept-url pattern="/services/manager/edit.do"
 			access="hasRole('MANAGER')" />
 		<security:intercept-url pattern="/services/manager/create.do"
+			access="hasRole('MANAGER')" />
+		<security:intercept-url pattern="/request/manager/list.do"
 			access="hasRole('MANAGER')" />
 			
 

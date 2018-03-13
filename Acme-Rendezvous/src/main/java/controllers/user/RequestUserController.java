@@ -35,6 +35,22 @@ public class RequestUserController extends AbstractController {
 
 	@Autowired
 	private UserService userService;
+	
+	// Listing --------------------------------------------------------------
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list(final String message) {
+		ModelAndView result;
+		Collection<Request> request;
+
+		request = this.requestService.findAll();
+
+		result = new ModelAndView("request/list");
+		result.addObject("request", request);
+		result.addObject("requestURI", "request/user/list.do");
+
+		return result;
+	}
 
 	// Creation ---------------------------------------------------------------
 
@@ -71,7 +87,8 @@ public class RequestUserController extends AbstractController {
 		else
 			try {
 				this.requestService.save(request, rId);				
-				res = new ModelAndView("redirect:../list.do?rendezvousId=" + rId);
+//				res = new ModelAndView("redirect:../list.do?rendezvousId=" + rId);
+				res = new ModelAndView("redirect:list.do");
 			} catch (final Throwable oops) {
 				res = this.createEditModelAndView(request,
 						"request.commit.error");
