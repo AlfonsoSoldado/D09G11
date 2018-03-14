@@ -33,10 +33,10 @@ public class ServicesService {
 
 	@Autowired
 	private RendezvousService rendezvousService;
-	
+
 	@Autowired
 	private CategoryService categoryService;
-	
+
 	// Supporting services ----------------------------------------------------
 
 	// Constructor ------------------------------------------------------------
@@ -50,19 +50,19 @@ public class ServicesService {
 	public Services create() {
 		Services services;
 		services = new Services();
-		
+
 		Rendezvous r;
 		r = new Rendezvous();
 		Collection<Category> category;
 		category = new ArrayList<Category>();
 
 		Manager manager = managerService.findByPrincipal();
-		
+
 		services.setRendezvous(r);
 		services.setManager(manager);
 		services.setCanceled(false);
 		services.setCategory(category);
-		
+
 		return services;
 	}
 
@@ -79,21 +79,34 @@ public class ServicesService {
 		return res;
 	}
 
-	//TODO
+	// TODO
 	public Services save(Services services) {
 		Assert.notNull(services);
 		Services res;
-		
+
 		Rendezvous r = services.getRendezvous();
-		
-		if(services.getId() == 0){
+
+		if (services.getId() == 0) {
 			services.setCanceled(false);
 		}
-
+		services.setLevel(updateLevel(services));
 		res = this.servicesRepository.save(services);
-		
+
 		r.setServices(res);
-		
+
+		return res;
+	}
+
+	private Integer updateLevel(Services services) {
+		Integer res = 5;
+		for (Category category : services.getCategory()) {
+			if (category.getLevel() < res) {
+				res = category.getLevel();
+			}
+		}
+		if (res == 5) {
+			res = null;
+		}
 		return res;
 	}
 
@@ -101,28 +114,28 @@ public class ServicesService {
 		Assert.notNull(services);
 		Assert.isTrue(services.getId() != 0);
 		Assert.isTrue(this.servicesRepository.exists(services.getId()));
-		
+
 		Request request;
 		request = this.requestByServices(services.getId());
-		
+
 		request.setServices(null);
-		
+
 		Rendezvous rendezvous;
 		rendezvous = rendezvousService.findRendezvousByServices(services.getId());
-		
+
 		rendezvous.setServices(null);
-		
+
 		Collection<Category> category = new ArrayList<Category>();
 		category = categoryService.findCategoryByServices(services.getId());
-		
-		for(Category c: category){
+
+		for (Category c : category) {
 			Collection<Services> ss = new ArrayList<Services>();
 			ss = c.getServices();
 			ss.remove(services);
-			
+
 			c.setServices(ss);
 		}
-		
+
 		this.servicesRepository.delete(services);
 	}
 
@@ -152,14 +165,14 @@ public class ServicesService {
 
 		return res;
 	}
-	
-	public Collection<Services> ServicesByRendezvous(int rendezvousId){
+
+	public Collection<Services> ServicesByRendezvous(int rendezvousId) {
 		Collection<Services> res = new ArrayList<Services>();
 		res = servicesRepository.servicesByRendezvous(rendezvousId);
 		return res;
 	}
-	
-	public Request requestByServices(int servicesId){
+
+	public Request requestByServices(int servicesId) {
 		return servicesRepository.requestByServices(servicesId);
 	}
 }

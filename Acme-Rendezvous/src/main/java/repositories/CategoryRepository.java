@@ -14,5 +14,5 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
 	@Query("select c from Category c join c.services s where s.id=?1")
 	Collection<Category> findCategoryByServices(int id);
-	
+
 }

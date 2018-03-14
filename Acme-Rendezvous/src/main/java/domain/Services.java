@@ -25,6 +25,7 @@ public class Services extends DomainEntity {
 	private String description;
 	private String picture;
 	private Boolean canceled;
+	private Integer level;
 
 	@NotBlank
 	public String getName() {
@@ -61,12 +62,20 @@ public class Services extends DomainEntity {
 		this.canceled = canceled;
 	}
 
+	public Integer getLevel() {
+
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
 	// Relationships --------------------------------------------------
 
 	private Manager manager;
 	private Collection<Category> category;
 	private Rendezvous rendezvous;
-	
 
 	@Valid
 	@NotNull
