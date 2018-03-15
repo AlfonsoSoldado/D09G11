@@ -25,6 +25,7 @@
 		<form:hidden path="id" />
 		<form:hidden path="version" />
 		<form:hidden path="manager" />
+		<form:hidden path="canceled"/>
 	
 
 		<acme:select items="${rendezvous }" itemLabel="name" code="services.rendezvous" path="rendezvous"/>

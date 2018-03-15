@@ -32,6 +32,7 @@
 	</form:label>
 		<form:select id="level" path="level">
 			<form:options items="${levels}" />
+
 		</form:select>
 		<form:errors cssClass="error" path="level" />
 		<br />

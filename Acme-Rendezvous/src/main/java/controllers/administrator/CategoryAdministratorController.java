@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import controllers.AbstractController;
@@ -61,25 +62,50 @@ public class CategoryAdministratorController extends AbstractController {
 		return res;
 	}
 
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam final int categoryId) {
+		ModelAndView result;
+		Category category;
+
+		category = this.categoryService.findOne(categoryId);
+		if (category != null) {
+
+			result = this.createEditModelAndView(category);
+			ArrayList<Integer> levels = new ArrayList<>();
+			levels.add(1);
+			levels.add(2);
+			levels.add(3);
+
+			result.addObject("levels", levels);
+
+		} else
+			result = new ModelAndView("redirect:list.do");
+
+		return result;
+	}
+
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid Category category, final BindingResult binding) {
 		ModelAndView result;
 		if (binding.hasErrors()) {
+			System.out.println(binding.getAllErrors());
 			result = this.createEditModelAndView(category, "category.params.error");
 		} else {
 			try {
 				if (category.getId() != 0) {
 
 					Category old = this.categoryService.findOne(category.getId());
-					if (old.getLevel() != category.getLevel()) {
+					if (old.getLevel() - category.getLevel()<=-1) {
 						updateServices(old.getServices(), category);
 					}
+					
+				} else {
 
+					this.categoryService.save(category);
 				}
-				this.categoryService.save(category);
-
 				result = new ModelAndView("redirect:list.do");
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 				result = createEditModelAndView(category, "category.commit.error");
 			}
 		}
@@ -89,15 +115,23 @@ public class CategoryAdministratorController extends AbstractController {
 
 	// TODO intentar cambiar los bucles
 	private void updateServices(Collection<Services> servicesWithThisCategory, Category category) {
+		Collection<Services> categoryServices = category.getServices();
 		for (Services services : servicesWithThisCategory) {
-			if (services.getLevel() - category.getLevel() == 2 || services.getLevel() - category.getLevel() == -2) {
+			if (services.getLevel() - category.getLevel() <= -1) {
 				Collection<Category> categories = services.getCategory();
 				for (Category categoryremove : categories) {
-					if (categoryremove.getLevel() - category.getLevel() == 2
-							|| categoryremove.getLevel() - category.getLevel() == -2) {
-						categories.remove(categoryremove);
+					if (categoryremove.getLevel() - category.getLevel() <= -1) {
+						if (categories.size() == 1) {
+							categories.clear();
+							break;
+						} else {
+							categories.remove(categoryremove);
+							categoryServices.remove(services);
+						}
 					}
 				}
+				category.setServices(categoryServices);
+				categoryService.save(category);
 				servicesService.save(services);
 
 			}

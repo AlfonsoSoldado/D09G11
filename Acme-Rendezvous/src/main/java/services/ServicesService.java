@@ -76,6 +76,8 @@ public class ServicesService {
 		Assert.isTrue(services != 0);
 		Services res;
 		res = this.servicesRepository.findOne(services);
+		res.setLevel(updateLevel(res));
+
 		return res;
 	}
 
@@ -158,9 +160,9 @@ public class ServicesService {
 		} else {
 			serviceFinal = this.findOne(services.getId());
 			services.setManager((Manager) this.actorService.findByPrincipal());
-			services.setRendezvous(serviceFinal.getRendezvous());
-			services.setCategory(serviceFinal.getCategory());
-			res = services;
+			serviceFinal.setRendezvous(services.getRendezvous());
+			serviceFinal.setCategory(services.getCategory());
+			res = serviceFinal;
 		}
 
 		return res;
