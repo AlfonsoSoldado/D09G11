@@ -14,11 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import controllers.AbstractController;
-import domain.Announcement;
 import domain.Category;
-import domain.Rendezvous;
 import domain.Services;
-import domain.User;
 import services.AdministratorService;
 import services.CategoryService;
 import services.ServicesService;
@@ -95,10 +92,14 @@ public class CategoryAdministratorController extends AbstractController {
 				if (category.getId() != 0) {
 
 					Category old = this.categoryService.findOne(category.getId());
-					if (old.getLevel() - category.getLevel()<=-1) {
+					if ((old.getLevel() - category.getLevel() <= -1) && !old.getServices().isEmpty()) {
 						updateServices(old.getServices(), category);
+					} else {
+						category.setServices(new ArrayList<Services>());
+						this.categoryService.save(category);
+
 					}
-					
+
 				} else {
 
 					this.categoryService.save(category);
@@ -116,6 +117,7 @@ public class CategoryAdministratorController extends AbstractController {
 	// TODO intentar cambiar los bucles
 	private void updateServices(Collection<Services> servicesWithThisCategory, Category category) {
 		Collection<Services> categoryServices = category.getServices();
+
 		for (Services services : servicesWithThisCategory) {
 			if (services.getLevel() - category.getLevel() <= -1) {
 				Collection<Category> categories = services.getCategory();
@@ -136,6 +138,7 @@ public class CategoryAdministratorController extends AbstractController {
 
 			}
 		}
+
 	}
 
 	protected ModelAndView createEditModelAndView(final Category category) {

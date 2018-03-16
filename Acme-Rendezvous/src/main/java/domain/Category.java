@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -53,7 +54,7 @@ public class Category extends DomainEntity {
 	private Collection<Services> services;
 
 	@Valid
-	@ManyToMany(mappedBy = "category")
+	@ManyToMany(mappedBy = "category",cascade = CascadeType.ALL)
 	public Collection<Services> getServices() {
 		return services;
 	}
