@@ -25,6 +25,7 @@
 		modelAttribute="category">
 
 		<form:hidden path="id" />
+		<form:hidden path="version"/>
 		<acme:textbox code="category.name" path="name" />
 		<acme:textbox code="category.description" path="description" />
 		<form:label path="level">

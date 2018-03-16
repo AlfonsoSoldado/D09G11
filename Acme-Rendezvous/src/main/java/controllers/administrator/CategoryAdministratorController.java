@@ -114,6 +114,40 @@ public class CategoryAdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(Category category, final BindingResult binding) {
+		ModelAndView result;
+		if (binding.hasErrors()) {
+			System.out.println(binding.getAllErrors());
+			result = this.createEditModelAndView(category, "category.params.error");
+		} else {
+			try {
+
+				Category old = this.categoryService.findOne(category.getId());
+				if (!old.getServices().isEmpty()) {
+					updateServicesToRemove(old.getServices(), category);
+				}
+				categoryService.delete(category);
+				result = new ModelAndView("redirect:list.do");
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				result = createEditModelAndView(category, "category.commit.error");
+			}
+		}
+
+		return result;
+	}
+
+	private void updateServicesToRemove(Collection<Services> services, Category category) {
+		for (Services service : services) {
+			Collection<Category> categories=service.getCategory();
+			categories.remove(category);
+			service.setCategory(categories);
+			servicesService.save(service);
+		}
+		
+	}
+
 	// TODO intentar cambiar los bucles
 	private void updateServices(Collection<Services> servicesWithThisCategory, Category category) {
 		Collection<Services> categoryServices = category.getServices();
