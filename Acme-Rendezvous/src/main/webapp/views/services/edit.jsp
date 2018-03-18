@@ -28,7 +28,9 @@
 		<form:hidden path="canceled"/>
 		<form:hidden path="rendezvous"/>
 
-		<acme:select items="${categories }" itemLabel="name" code="services.category" path="category"/>
+		<acme:select items="${categories1 }" itemLabel="name" code="services.category" path="category"/>
+		<acme:select items="${categories2 }" itemLabel="name" code="services.category" path="category"/>
+		<acme:select items="${categories3 }" itemLabel="name" code="services.category" path="category"/>
 
 		<acme:textbox path="name" code="services.name" />
 		<acme:textbox path="description" code="services.description" />

@@ -23,11 +23,14 @@ import controllers.AbstractController;
 import domain.Category;
 import domain.Manager;
 import domain.Rendezvous;
+import domain.Request;
 import domain.Services;
 
 @Controller
 @RequestMapping("/services/manager")
 public class ServicesManagerController extends AbstractController {
+	
+	private Request requestAttribute;
 
 	@Autowired
 	private ServicesService servicesService;
@@ -53,8 +56,10 @@ public class ServicesManagerController extends AbstractController {
 	public ModelAndView create(@RequestParam final int requestId) {
 		ModelAndView res;
 		
+		requestAttribute = requestService.findOne(requestId);
+		
 		Services services = this.servicesService.create();
-		Rendezvous rendezvous = rendezvousService.findRendezvousByRequest(requestService.findOne(requestId));
+		Rendezvous rendezvous = rendezvousService.findRendezvousByRequest(requestAttribute);
 		
 		services.setRendezvous(rendezvous);
 		
@@ -109,12 +114,11 @@ public class ServicesManagerController extends AbstractController {
 			try {
 				Services saved = this.servicesService.save(services);
 				rendezvous.setServices(saved);
+				requestAttribute.setServices(saved);
 				
 				res = new ModelAndView("redirect:../../");
 			} catch (final Throwable oops) {
 				res = this.createEditModelAndView(services, "services.commit.error");
-				System.out.println(oops.getMessage());
-				System.out.println(oops.getCause());
 			}
 		return res;
 	}
@@ -146,13 +150,19 @@ public class ServicesManagerController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Services services, final String message) {
 		ModelAndView result;
-		Collection<Category> category = new ArrayList<Category>();
+		Collection<Category> category1 = new ArrayList<Category>();
+		Collection<Category> category2 = new ArrayList<Category>();
+		Collection<Category> category3 = new ArrayList<Category>();
 		
-		category = categoryService.findAll();
+		category1 = categoryService.findCategoryByLevel(1);
+		category2 = categoryService.findCategoryByLevel(2);
+		category3 = categoryService.findCategoryByLevel(3);
 		
 		result = new ModelAndView("services/manager/edit");
 		result.addObject("services", services);
-		result.addObject("categories", category);
+		result.addObject("categories1", category1);
+		result.addObject("categories2", category2);
+		result.addObject("categories3", category3);
 		result.addObject("message", message);
 		result.addObject("requestUri", "services/manager/edit.do");
 
