@@ -1,12 +1,12 @@
 #./src/main/resources/Entities.map
-#Thu Mar 15 20:37:20 CET 2018
+#Sun Mar 18 18:41:39 CET 2018
 Announcement2=47
 Announcement1=46
 admin1=33
 question2=53
 question1=52
-services2=61
-services1=60
+services2=59
+services1=57
 manager2=41
 manager1=40
 userAccount5=37
@@ -14,14 +14,14 @@ answer2=55
 userAccount4=36
 answer1=54
 userAccount3=35
-request2=59
+request2=61
 userAccount2=34
-request1=58
+request1=60
 userAccount1=32
 rendezvous2=43
 rendezvous1=42
 comment4=51
-category2=57
+category2=58
 comment3=50
 RSVP2=45
 category1=56

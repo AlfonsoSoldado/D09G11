@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Rendezvous;
+import domain.Request;
 
 @Repository
 public interface RendezvousRepository extends JpaRepository<Rendezvous, Integer> {
@@ -41,5 +42,8 @@ public interface RendezvousRepository extends JpaRepository<Rendezvous, Integer>
 	
 	@Query("select r from Rendezvous r where r.services.id=?1")
 	Rendezvous findRendezvousByServices(int id);
+	
+	@Query("select r from Rendezvous r where ?1 member r.requests")
+	Rendezvous findRendezvousByRequest(Request request);
 
 }

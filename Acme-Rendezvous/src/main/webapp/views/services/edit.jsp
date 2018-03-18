@@ -26,17 +26,14 @@
 		<form:hidden path="version" />
 		<form:hidden path="manager" />
 		<form:hidden path="canceled"/>
-	
+		<form:hidden path="rendezvous"/>
 
-		<acme:select items="${rendezvous }" itemLabel="name" code="services.rendezvous" path="rendezvous"/>
 		<acme:select items="${categories }" itemLabel="name" code="services.category" path="category"/>
-
 
 		<acme:textbox path="name" code="services.name" />
 		<acme:textbox path="description" code="services.description" />
 		<acme:textbox path="picture" code="services.picture" />
 		
-
 		<acme:submit name="save" code="services.submit" />
 		<acme:cancel url="rendezvous/list.do" code="services.cancel" />
 		<acme:delete confirmationCode="services.confirmationCode"

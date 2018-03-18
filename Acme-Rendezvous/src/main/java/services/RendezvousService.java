@@ -16,6 +16,7 @@ import repositories.RendezvousRepository;
 import domain.Announcement;
 import domain.Comment;
 import domain.Rendezvous;
+import domain.Request;
 import domain.User;
 
 @Service
@@ -163,5 +164,9 @@ public class RendezvousService {
 	
 	public Rendezvous findRendezvousByServices(int servicesId){
 		return this.rendezvousRepository.findRendezvousByServices(servicesId);
+	}
+	
+	public Rendezvous findRendezvousByRequest(Request request){
+		return this.rendezvousRepository.findRendezvousByRequest(request);
 	}
 }

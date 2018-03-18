@@ -17,6 +17,7 @@ import services.ActorService;
 import services.CategoryService;
 import services.ManagerService;
 import services.RendezvousService;
+import services.RequestService;
 import services.ServicesService;
 import controllers.AbstractController;
 import domain.Category;
@@ -43,14 +44,20 @@ public class ServicesManagerController extends AbstractController {
 	@Autowired
 	private ManagerService managerService;
 	
+	@Autowired
+	private RequestService requestService;
+	
 	// Creation ---------------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create() {
+	public ModelAndView create(@RequestParam final int requestId) {
 		ModelAndView res;
 		
 		Services services = this.servicesService.create();
-			
+		Rendezvous rendezvous = rendezvousService.findRendezvousByRequest(requestService.findOne(requestId));
+		
+		services.setRendezvous(rendezvous);
+		
 		res = this.createEditModelAndView(services);
 
 		return res;
@@ -92,17 +99,22 @@ public class ServicesManagerController extends AbstractController {
 		services = this.servicesService.reconstruct(services, binding);
 		
 		Manager manager = managerService.findByPrincipal();
+		Rendezvous rendezvous = services.getRendezvous();
+
 		services.setManager(manager);
 		
 		if (binding.hasErrors())
 			res = this.createEditModelAndView(services, "services.params.error");
 		else
 			try {
-				this.servicesService.save(services);
+				Services saved = this.servicesService.save(services);
+				rendezvous.setServices(saved);
 				
 				res = new ModelAndView("redirect:../../");
 			} catch (final Throwable oops) {
 				res = this.createEditModelAndView(services, "services.commit.error");
+				System.out.println(oops.getMessage());
+				System.out.println(oops.getCause());
 			}
 		return res;
 	}
@@ -134,18 +146,12 @@ public class ServicesManagerController extends AbstractController {
 
 	protected ModelAndView createEditModelAndView(final Services services, final String message) {
 		ModelAndView result;
-
-		Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
 		Collection<Category> category = new ArrayList<Category>();
-		
-		rendezvous = this.rendezvousService.findRendezvousNotCancelled();
-		rendezvous.removeAll(this.rendezvousService.findRendezvousWithServices());
 		
 		category = categoryService.findAll();
 		
 		result = new ModelAndView("services/manager/edit");
 		result.addObject("services", services);
-		result.addObject("rendezvous", rendezvous);
 		result.addObject("categories", category);
 		result.addObject("message", message);
 		result.addObject("requestUri", "services/manager/edit.do");

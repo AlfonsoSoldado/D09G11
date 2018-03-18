@@ -28,7 +28,7 @@
 	<security:authorize access="hasRole('MANAGER')">
 	<display:column>
 		<jstl:if test="${row.services == null}">
-		<acme:links url="services/manager/create.do?rendezvousId=${rendezvous}" code="request.create.services" />
+		<acme:links url="services/manager/create.do?requestId=${row.id}" code="request.create.services" />
 		</jstl:if>
 	</display:column>
 	</security:authorize>
