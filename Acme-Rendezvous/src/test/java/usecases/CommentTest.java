@@ -41,13 +41,13 @@ public class CommentTest extends AbstractTest {
 
 			//Create a comment
 			{
-				"comment1", "http://www.foto.com", null, "user1", "trip1"
+				"comment1", "http://www.foto.com", null, "user1", "rendezvous1"
 			}, {
 				//Create a comment with an invalid picture (url)
-				"comment2", "foto", IllegalArgumentException.class, "user1", "trip1"
+				"comment2", "foto", IllegalArgumentException.class, "user1", "rendezvous1"
 			}, {
 				//Create a comment with an non register actor
-				"comment2", "foto", IllegalArgumentException.class, null, "trip1"
+				"comment2", "foto", IllegalArgumentException.class, null, "rendezvous1"
 			}
 		};
 
