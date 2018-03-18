@@ -29,6 +29,8 @@
 		<value>/views/RSVP/messages</value>
 		<value>/views/services/messages</value>
 		<value>/views/request/messages</value>
+		<value>/views/category/messages</value>
+
 
 	</util:list>
 

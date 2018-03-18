@@ -457,7 +457,7 @@
 				<ref bean="services2" />
 			</list>
 		</property>
-		<property name="level" value="2" />
+		<property name="level" value="1" />
 
 	</bean>
 
@@ -509,6 +509,7 @@
 			</list>
 		</property>
 		<property name="rendezvous" ref="rendezvous1" />
+		<property name="level" value="1" />
 	</bean>
 
 	<bean id="services2" class="domain.Services">
@@ -523,6 +524,8 @@
 			</list>
 		</property>
 		<property name="rendezvous" ref="rendezvous2" />
+		<property name="level" value="1" />
+
 	</bean>
 
 	<!-- FRANCHISE -->
