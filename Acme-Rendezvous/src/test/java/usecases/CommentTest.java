@@ -1,6 +1,9 @@
 
 package usecases;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -35,42 +38,44 @@ public class CommentTest extends AbstractTest {
 	 * An actor who is authenticated as a user must be able to comment on the rendezvouses that he or she has RSVPd.
 	 */
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void commentUser() {
 		final Object testingData[][] = {
 
 			//Create a comment
 			{
-				"comment1", "http://www.foto.com", null, "user1", "rendezvous1"
+				"a comment", null, "http://www.foto.com", null, null, "rendezvous1", null
 			}, {
 				//Create a comment with an invalid picture (url)
-				"comment2", "foto", IllegalArgumentException.class, "user1", "rendezvous1"
-			}, {
-				//Create a comment with an non register actor
-				"comment2", "foto", IllegalArgumentException.class, null, "rendezvous1"
+				"another comment", null, "foto", null, null, "rendezvous1", IllegalArgumentException.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.createCommentTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4]);
+			this.createCommentTemplate((String) testingData[i][0], (Date) testingData[i][1], (String) testingData[i][2],
+					(List<Comment>) testingData[i][3], (Comment) testingData[i][4], 
+					super.getEntityId((String) testingData[i][5]), (Class<?>) testingData[i][6]);
 
 	}
-	protected void createCommentTemplate(final String text, final String picture, final Class<?> expected, final String user, final String rendezvous) {
+	protected void createCommentTemplate(final String text, final Date momentMade, final String picture, 
+			final List<Comment> replies, final Comment parent, final int rendezvouseId, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
 		try {
 
 			//-----------------Comment-------------------
-			this.authenticate(user);
+			this.authenticate("user2");
 			final Comment comment = this.commentService.create();
 			comment.setText(text);
+			comment.setMomentMade(momentMade);
 			comment.setPicture(picture);
-			final int id = this.getEntityId(rendezvous);
-			final Rendezvous rdv = this.rendezvousService.findOne(id);
+			final Rendezvous rdv = this.rendezvousService.findOne(rendezvouseId);
 			comment.setRendezvous(rdv);
 
 			this.commentService.save(comment);
-
+			this.unauthenticate();
+			this.commentService.flush();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}

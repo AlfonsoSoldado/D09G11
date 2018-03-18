@@ -145,4 +145,8 @@ public class CommentService {
 		save.setComment(comments);
 		this.rendezvousService.save(save);
 	}
+	
+	public void flush() {
+		this.commentRepository.flush();
+	}
 }
