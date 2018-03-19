@@ -115,6 +115,7 @@ public class ServicesManagerController extends AbstractController {
 				Services saved = this.servicesService.save(services);
 				rendezvous.setServices(saved);
 				requestAttribute.setServices(saved);
+				requestService.save(requestAttribute);
 				
 				res = new ModelAndView("redirect:../../");
 			} catch (final Throwable oops) {
