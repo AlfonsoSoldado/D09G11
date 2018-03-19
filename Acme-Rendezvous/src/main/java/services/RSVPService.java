@@ -93,4 +93,8 @@ public class RSVPService {
 		return res;
 
 	}
+	
+	public void flush() {
+		this.rsvpRepository.flush();
+	}
 }

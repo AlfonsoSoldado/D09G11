@@ -1,0 +1,63 @@
+package services;
+
+import javax.transaction.Transactional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import utilities.AbstractTest;
+import domain.RSVP;
+import domain.Rendezvous;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:spring/junit.xml" })
+@Transactional
+public class RSVPServiceTest extends AbstractTest {
+
+	// Supporting services ----------------------------------------------------
+	
+	@Autowired
+	private RSVPService rsvpService;
+	
+	@Autowired
+	private RendezvousService rendezvousService;
+	
+	// Creating and saving a question -----------------------------------------
+	
+	@Test
+	public void driverRSVPCreateSave() {
+		final Object testingData[][] = {
+				{// User1 create a question for one of his rendezvous.
+					false, "rendezvous1", null}, 
+					{// User1 create a question for another rendezvous.
+					false, "rendezvous2", IllegalArgumentException.class}
+			};
+			for (int i = 0; i < testingData.length; i++)
+				this.templateRSVPCreateSave((Boolean) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
+		}
+
+	private void templateRSVPCreateSave(Boolean confirmed, String rendezvous, Class<?> expected) {
+		RSVP rsvp;
+		Rendezvous rendezvousRSVP;
+		Class<?> caught; 
+		caught = null;
+		try {
+			super.authenticate("user1");
+			rendezvousRSVP = this.rendezvousService.findOne(this.getEntityId(rendezvous));
+			rsvp = this.rsvpService.create();
+			
+			rsvp.setConfirmed(confirmed);
+			rsvp.setRendezvous(rendezvousRSVP);
+			
+			rsvp = this.rsvpService.save(rsvp);
+			this.unauthenticate();
+			this.rsvpService.flush();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
+}

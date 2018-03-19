@@ -32,56 +32,6 @@ public class QuestionServiceTest extends AbstractTest {
 	@Autowired
 	private AnswerService answerService;
 	
-	// Positive test cases ----------------------------------------------------------
-	
-	@Test
-	public void testUserQuestion() {
-		super.authenticate("user1");
-		Question question;
-		Rendezvous rendezvous;
-		Answer questionAnswer;
-		Collection<Answer> answers;
-
-		rendezvous = this.rendezvousService.findOne(this.getEntityId("rendezvous1"));
-		questionAnswer = this.answerService.findOne(this.getEntityId("answer1"));
-		answers = new ArrayList<Answer>();
-		
-		question = this.questionService.create();
-		question.setText("This is a question");
-		question.setRendezvous(rendezvous);
-		answers.add(questionAnswer);
-		question.setAnswer(answers);
-
-		this.questionService.save(question);
-
-		super.unauthenticate();
-	}
-	
-	// Negative test cases ----------------------------------------------------------
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void testUserNotAuthenticatedQuestion() {
-		super.authenticate(null);
-		Question question;
-		Rendezvous rendezvous;
-		Answer questionAnswer;
-		Collection<Answer> answers;
-
-		rendezvous = this.rendezvousService.findOne(this.getEntityId("rendezvous1"));
-		questionAnswer = this.answerService.findOne(this.getEntityId("answer1"));
-		answers = new ArrayList<Answer>();
-
-		question = this.questionService.create();
-		question.setText("This is a question");
-		question.setRendezvous(rendezvous);
-		answers.add(questionAnswer);
-		question.setAnswer(answers);
-
-		this.questionService.save(question);
-
-		super.unauthenticate();
-	}
-	
 	// Creating and saving a question -----------------------------------------
 	
 	@Test
@@ -93,8 +43,7 @@ public class QuestionServiceTest extends AbstractTest {
 					"question2", "answer2", "rendezvous2", IllegalArgumentException.class}
 			};
 			for (int i = 0; i < testingData.length; i++)
-				this.templateQuestionCreateSave((String) testingData[i][0], 
-						(String) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
+				this.templateQuestionCreateSave((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
 		}
 
 	private void templateQuestionCreateSave(String text, String answer, String rendezvous, Class<?> expected) {
@@ -105,10 +54,10 @@ public class QuestionServiceTest extends AbstractTest {
 		Class<?> caught; 
 		caught = null;
 		try {
-			authenticate("user1");;
-			question = this.questionService.create();
+			super.authenticate("user1");
 			questionRendezvous = this.rendezvousService.findOne(this.getEntityId(rendezvous));
 			questionAnswer = this.answerService.findOne(this.getEntityId(answer));
+			question = this.questionService.create();
 			answers = new ArrayList<Answer>();
 			
 			question.setRendezvous(questionRendezvous);
