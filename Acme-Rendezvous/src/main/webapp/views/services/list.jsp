@@ -22,9 +22,17 @@
 <display:table pagesize="5" class="displaytag" keepStatus="true"
 	name="services" requestURI="${requestURI}" id="row">
 
-	<acme:column property="name" code="services.name" />
-	<acme:column property="description" code="services.description" />
-	<acme:column property="rendezvous.name" code="services.rendezvous" />
+	<spring:message code="services.name" var="name" />
+	<display:column property="name" title="${name }"
+		class="${row.canceled }" />
+
+	<spring:message code="services.description" var="description" />
+	<display:column property="description" title="${description }"
+		class="${row.canceled }" />
+		
+	<spring:message code="services.rendezvous" var="rendezvous" />
+	<display:column property="rendezvous.name" title="${rendezvous }"
+		class="${row.canceled }" />
 
 	<spring:message code="services.picture" var="picture" />
 	<display:column>

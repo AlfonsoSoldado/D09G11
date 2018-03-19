@@ -16,7 +16,8 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<a href="/Acme-Rendezvous"><img src="${bannerShowImage}" alt="Acme-Rendezvous Co., Inc." /></a>
+	<a href="/Acme-Rendezvous"><img src="${bannerShowImage}"
+		alt="Acme-Rendezvous Co., Inc." /></a>
 </div>
 
 <div>
@@ -28,12 +29,16 @@
 
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="j_spring_security_logout"><spring:message code="master.page.logout" /> </a></li>
-					<li><a href="administrator/franchise.do"><spring:message code="master.page.franchise" /></a></li>
+					<li><a href="j_spring_security_logout"><spring:message
+								code="master.page.logout" /> </a></li>
+					<li><a href="administrator/franchise.do"><spring:message
+								code="master.page.franchise" /></a></li>
 				</ul></li>
-				
+
 			<li><a class="fNiv" href="rendezvous/list.do"><spring:message
 						code="master.page.rendezvous" /></a></li>
+			<li><a class="fNiv" href="category/administrator/list.do"><spring:message
+						code="master.page.category" /></a></li>
 			<li><a class="fNiv" href="user/list.do"><spring:message
 						code="master.page.user.list" /></a></li>
 
@@ -72,8 +77,8 @@
 			<li><a class="fNiv" href="request/user/list.do"><spring:message
 						code="master.page.request" /></a></li>
 		</security:authorize>
-		
-		
+
+
 		<security:authorize access="hasRole('MANAGER')">
 			<li><a class="fNiv"> <spring:message
 						code="master.page.profile" /> (<security:authentication
@@ -97,7 +102,7 @@
 			<li><a class="fNiv" href="request/manager/list.do"><spring:message
 						code="master.page.request" /></a></li>
 		</security:authorize>
-		
+
 
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
@@ -108,6 +113,8 @@
 						code="master.page.register.manager" /></a></li>
 			<li><a class="fNiv" href="rendezvous/list.do"><spring:message
 						code="master.page.rendezvous" /></a></li>
+			<li><a class="fNiv" href="category/list.do"><spring:message
+						code="master.page.category" /></a></li>
 			<li><a class="fNiv" href="user/list.do"><spring:message
 						code="master.page.user.list" /></a></li>
 		</security:authorize>

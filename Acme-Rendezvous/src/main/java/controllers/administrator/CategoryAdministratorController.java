@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.CategoryService;
+import services.ServicesService;
 import controllers.AbstractController;
 import domain.Category;
 import domain.Services;
-import services.AdministratorService;
-import services.CategoryService;
-import services.ServicesService;
 
 @Controller
 @RequestMapping("/category/administrator")
@@ -26,8 +25,7 @@ public class CategoryAdministratorController extends AbstractController {
 
 	@Autowired
 	private CategoryService categoryService;
-	@Autowired
-	private AdministratorService administratorService;
+	
 	@Autowired
 	private ServicesService servicesService;
 
@@ -41,7 +39,7 @@ public class CategoryAdministratorController extends AbstractController {
 
 		return result;
 	}
-
+	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView res;

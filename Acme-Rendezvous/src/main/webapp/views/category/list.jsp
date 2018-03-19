@@ -19,22 +19,30 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<security:authorize access="hasRole('ADMIN')">
-	<display:table pagesize="5" class="displaytag" keepStatus="true"
-		name="category" requestURI="${requestURI}" id="row">
 
-		<acme:column property="name" code="category.name" />
-		<acme:column property="description" code="category.description" />
-		<acme:column property="level" code="category.level" />
+<display:table pagesize="5" class="displaytag" keepStatus="true"
+	name="category" requestURI="${requestURI}" id="row">
+
+	<acme:column property="name" code="category.name" />
+	<acme:column property="description" code="category.description" />
+	<acme:column property="level" code="category.level" />
+	<display:column>
+		<acme:links url="rendezvous/list.do?=${row.id }"
+			code="category.rendezvous" />
+	</display:column>
+
+	<security:authorize access="hasRole('ADMIN')">
 		<display:column>
-			<acme:links url="category/administrator/edit.do?categoryId=${row.id }"
+			<acme:links
+				url="category/administrator/edit.do?categoryId=${row.id }"
 				code="category.edit" />
 		</display:column>
-	</display:table>
+	</security:authorize>
+</display:table>
+
+<security:authorize access="hasRole('ADMIN')">
+	<acme:links url="category/administrator/create.do"
+		code="category.create" />
 </security:authorize>
-
-
-<acme:links url="category/administrator/create.do"
-	code="category.create" />
 
 

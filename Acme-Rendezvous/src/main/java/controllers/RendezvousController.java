@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.AdministratorService;
+import services.CategoryService;
 import services.RendezvousService;
 import services.UserService;
+import domain.Category;
 import domain.Rendezvous;
+import domain.Services;
 import domain.User;
 
 @Controller
@@ -30,6 +33,9 @@ public class RendezvousController extends AbstractController {
 	
 	@Autowired
 	private AdministratorService	administratorService;
+	
+	@Autowired
+	private CategoryService		categoryService;
 
 	// Constructors ---------------------------------------------------------
 
@@ -77,6 +83,26 @@ public class RendezvousController extends AbstractController {
 		result = new ModelAndView("rendezvous/listByUser");
 		result.addObject("rendezvous", rendezvous);
 		result.addObject("requestURI", "rendezvous/listByUser.do");
+		return result;
+	}
+	
+	@RequestMapping(value = "/listByCategory", method = RequestMethod.GET)
+	public ModelAndView listByCategory(@RequestParam final int categoryId) {
+		ModelAndView result;
+		
+		Category category;
+		category = categoryService.findOne(categoryId);
+		
+		Rendezvous rendezvous;
+		
+		result = new ModelAndView("rendezvous/listByCategory");
+		
+		for(Services s: category.getServices()){
+			rendezvous = rendezvousService.findRendezvousByServices(s.getId());
+			result.addObject("rendezvous", rendezvous);
+		}
+		
+		result.addObject("requestURI", "rendezvous/listByCategory.do");
 		return result;
 	}
 

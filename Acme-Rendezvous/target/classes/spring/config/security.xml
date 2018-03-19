@@ -68,6 +68,10 @@
 			access="permitAll" />
 		<security:intercept-url pattern="/user/displayByAnswer.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/category/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/rendezvous/listByCategory.do"
+			access="permitAll" />
 
 
 
@@ -101,10 +105,7 @@
 		<security:intercept-url pattern="/request/user/list.do"
 			access="hasRole('USER')" />
 
-
 		<security:intercept-url pattern="/services/manager/listMyServices.do"
-			access="hasRole('MANAGER')" />
-		<security:intercept-url pattern="/services/list.do"
 			access="hasRole('MANAGER')" />
 		<security:intercept-url pattern="/services/manager/edit.do"
 			access="hasRole('MANAGER')" />
@@ -134,6 +135,9 @@
 			access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/category/administrator/create.do"
 			access="hasRole('ADMIN')" />
+
+		<security:intercept-url pattern="/services/list.do"
+			access="hasAnyRole('USER','MANAGER')" />
 
 
 		<security:intercept-url pattern="/**"

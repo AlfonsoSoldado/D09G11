@@ -46,6 +46,11 @@
 		<put-attribute name="body" value="/views/rendezvous/listByUser.jsp" />
 	</definition>
 	
+	<definition name="rendezvous/listByCategory" extends="master.page">	
+		<put-attribute name="title" value="Lista de rendezvous por categorías" />
+		<put-attribute name="body" value="/views/rendezvous/list.jsp" />
+	</definition>
+	
 	<definition name="rendezvous/user/listMyRendezvous" extends="master.page">	
 		<put-attribute name="title" value="Mis rendezvous" />
 		<put-attribute name="body" value="/views/rendezvous/listMyRendezvous.jsp" />
