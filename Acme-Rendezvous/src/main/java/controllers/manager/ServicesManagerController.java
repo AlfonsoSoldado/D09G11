@@ -119,6 +119,11 @@ public class ServicesManagerController extends AbstractController {
 				
 				res = new ModelAndView("redirect:../../");
 			} catch (final Throwable oops) {
+				System.out.println(oops.getMessage());
+				System.out.println(oops.getCause());
+				System.out.println(oops.getLocalizedMessage());
+				System.out.println(oops.getStackTrace());
+				System.out.println(oops.getSuppressed());
 				res = this.createEditModelAndView(services, "services.commit.error");
 			}
 		return res;

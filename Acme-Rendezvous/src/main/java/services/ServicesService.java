@@ -36,6 +36,9 @@ public class ServicesService {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private RequestService requestService;
 
 	// Supporting services ----------------------------------------------------
 
@@ -87,14 +90,20 @@ public class ServicesService {
 		Services res;
 
 		Rendezvous r = services.getRendezvous();
-
-		if (services.getId() == 0) {
-			services.setCanceled(false);
-		}
+		
 		services.setLevel(updateLevel(services));
 		res = this.servicesRepository.save(services);
 
-		r.setServices(res);
+		if (services.getId() == 0) {
+			services.setCanceled(false);
+			
+			r.setServices(res);
+		} else if(services.getId() != 0) {
+			Request request;
+			request = this.requestByServices(services.getId());
+			request.setServices(services);
+			requestService.save(request);
+		}
 
 		return res;
 	}

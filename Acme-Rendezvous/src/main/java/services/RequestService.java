@@ -78,9 +78,9 @@ public class RequestService {
 		}
 		res = this.requestRepository.save(request);
 		
-		Rendezvous rendezvous;
-		rendezvous = this.rendezvousService.findRendezvousByRequest(res);
-		Assert.isTrue(rendezvous.getServices() == null);
+		//Rendezvous rendezvous;
+		//rendezvous = this.rendezvousService.findRendezvousByRequest(res);
+		//Assert.isTrue(rendezvous.getServices() == null);
 		
 		return res;
 	}
