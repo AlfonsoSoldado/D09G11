@@ -2,6 +2,7 @@
 package repositories;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Administrator;
+import domain.Manager;
 import domain.Rendezvous;
+import domain.Services;
 
 @Repository
 public interface AdministratorRepository extends JpaRepository<Administrator, Integer> {
@@ -57,10 +60,11 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 	@Query("select stddev(m.question.size*1.0/m.rendezvous.size) from User m")
 	double estandardDesviationOfQuestionsPerRendezvous();
 
-	//revisar
+	// revisar
 	@Query("select count(m.answer.size)/(select count(f) from Rendezvous f)*1.0 from Question m")
 	double averageOfAnswerPerQuestionsPerRendezvous();
-	//revisar
+
+	// revisar
 	@Query("select stddev((m.answer.size*1.0)/(select count(f) from Rendezvous f)*1.0) from Question m")
 	double estandardDesviationOfAnswerPerQuestionsPerRendezvous();
 
@@ -75,10 +79,44 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 
 	@Query("select e from Administrator e join e.userAccount ac where ac.id = ?1")
 	Administrator findByPrincipal(int id);
-	/*
-	 * preguntar a muller si es más eficiente sacar la media y la desviacion en una sola consulta o en varias
-	 * 
-	 * The average and the standard deviation of announcements per rendezvous. revisar
-	 */
 
+	// consultas nuevas
+	// consultas del C
+	@Query("select c.services from Category c where c.services.size=(select max(m.services.size) from Category m)")
+	Collection<Services> bestSellingServices();
+
+	// estas dos consultas forman una sola
+	@Query("select m.manager from Services m where (select  count(s) from Services s where s.manager=m.manager)>=?1")
+	Collection<Manager> managersWhoPprovideMoreServicesThanTheAverage(int media);
+
+	@Query("select  count(s) from Services s group by s.manager")
+	Collection<Integer> servicesPerManagerAndManaer();
+
+	@Query("select  count(s), s.manager from Services s where s.canceled=true group by s.manager order by count(s) desc")
+	List<Object[]> managersWhoHaveGotMoreServicesCancelled();
+	// select s from Services s group by s.manager; servicios agrupados por manager
+	// select m.manager from Services m where (select count(s) from Services s where
+	// s.manager=m.manager)>=1.1//managers con mas servicios que la mesdia
+
+	// consultas del B
+	@Query("select avg(s.category.size) from Services s")
+	Double averageOfCategoriesPerRendezvous();
+
+	@Query("select avg(c.services.size/(select count(m) from Category m)) from Category c")
+	Double averageRatioServicesInEachCategory();
+
+	@Query("select avg(r.requests.size) from Rendezvous r")
+	Double averageServicesRequestedPerRendezvous();
+
+	@Query("select min(r.requests.size) from Rendezvous r")
+	Double minServicesRequestedPerRendezvous();
+
+	@Query("select max(r.requests.size) from Rendezvous r")
+	Double maxServicesRequestedPerRendezvous();
+
+	@Query("select stddev(r.requests.size) from Rendezvous r")
+	Double standardDesviationServicesRequestedPerRendezvous();
+
+	@Query("select c.services from Category c order by c.services.size desc")
+	Collection<Services> topSellingServices();
 }

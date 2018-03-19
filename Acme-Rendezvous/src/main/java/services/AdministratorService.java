@@ -2,6 +2,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -12,12 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import domain.Administrator;
+import domain.Manager;
+import domain.Rendezvous;
+import domain.Services;
 import repositories.AdministratorRepository;
 import security.Authority;
 import security.LoginService;
 import security.UserAccount;
-import domain.Administrator;
-import domain.Rendezvous;
 
 @Service
 @Transactional
@@ -191,4 +194,81 @@ public class AdministratorService {
 			result = true;
 		return result;
 	}
+
+	// consultas nuevas
+	// consultas del c
+	public Collection<Services> bestSellingServices() {
+		return this.administratorRepository.bestSellingServices();
+
+	}
+
+	Collection<Manager> managersWhoPprovideMoreServicesThanTheAverage() {
+		return this.administratorRepository
+				.managersWhoPprovideMoreServicesThanTheAverage(this.avgServicesPerManagerAndManaer());
+
+	}
+
+	public Collection<Manager> managersWhoHaveGotMoreServicesCancelled() {
+		List<Object[]> servicesCallededPerManager = this.administratorRepository
+				.managersWhoHaveGotMoreServicesCancelled();
+		int acumulador = 0;
+		Collection<Manager> managers = new ArrayList<>();
+		if (servicesCallededPerManager != null) {
+			Object[] primerElemento = servicesCallededPerManager.get(0);
+			acumulador = (int) primerElemento[0];
+
+			for (Object[] objects : servicesCallededPerManager) {
+				if ((int) objects[0] == acumulador) {
+					managers.add((Manager) objects[1]);
+				} else {
+					break;
+				}
+			}
+		}
+		return managers;
+	}
+
+	public int avgServicesPerManagerAndManaer() {
+		Collection<Integer> servicesPerManager = this.administratorRepository.servicesPerManagerAndManaer();
+		int suma = 0;
+		if (servicesPerManager != null) {
+			for (Integer integer : servicesPerManager) {
+				suma += integer;
+			}
+		}
+		int media = suma / servicesPerManager.size();
+
+		return media;
+
+	}
+
+	// consultas del b
+	public Double averageOfCategoriesPerRendezvous() {
+		return this.administratorRepository.averageOfCategoriesPerRendezvous();
+	}
+
+	public Double averageRatioServicesInEachCategory() {
+		return this.administratorRepository.averageRatioServicesInEachCategory();
+	}
+
+	public Double averageServicesRequestedPerRendezvous() {
+		return this.administratorRepository.averageServicesRequestedPerRendezvous();
+	}
+
+	public Double minServicesRequestedPerRendezvous() {
+		return this.administratorRepository.minServicesRequestedPerRendezvous();
+	}
+
+	public Double maxServicesRequestedPerRendezvous() {
+		return this.administratorRepository.maxServicesRequestedPerRendezvous();
+	}
+
+	public Double standardDesviationServicesRequestedPerRendezvous() {
+		return this.administratorRepository.standardDesviationServicesRequestedPerRendezvous();
+	}
+
+	public Collection<Services> topSellingServices() {
+		return this.administratorRepository.topSellingServices();
+	}
+
 }
