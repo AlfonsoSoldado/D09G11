@@ -486,12 +486,14 @@
 	<bean id="request1" class="domain.Request">
 		<property name="creditCard" ref="creditCard1" />
 		<property name="comment" value="This is an optional comment" />
+		<property name="moment" value="10/10/2010 18:24" />
 		<property name="services" ref="services1" />
 	</bean>
 
 	<bean id="request2" class="domain.Request">
 		<property name="creditCard" ref="creditCard2" />
 		<property name="comment" value="This is an optional comment" />
+		<property name="moment" value="10/10/2010 18:25" />
 		<property name="services" ref="services2" />
 	</bean>
 

@@ -2,6 +2,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.RequestRepository;
+import domain.CreditCard;
 import domain.Rendezvous;
 import domain.Request;
 import domain.Services;
+import domain.User;
 
 @Service
 @Transactional
@@ -27,6 +30,9 @@ public class RequestService {
 	@Autowired
 	private RendezvousService rendezvousService;
 	
+	@Autowired
+	private UserService userService;
+
 	// Constructor ------------------------------------------------------------
 
 	public RequestService() {
@@ -36,11 +42,15 @@ public class RequestService {
 	// Simple CRUD methods ----------------------------------------------------
 
 	public Request create() {
+		User user = userService.findByPrincipal();
 		final Request request;
 		Services services = new Services();
-		
+		Collection<CreditCard> creditCards = new ArrayList<CreditCard>();
 		request = new Request();
+		creditCards = this.findAllCreditCard(user.getId());
 		request.setServices(services);
+		if (creditCards.size() > 0)
+			request.setCreditCard(creditCards.iterator().next());
 		return request;
 	}
 
@@ -60,24 +70,34 @@ public class RequestService {
 	public Request save(Request request) {
 		Assert.notNull(request);
 		Request res;
+		if (request.getId() == 0) {
+			Date moment;
+			moment = new Date(System.currentTimeMillis() - 1000);
+			request.setMoment(moment);
+		}
 		res = this.requestRepository.save(request);
 		return res;
 	}
-	
+
 	public Request save(Request request, int rendezvousId) {
 		Assert.notNull(request);
 		Request res;
+		if (request.getId() == 0) {
+			Date moment;
+			moment = new Date(System.currentTimeMillis() - 1000);
+			request.setMoment(moment);
+		}
 		res = this.requestRepository.save(request);
-		
+
 		Rendezvous r = rendezvousService.findOne(rendezvousId);
-		
+
 		Collection<Request> requests = new ArrayList<Request>();
-		
+
 		requests = r.getRequests();
 		requests.add(res);
-		
+
 		r.setRequests(requests);
-		
+
 		return res;
 	}
 
@@ -90,18 +110,27 @@ public class RequestService {
 
 	// Other business method --------------------------------------------------
 
-	
-	public Collection<Request> findRequestByRendezvous(int rendezvousId){
+	public Collection<Request> findRequestByRendezvous(int rendezvousId) {
+		Collection<Request> requests = new ArrayList<Request>();
+
+		requests = requestRepository.findRequestByRendezvous(rendezvousId);
+
+		return requests;
+	}
+
+	public Collection<Request> findRequestByUser(int userId) {
 		Collection<Request> requests = new ArrayList<Request>();
 		
-		requests = requestRepository.findRequestByRendezvous(rendezvousId);
+		requests = requestRepository.findRequestByUser(userId);
 		
 		return requests;
 	}
 	
-	public Collection<Request> findRequestByUser(int userId){
-		Collection<Request> requests = new ArrayList<Request>();
-		requests = requestRepository.findRequestByUser(userId);
-		return requests;
+	public Collection<CreditCard> findAllCreditCard(int userId) {
+		Collection<CreditCard> creditcCards = new ArrayList<CreditCard>();
+		
+		creditcCards = requestRepository.findAllCreditCard(userId);
+		
+		return creditcCards;
 	}
 }

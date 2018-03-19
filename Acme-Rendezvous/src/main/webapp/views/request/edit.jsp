@@ -25,6 +25,7 @@
 		<form:hidden path="id" />
 		<form:hidden path="version" />
 		<form:hidden path="services" />
+		<form:hidden path="moment" />
 
 		<acme:textbox path="creditCard.holderName" code="request.creditCard.holderName" />
 		<acme:textbox path="creditCard.brandName" code="request.creditCard.brandName" />

@@ -3,11 +3,14 @@ package controllers.user;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +20,7 @@ import services.RendezvousService;
 import services.RequestService;
 import services.UserService;
 import controllers.AbstractController;
+import domain.CreditCard;
 import domain.Rendezvous;
 import domain.Request;
 import domain.User;
@@ -60,12 +64,25 @@ public class RequestUserController extends AbstractController {
 	// Creation ---------------------------------------------------------------
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam final int rendezvousId) {
+	public ModelAndView create(@CookieValue(value = "creditCard", defaultValue = "") String creditCard, HttpServletResponse response, @RequestParam final int rendezvousId) {
 		ModelAndView res;
-
+		String addString;
 		User user = userService.findByPrincipal();
-		
+		Collection<CreditCard> creditCards = requestService.findAllCreditCard(user.getId());
+		CreditCard credit;
+		Cookie newCookie;
 		rId = rendezvousId;
+		
+		if (creditCards.size() > 0) {
+			credit = creditCards.iterator().next();
+			addString = String.valueOf(credit.getHolderName() + credit.getBrandName() + credit.getNumber() + credit.getExpirationMonth() + credit.getExpirationYear() + credit.getCVV());
+			System.out.println(credit.getNumber());
+		} else
+			addString = "";
+
+		newCookie = new Cookie("creditCard", addString);
+		response.addCookie(newCookie);
+		
 		Rendezvous r = rendezvousService.findOne(rId);
 
 		Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
