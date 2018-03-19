@@ -24,7 +24,7 @@
 <!-- Listing grid -->
 
 <display:table pagesize="5" class="displaytag" keepStatus="true"
-	name="rendezvous" requestURI="${requestUri}" id="row">
+	name="rendezvous" requestURI="${requestURI}" id="row">
 
 	<!-- Attributes -->
 	<security:authorize access="hasRole('USER')">
