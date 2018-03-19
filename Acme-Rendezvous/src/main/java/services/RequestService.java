@@ -69,6 +69,7 @@ public class RequestService {
 
 	public Request save(Request request) {
 		Assert.notNull(request);
+		
 		Request res;
 		if (request.getId() == 0) {
 			Date moment;
@@ -76,6 +77,11 @@ public class RequestService {
 			request.setMoment(moment);
 		}
 		res = this.requestRepository.save(request);
+		
+		Rendezvous rendezvous;
+		rendezvous = this.rendezvousService.findRendezvousByRequest(res);
+		Assert.isTrue(rendezvous.getServices() == null);
+		
 		return res;
 	}
 
