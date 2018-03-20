@@ -126,7 +126,6 @@ public class CategoryService {
 				this.servicesService.save(services);
 
 			}
-
 	}
 
 	public void flush() {
