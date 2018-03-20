@@ -1,4 +1,4 @@
-package services;
+package usecases;
 
 import javax.transaction.Transactional;
 
@@ -9,12 +9,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import domain.Category;
+import services.CategoryService;
 import utilities.AbstractTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/junit.xml" })
 @Transactional
-public class CategoryServiceTest extends AbstractTest {
+public class CategoryTest extends AbstractTest {
 
 	@Autowired
 	private CategoryService categoryService;
@@ -24,7 +25,6 @@ public class CategoryServiceTest extends AbstractTest {
 	 * new category
 	 */
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void CategoryAdminCreate() {
 		final Object testingData[][] = {
@@ -32,26 +32,25 @@ public class CategoryServiceTest extends AbstractTest {
 				// An admin create a new category
 				{
 
-						"category1", "description1", "1", null, null },
+						"admin", "category1", "description1", "1", null },
 				{
 						// An admin create other category
-						"category1", "description1", "aaaa", null, IllegalArgumentException.class } };
+						"user1", "category1", "description1", "1", IllegalArgumentException.class } };
 		for (int i = 0; i < testingData.length; i++)
-			this.templateCategoryCreateSave((String) testingData[i][0], (String) testingData[i][1],
-					(int) testingData[i][2], (Class<?>) testingData[i][3]);
+			this.templateCategoryTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3],  (Class<?>) testingData[i][4]);
 	}
 
-	private void templateCategoryCreateSave(String name, String description, int level, Class<?> expected) {
+	private void templateCategoryTemplate(String user, String name, String description, String level,
+			Class<?> expected) {
 		Category category;
 		Class<?> caught;
 		caught = null;
 		try {
-			super.authenticate("admin");
+			super.authenticate(user);
 			category = this.categoryService.create();
-
 			category.setName(name);
 			category.setDescription(description);
-			category.setLevel(level);
+			category.setLevel(Integer.valueOf(level));
 
 			category = this.categoryService.save(category);
 			this.unauthenticate();
