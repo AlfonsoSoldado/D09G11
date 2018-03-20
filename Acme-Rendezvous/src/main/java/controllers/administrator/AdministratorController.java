@@ -69,6 +69,19 @@ public class AdministratorController extends AbstractController {
 		result.addObject("estandardDesviationRepliesComment", administratorService.estandardDesviationRepliesComment());
 
 		// *********
+		//consultas nuevas
+		result.addObject("managersWhoPprovideMoreServicesThanTheAverage", administratorService.managersWhoPprovideMoreServicesThanTheAverage());
+		result.addObject("bestSellingServices", administratorService.bestSellingServices());
+		result.addObject("managersWhoHaveGotMoreServicesCancelled", administratorService.managersWhoHaveGotMoreServicesCancelled());
+//consultas del b
+		result.addObject("averageOfCategoriesPerRendezvous", administratorService.averageOfCategoriesPerRendezvous());
+		result.addObject("averageRatioServicesInEachCategory", administratorService.averageRatioServicesInEachCategory());
+		result.addObject("averageServicesRequestedPerRendezvous", administratorService.averageServicesRequestedPerRendezvous());
+		result.addObject("minServicesRequestedPerRendezvous", administratorService.minServicesRequestedPerRendezvous());
+		result.addObject("maxServicesRequestedPerRendezvous", administratorService.maxServicesRequestedPerRendezvous());
+		result.addObject("standardDesviationServicesRequestedPerRendezvous", administratorService.standardDesviationServicesRequestedPerRendezvous());
+		result.addObject("topSellingServices", administratorService.topSellingServices());
+
 		return result;
 	}
 

@@ -87,10 +87,10 @@ public interface AdministratorRepository extends JpaRepository<Administrator, In
 
 	// estas dos consultas forman una sola
 	@Query("select m.manager from Services m where (select  count(s) from Services s where s.manager=m.manager)>=?1")
-	Collection<Manager> managersWhoPprovideMoreServicesThanTheAverage(int media);
+	Collection<Manager> managersWhoPprovideMoreServicesThanTheAverage(long media);
 
 	@Query("select  count(s) from Services s group by s.manager")
-	Collection<Integer> servicesPerManagerAndManaer();
+	Collection<Long> servicesPerManagerAndManaer();
 
 	@Query("select  count(s), s.manager from Services s where s.canceled=true group by s.manager order by count(s) desc")
 	List<Object[]> managersWhoHaveGotMoreServicesCancelled();

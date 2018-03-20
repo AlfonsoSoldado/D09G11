@@ -202,7 +202,7 @@ public class AdministratorService {
 
 	}
 
-	Collection<Manager> managersWhoPprovideMoreServicesThanTheAverage() {
+	public Collection<Manager> managersWhoPprovideMoreServicesThanTheAverage() {
 		return this.administratorRepository
 				.managersWhoPprovideMoreServicesThanTheAverage(this.avgServicesPerManagerAndManaer());
 
@@ -211,14 +211,14 @@ public class AdministratorService {
 	public Collection<Manager> managersWhoHaveGotMoreServicesCancelled() {
 		List<Object[]> servicesCallededPerManager = this.administratorRepository
 				.managersWhoHaveGotMoreServicesCancelled();
-		int acumulador = 0;
+		long acumulador = 0;
 		Collection<Manager> managers = new ArrayList<>();
 		if (servicesCallededPerManager != null) {
 			Object[] primerElemento = servicesCallededPerManager.get(0);
-			acumulador = (int) primerElemento[0];
+			acumulador = (long) primerElemento[0];
 
 			for (Object[] objects : servicesCallededPerManager) {
-				if ((int) objects[0] == acumulador) {
+				if ((long) objects[0] == acumulador) {
 					managers.add((Manager) objects[1]);
 				} else {
 					break;
@@ -228,15 +228,15 @@ public class AdministratorService {
 		return managers;
 	}
 
-	public int avgServicesPerManagerAndManaer() {
-		Collection<Integer> servicesPerManager = this.administratorRepository.servicesPerManagerAndManaer();
-		int suma = 0;
+	public long avgServicesPerManagerAndManaer() {
+		Collection<Long> servicesPerManager = this.administratorRepository.servicesPerManagerAndManaer();
+		long suma = 0;
 		if (servicesPerManager != null) {
-			for (Integer integer : servicesPerManager) {
+			for (Long integer : servicesPerManager) {
 				suma += integer;
 			}
 		}
-		int media = suma / servicesPerManager.size();
+		long media = suma / new Long(servicesPerManager.size());
 
 		return media;
 

@@ -163,19 +163,101 @@
 	</jstl:forEach>
 </p>
 
-<!-- falta lo del top -->
+
+<h3>
+	<spring:message
+		code="administrator.managersWhoPprovideMoreServicesThanTheAverage" />
+</h3>
+<p>
+	<jstl:forEach var="row"
+		items="${managersWhoPprovideMoreServicesThanTheAverage}">
+		<p>
+			<jstl:out value="${row.name }"></jstl:out>
+		</p>
+	</jstl:forEach>
+</p>
+
+<h3>
+	<spring:message code="administrator.bestSellingServices" />
+</h3>
+
+<p>
+	<jstl:forEach var="row" items="${bestSellingServices}">
+		<p>
+			<jstl:out value="${row.name }"></jstl:out>
+		</p>
+	</jstl:forEach>
+</p>
 
 
 
+<h3>
+	<spring:message
+		code="administrator.managersWhoHaveGotMoreServicesCancelled" />
+</h3>
+<p>
+	<jstl:forEach var="row"
+		items="${managersWhoHaveGotMoreServicesCancelled}">
+		<p>
+			<jstl:out value="${row.name }"></jstl:out>
+		</p>
+	</jstl:forEach>
+</p>
 
 
+<h3>
+	<spring:message code="administrator.averageOfCategoriesPerRendezvous" />
+</h3>
+
+<p>
+	<jstl:out value="${averageOfCategoriesPerRendezvous}" />
+</p>
+<h3>
+	<spring:message code="administrator.averageRatioServicesInEachCategory" />
+</h3>
+
+<p>
+	<jstl:out value="${averageRatioServicesInEachCategory}" />
+</p>
+<h3>
+	<spring:message
+		code="administrator.averageServicesRequestedPerRendezvous" />
+</h3>
+<p>
+	<jstl:out value="${averageServicesRequestedPerRendezvous}" />
+</p>
+<h3>
+	<spring:message code="administrator.minServicesRequestedPerRendezvous" />
+</h3>
+
+<p>
+	<jstl:out value="${minServicesRequestedPerRendezvous}" />
+</p>
+
+<h3>
+	<spring:message code="administrator.maxServicesRequestedPerRendezvous" />
+</h3>
+<p>
+	<jstl:out value="${maxServicesRequestedPerRendezvous}" />
+</p>
 
 
-
-
-
-
-
-
+<h3>
+	<spring:message
+		code="administrator.standardDesviationServicesRequestedPerRendezvous" />
+</h3>
+<p>
+	<jstl:out value="${standardDesviationServicesRequestedPerRendezvous}" />
+</p>
+<h3>
+	<spring:message code="administrator.topSellingServices" />
+</h3>
+<p>
+	<jstl:forEach var="row" items="${topSellingServices}">
+		<p>
+			<jstl:out value="${row.name }"></jstl:out>
+		</p>
+	</jstl:forEach>
+</p>
 
 
