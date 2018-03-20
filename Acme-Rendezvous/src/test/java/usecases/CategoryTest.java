@@ -54,7 +54,6 @@ public class CategoryTest extends AbstractTest {
 			category.setName(name);
 			category.setDescription(description);
 			category.setLevel(level);
-
 			category = this.categoryService.save(category);
 			this.unauthenticate();
 			this.categoryService.flush();
