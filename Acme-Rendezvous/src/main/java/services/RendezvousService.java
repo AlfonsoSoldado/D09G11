@@ -35,9 +35,10 @@ public class RendezvousService {
 
 	@Autowired
 	private Validator				validator;
-	
+
 	@Autowired
-	private ActorService actorService;
+	private ActorService			actorService;
+
 
 	// Constructor ------------------------------------------------------------
 
@@ -54,6 +55,7 @@ public class RendezvousService {
 		res.setAttendant(new ArrayList<User>());
 		res.setSimilar(new ArrayList<Rendezvous>());
 		res.setAnnouncement(new ArrayList<Announcement>());
+		res.setRequests(new ArrayList<Request>());
 		res.setDeleted(false);
 		return res;
 	}
@@ -83,7 +85,7 @@ public class RendezvousService {
 		Assert.notNull(rendezvous);
 		Assert.isTrue(rendezvous.getId() != 0);
 		Assert.isTrue(this.rendezvousRepository.exists(rendezvous.getId()));
-		Assert.isTrue(actorService.isAuthenticated());
+		Assert.isTrue(this.actorService.isAuthenticated());
 		rendezvous.setFinalMode(true);
 		rendezvous.setDeleted(true);
 		this.rendezvousRepository.save(rendezvous);
@@ -157,16 +159,16 @@ public class RendezvousService {
 	public Collection<Rendezvous> findRendezvousNotCancelled() {
 		return this.rendezvousRepository.findRendezvousNotCancelled();
 	}
-	
-	public Collection<Rendezvous> findRendezvousWithServices(){
+
+	public Collection<Rendezvous> findRendezvousWithServices() {
 		return this.rendezvousRepository.findRendezvousWithServices();
 	}
-	
-	public Rendezvous findRendezvousByServices(int servicesId){
+
+	public Rendezvous findRendezvousByServices(final int servicesId) {
 		return this.rendezvousRepository.findRendezvousByServices(servicesId);
 	}
-	
-	public Rendezvous findRendezvousByRequest(Request request){
+
+	public Rendezvous findRendezvousByRequest(final Request request) {
 		return this.rendezvousRepository.findRendezvousByRequest(request);
 	}
 }

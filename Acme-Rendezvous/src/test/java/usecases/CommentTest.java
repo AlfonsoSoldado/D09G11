@@ -45,7 +45,7 @@ public class CommentTest extends AbstractTest {
 				//User comment a rendezvous that he or she hasn't RSVPd.
 				"user2", "another comment", "http://www.foto.com", "rendezvous1", null, IllegalArgumentException.class
 			}, {
-				//Unauthenticated user comment a rendezvous.		
+				//Unauthenticated actor comment a rendezvous.		
 				null, "another more comment", "http://www.foto.com", "rendezvous1", null, IllegalArgumentException.class
 			}, {
 				//User reply a comment of a rendezvous that he or she has RSVPd

@@ -44,7 +44,7 @@ public class QuestionTest extends AbstractTest {
 				//User creates a question for a rendezvous that he or she has not created.
 				"user2", "another question", "rendezvous1", IllegalArgumentException.class
 			}, {
-				//Unauthenticated user creates a question.		
+				//Unauthenticated actor creates a question.		
 				null, "another more question", "rendezvous1", IllegalArgumentException.class
 			}
 		};
