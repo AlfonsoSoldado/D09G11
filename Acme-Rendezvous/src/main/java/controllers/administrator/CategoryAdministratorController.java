@@ -13,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.CategoryService;
-import services.ServicesService;
 import controllers.AbstractController;
 import domain.Category;
-import domain.Services;
+import services.CategoryService;
 
 @Controller
 @RequestMapping("/category/administrator")
@@ -25,9 +23,6 @@ public class CategoryAdministratorController extends AbstractController {
 
 	@Autowired
 	private CategoryService categoryService;
-	
-	@Autowired
-	private ServicesService servicesService;
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -39,7 +34,7 @@ public class CategoryAdministratorController extends AbstractController {
 
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView res;
@@ -87,21 +82,9 @@ public class CategoryAdministratorController extends AbstractController {
 			result = this.createEditModelAndView(category, "category.params.error");
 		} else {
 			try {
-				if (category.getId() != 0) {
 
-					Category old = this.categoryService.findOne(category.getId());
-					if ((old.getLevel() - category.getLevel() <= -1) && !old.getServices().isEmpty()) {
-						updateServices(old.getServices(), category);
-					} else {
-						category.setServices(new ArrayList<Services>());
-						this.categoryService.save(category);
+				this.categoryService.save(category);
 
-					}
-
-				} else {
-
-					this.categoryService.save(category);
-				}
 				result = new ModelAndView("redirect:list.do");
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -110,6 +93,7 @@ public class CategoryAdministratorController extends AbstractController {
 		}
 
 		return result;
+
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
@@ -121,10 +105,7 @@ public class CategoryAdministratorController extends AbstractController {
 		} else {
 			try {
 
-				Category old = this.categoryService.findOne(category.getId());
-				if (!old.getServices().isEmpty()) {
-					updateServicesToRemove(old.getServices(), category);
-				}
+				
 				categoryService.delete(category);
 				result = new ModelAndView("redirect:list.do");
 			} catch (Exception e) {
@@ -134,43 +115,6 @@ public class CategoryAdministratorController extends AbstractController {
 		}
 
 		return result;
-	}
-
-	private void updateServicesToRemove(Collection<Services> services, Category category) {
-		for (Services service : services) {
-			Collection<Category> categories=service.getCategory();
-			categories.remove(category);
-			service.setCategory(categories);
-			servicesService.save(service);
-		}
-		
-	}
-
-	// TODO intentar cambiar los bucles
-	private void updateServices(Collection<Services> servicesWithThisCategory, Category category) {
-		Collection<Services> categoryServices = category.getServices();
-
-		for (Services services : servicesWithThisCategory) {
-			if (services.getLevel() - category.getLevel() <= -1) {
-				Collection<Category> categories = services.getCategory();
-				for (Category categoryremove : categories) {
-					if (categoryremove.getLevel() - category.getLevel() <= -1) {
-						if (categories.size() == 1) {
-							categories.clear();
-							break;
-						} else {
-							categories.remove(categoryremove);
-							categoryServices.remove(services);
-						}
-					}
-				}
-				category.setServices(categoryServices);
-				categoryService.save(category);
-				servicesService.save(services);
-
-			}
-		}
-
 	}
 
 	protected ModelAndView createEditModelAndView(final Category category) {
