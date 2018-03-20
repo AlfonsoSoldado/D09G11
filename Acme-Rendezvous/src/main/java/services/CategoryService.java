@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.CategoryRepository;
+import security.Authority;
 import security.LoginService;
+import security.UserAccount;
 import domain.Category;
 import domain.Services;
 
@@ -39,7 +41,6 @@ public class CategoryService {
 	public Category create() {
 		Category category;
 		category = new Category();
-		category.setServices(new ArrayList<Services>());
 		return category;
 	}
 
@@ -58,7 +59,7 @@ public class CategoryService {
 
 	public Category save(final Category category) {
 		Assert.notNull(category);
-		Assert.isTrue(LoginService.getPrincipal().getAuthorities().contains("ADMIN"));
+		this.checkAuthority();
 		Category res = null;
 		if (category.getId() != 0) {
 
@@ -74,7 +75,6 @@ public class CategoryService {
 
 		return res;
 	}
-
 	public void delete(final Category category) {
 		Assert.notNull(category);
 		Assert.isTrue(category.getId() != 0);
@@ -131,5 +131,16 @@ public class CategoryService {
 
 	public void flush() {
 		this.categoryRepository.flush();
+	}
+
+	public void checkAuthority() {
+		UserAccount userAccount;
+		userAccount = LoginService.getPrincipal();
+		Assert.notNull(userAccount);
+		final Collection<Authority> authority = userAccount.getAuthorities();
+		Assert.notNull(authority);
+		final Authority res = new Authority();
+		res.setAuthority("ADMIN");
+		Assert.isTrue(authority.contains(res));
 	}
 }

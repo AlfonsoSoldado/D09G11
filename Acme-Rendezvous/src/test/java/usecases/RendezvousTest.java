@@ -28,7 +28,7 @@ public class RendezvousTest extends AbstractTest {
 
 	// Test---------------------------------------------------------------
 	@Test
-	public void commentUser() {
+	public void rendezvousTest() {
 		final Object testingData[][] = {
 
 			//An actor who is not authenticated must be able to:

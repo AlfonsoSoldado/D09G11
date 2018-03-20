@@ -32,7 +32,7 @@ public class QuestionTest extends AbstractTest {
 
 	// Test---------------------------------------------------------------
 	@Test
-	public void commentUser() {
+	public void questionTest() {
 		final Object testingData[][] = {
 
 			//An actor who is authenticated as a user must be able to :
