@@ -31,11 +31,6 @@ public class CommentTest extends AbstractTest {
 
 
 	// Test---------------------------------------------------------------
-
-	/*
-	 * An actor who is authenticated as a user must be able to comment on the rendezvouses that he or she has RSVPd.
-	 */
-
 	@Test
 	public void commentUser() {
 		final Object testingData[][] = {

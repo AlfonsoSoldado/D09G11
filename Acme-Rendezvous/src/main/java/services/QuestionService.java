@@ -72,6 +72,7 @@ public class QuestionService {
 	public Question save(final Question question) {
 		this.userService.checkAuthority();
 		Assert.notNull(question);
+		Assert.isTrue(this.userService.findCreator(question.getRendezvous().getId()) == this.userService.findByPrincipal());
 		if (question.getId() != 0) {
 			final Collection<Rendezvous> rendezvouses = new ArrayList<Rendezvous>();
 			User user;
@@ -138,9 +139,9 @@ public class QuestionService {
 		this.validator.validate(res, binding);
 		return res;
 	}
-	
+
 	public void flush() {
 		this.questionRepository.flush();
 	}
-	
+
 }
