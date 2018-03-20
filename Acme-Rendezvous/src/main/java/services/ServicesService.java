@@ -1,3 +1,4 @@
+
 package services;
 
 import java.util.ArrayList;
@@ -10,6 +11,9 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 
 import repositories.ServicesRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Category;
 import domain.Manager;
 import domain.Rendezvous;
@@ -23,22 +27,23 @@ public class ServicesService {
 	// Managed repository -----------------------------------------------------
 
 	@Autowired
-	private ServicesRepository servicesRepository;
+	private ServicesRepository	servicesRepository;
 
 	@Autowired
-	private ManagerService managerService;
+	private ManagerService		managerService;
 
 	@Autowired
-	private ActorService actorService;
+	private ActorService		actorService;
 
 	@Autowired
-	private RendezvousService rendezvousService;
+	private RendezvousService	rendezvousService;
 
 	@Autowired
-	private CategoryService categoryService;
-	
+	private CategoryService		categoryService;
+
 	@Autowired
-	private RequestService requestService;
+	private RequestService		requestService;
+
 
 	// Supporting services ----------------------------------------------------
 
@@ -59,7 +64,7 @@ public class ServicesService {
 		Collection<Category> category;
 		category = new ArrayList<Category>();
 
-		Manager manager = managerService.findByPrincipal();
+		final Manager manager = this.managerService.findByPrincipal();
 
 		services.setRendezvous(r);
 		services.setManager(manager);
@@ -70,76 +75,76 @@ public class ServicesService {
 	}
 
 	public Collection<Services> findAll() {
+		Assert.notNull(LoginService.getPrincipal());
 		Collection<Services> res;
 		res = this.servicesRepository.findAll();
 		return res;
 	}
-
-	public Services findOne(int services) {
+	public Services findOne(final int services) {
 		Assert.isTrue(services != 0);
 		Services res;
 		res = this.servicesRepository.findOne(services);
-		res.setLevel(updateLevel(res));
+		res.setLevel(this.updateLevel(res));
 
 		return res;
 	}
 
-	// TODO
-	public Services save(Services services) {
+	public Services save(final Services services) {
 		Assert.notNull(services);
+		this.checkAuthority();
+
 		Services res;
 
-		Rendezvous r = services.getRendezvous();
-		
-		services.setLevel(updateLevel(services));
+		final Rendezvous r = services.getRendezvous();
+
+		services.setLevel(this.updateLevel(services));
 		res = this.servicesRepository.save(services);
 
 		if (services.getId() == 0) {
 			services.setCanceled(false);
-			
+
 			r.setServices(res);
-		} else if(services.getId() != 0) {
+		} else {
+			Assert.isTrue(services.getManager() == this.managerService.findByPrincipal());
 			Request request;
 			request = this.requestByServices(services.getId());
 			request.setServices(services);
-			requestService.save(request);
+			this.requestService.save(request);
 		}
 
 		return res;
 	}
 
-	private Integer updateLevel(Services services) {
+	private Integer updateLevel(final Services services) {
 		Integer res = 5;
-		for (Category category : services.getCategory()) {
-			if (category.getLevel() < res) {
+		for (final Category category : services.getCategory())
+			if (category.getLevel() < res)
 				res = category.getLevel();
-			}
-		}
-		if (res == 5) {
+		if (res == 5)
 			res = null;
-		}
 		return res;
 	}
 
-	public void delete(Services services) {
+	public void delete(final Services services) {
 		Assert.notNull(services);
 		Assert.isTrue(services.getId() != 0);
 		Assert.isTrue(this.servicesRepository.exists(services.getId()));
+		this.checkAuthority();
+		Assert.isTrue(services.getManager() == this.managerService.findByPrincipal());
 
 		Request request;
 		request = this.requestByServices(services.getId());
-
 		request.setServices(null);
 
 		Rendezvous rendezvous;
-		rendezvous = rendezvousService.findRendezvousByServices(services.getId());
+		rendezvous = this.rendezvousService.findRendezvousByServices(services.getId());
 
 		rendezvous.setServices(null);
 
 		Collection<Category> category = new ArrayList<Category>();
-		category = categoryService.findCategoryByServices(services.getId());
+		category = this.categoryService.findCategoryByServices(services.getId());
 
-		for (Category c : category) {
+		for (final Category c : category) {
 			Collection<Services> ss = new ArrayList<Services>();
 			ss = c.getServices();
 			ss.remove(services);
@@ -156,17 +161,17 @@ public class ServicesService {
 		return this.servicesRepository.servicesAviables();
 	}
 
-	public Collection<Services> servicesByManager(Manager manager) {
+	public Collection<Services> servicesByManager(final Manager manager) {
 		this.managerService.checkAuthority();
 		return this.servicesRepository.servicesByManager(manager.getId());
 	}
 
-	public Services reconstruct(Services services, BindingResult binding) {
+	public Services reconstruct(final Services services, final BindingResult binding) {
 		Services res;
 		Services serviceFinal;
-		if (services.getId() == 0) {
+		if (services.getId() == 0)
 			res = services;
-		} else {
+		else {
 			serviceFinal = this.findOne(services.getId());
 			services.setManager((Manager) this.actorService.findByPrincipal());
 			serviceFinal.setRendezvous(services.getRendezvous());
@@ -177,13 +182,28 @@ public class ServicesService {
 		return res;
 	}
 
-	public Collection<Services> ServicesByRendezvous(int rendezvousId) {
+	public Collection<Services> ServicesByRendezvous(final int rendezvousId) {
 		Collection<Services> res = new ArrayList<Services>();
-		res = servicesRepository.servicesByRendezvous(rendezvousId);
+		res = this.servicesRepository.servicesByRendezvous(rendezvousId);
 		return res;
 	}
 
-	public Request requestByServices(int servicesId) {
-		return servicesRepository.requestByServices(servicesId);
+	public Request requestByServices(final int servicesId) {
+		return this.servicesRepository.requestByServices(servicesId);
+	}
+
+	public void checkAuthority() {
+		UserAccount userAccount;
+		userAccount = LoginService.getPrincipal();
+		Assert.notNull(userAccount);
+		final Collection<Authority> authority = userAccount.getAuthorities();
+		Assert.notNull(authority);
+		final Authority res = new Authority();
+		res.setAuthority("MANAGER");
+		Assert.isTrue(authority.contains(res));
+	}
+
+	public void flush() {
+		this.servicesRepository.flush();
 	}
 }
