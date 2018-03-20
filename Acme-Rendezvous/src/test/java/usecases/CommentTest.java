@@ -1,9 +1,6 @@
 
 package usecases;
 
-import java.util.Date;
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -11,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.Assert;
 
 import services.CommentService;
 import services.RendezvousService;
@@ -43,35 +41,48 @@ public class CommentTest extends AbstractTest {
 	public void commentUser() {
 		final Object testingData[][] = {
 
-			//Create a comment
+			//An actor who is authenticated as a user must be able to:
+			//Comment on the rendezvouses that he or she has RSVPd.
+			//In addition to writing a comment from scratch, a user may reply to a comment
 			{
-				"a comment", null, "http://www.foto.com", null, null, "rendezvous1", null
+				//User comment a rendezvous that he or she has RSVPd.
+				"user1", "a comment", "http://www.foto.com", "rendezvous1", null, null
 			}, {
-				//Create a comment with an invalid picture (url)
-				"another comment", null, "foto", null, null, "rendezvous1", IllegalArgumentException.class
+				//User comment a rendezvous that he or she hasn't RSVPd.
+				"user2", "another comment", "http://www.foto.com", "rendezvous1", null, null
+			}, {
+				//Unauthenticated user comment a rendezvous.		
+				null, "another more comment", "http://www.foto.com", "rendezvous1", null, IllegalArgumentException.class
+			}, {
+				//User reply a comment
+				"user2", "reply", "http://www.foto.com", "rendezvous1", "comment1", null
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.createCommentTemplate((String) testingData[i][0], (Date) testingData[i][1], (String) testingData[i][2],
-					(List<Comment>) testingData[i][3], (Comment) testingData[i][4], 
-					super.getEntityId((String) testingData[i][5]), (Class<?>) testingData[i][6]);
+			this.createCommentTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (Class<?>) testingData[i][5]);
 
 	}
-	protected void createCommentTemplate(final String text, final Date momentMade, final String picture, 
-			final List<Comment> replies, final Comment parent, final int rendezvouseId, final Class<?> expected) {
+	protected void createCommentTemplate(final String user, final String text, final String picture, final String rendezvous, final String parent, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
 		try {
 
 			//-----------------Comment-------------------
-			this.authenticate("user2");
+			this.authenticate(user);
 			final Comment comment = this.commentService.create();
 			comment.setText(text);
-			comment.setMomentMade(momentMade);
 			comment.setPicture(picture);
-			final Rendezvous rdv = this.rendezvousService.findOne(rendezvouseId);
+			final int rendezvousId = this.getEntityId(rendezvous);
+			final Rendezvous rdv = this.rendezvousService.findOne(rendezvousId);
+			Assert.notNull(rdv);
 			comment.setRendezvous(rdv);
+
+			if (parent != null) {
+				final int commentId = this.getEntityId(parent);
+				final Comment parentComment = this.commentService.findOne(commentId);
+				comment.setParent(parentComment);
+			}
 
 			this.commentService.save(comment);
 			this.unauthenticate();
