@@ -13,6 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.RendezvousRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.Announcement;
 import domain.Comment;
 import domain.Rendezvous;
@@ -76,6 +79,10 @@ public class RendezvousService {
 	public Rendezvous save(final Rendezvous rendezvous) {
 		this.userService.checkAuthority();
 		Assert.notNull(rendezvous);
+		if (rendezvous.getId() != 0) {
+			Assert.isTrue(this.userService.findCreator(rendezvous.getId()) == this.userService.findByPrincipal());
+			Assert.isTrue(this.findOne(rendezvous.getId()).getFinalMode() == false);
+		}
 		Rendezvous res;
 		res = this.rendezvousRepository.save(rendezvous);
 		return res;
@@ -86,11 +93,12 @@ public class RendezvousService {
 		Assert.isTrue(rendezvous.getId() != 0);
 		Assert.isTrue(this.rendezvousRepository.exists(rendezvous.getId()));
 		Assert.isTrue(this.actorService.isAuthenticated());
+		if (this.checkAuthority() == false)
+			Assert.isTrue(this.userService.findCreator(rendezvous.getId()) == this.userService.findByPrincipal());
 		rendezvous.setFinalMode(true);
 		rendezvous.setDeleted(true);
 		this.rendezvousRepository.save(rendezvous);
 	}
-
 	// Other business method --------------------------------------------------
 
 	public Rendezvous findRendezvousByComment(final int commentId) {
@@ -170,5 +178,21 @@ public class RendezvousService {
 
 	public Rendezvous findRendezvousByRequest(final Request request) {
 		return this.rendezvousRepository.findRendezvousByRequest(request);
+	}
+
+	public boolean checkAuthority() {
+		boolean ret;
+		UserAccount userAccount;
+		userAccount = LoginService.getPrincipal();
+		Assert.notNull(userAccount);
+		final Collection<Authority> authority = userAccount.getAuthorities();
+		Assert.notNull(authority);
+		final Authority res = new Authority();
+		res.setAuthority("ADMIN");
+		if (authority.contains(res))
+			ret = true;
+		else
+			ret = false;
+		return ret;
 	}
 }
