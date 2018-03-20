@@ -126,3 +126,4 @@ Servers2/Tomcat v7.0 Server at localhost-config/catalina.properties
 Servers2/Tomcat v7.0 Server at localhost-config/catalina.policy
 Servers2/.project
 UML astah/UML - Modelo de Dominio v5.0.asta.lock
+Acme-Rendezvous/src/test/java/services/CategoryServiceTest.java
