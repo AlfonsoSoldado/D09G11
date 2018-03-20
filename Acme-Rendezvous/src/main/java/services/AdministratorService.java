@@ -213,7 +213,7 @@ public class AdministratorService {
 				.managersWhoHaveGotMoreServicesCancelled();
 		long acumulador = 0;
 		Collection<Manager> managers = new ArrayList<>();
-		if (servicesCallededPerManager != null) {
+		if (servicesCallededPerManager != null && !servicesCallededPerManager.isEmpty()) {
 			Object[] primerElemento = servicesCallededPerManager.get(0);
 			acumulador = (long) primerElemento[0];
 

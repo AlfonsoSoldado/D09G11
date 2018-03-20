@@ -180,13 +180,18 @@
 <h3>
 	<spring:message code="administrator.bestSellingServices" />
 </h3>
-
+<h3>
+	<jstl:if test="${bestSellingServices==null}">
+		<spring:message code="administrator.noHay" />
+	</jstl:if>
+</h3>
 <p>
 	<jstl:forEach var="row" items="${bestSellingServices}">
 		<p>
 			<jstl:out value="${row.name }"></jstl:out>
 		</p>
 	</jstl:forEach>
+
 </p>
 
 
@@ -195,13 +200,20 @@
 	<spring:message
 		code="administrator.managersWhoHaveGotMoreServicesCancelled" />
 </h3>
+<h3>
+	<jstl:if test="${managersWhoHaveGotMoreServicesCancelled==null}">
+		<spring:message code="administrator.noHay" />
+	</jstl:if>
+</h3>
 <p>
+
 	<jstl:forEach var="row"
 		items="${managersWhoHaveGotMoreServicesCancelled}">
 		<p>
 			<jstl:out value="${row.name }"></jstl:out>
 		</p>
 	</jstl:forEach>
+
 </p>
 
 
@@ -258,6 +270,9 @@
 			<jstl:out value="${row.name }"></jstl:out>
 		</p>
 	</jstl:forEach>
+	<jstl:if test="${topSellingServices==null}">
+		<spring:message code="administrator.noHay" />
+	</jstl:if>
 </p>
 
 
