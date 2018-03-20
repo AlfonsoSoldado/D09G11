@@ -32,10 +32,10 @@ public class CategoryTest extends AbstractTest {
 				// An admin create a new category
 				{
 
-						"admin", "category1", "description1", "1", null },
+						"admin", "category078", "description1", "1", null },
 				{
 						// An admin create other category
-						"user1", "category1", "description1", "1", IllegalArgumentException.class } };
+						"user1", "category13", "description1", "1", IllegalArgumentException.class } };
 		for (int i = 0; i < testingData.length; i++)
 			this.templateCategoryTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3],  (Class<?>) testingData[i][4]);
 	}
@@ -54,7 +54,6 @@ public class CategoryTest extends AbstractTest {
 
 			category = this.categoryService.save(category);
 			this.unauthenticate();
-			this.categoryService.flush();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
