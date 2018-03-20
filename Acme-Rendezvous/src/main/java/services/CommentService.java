@@ -21,20 +21,21 @@ import domain.User;
 public class CommentService {
 
 	// Managed repository -----------------------------------------------------
-	
+
 	@Autowired
-	private CommentRepository commentRepository;
-	
+	private CommentRepository		commentRepository;
+
 	// Services ---------------------------------------------------------------
 
 	@Autowired
-	private RendezvousService rendezvousService;
-	
+	private RendezvousService		rendezvousService;
+
 	@Autowired
-	private UserService userService;
-	
+	private UserService				userService;
+
 	@Autowired
-	private AdministratorService administratorService;
+	private AdministratorService	administratorService;
+
 
 	// Constructor ------------------------------------------------------------
 
@@ -45,7 +46,7 @@ public class CommentService {
 	// Simple CRUD methods ----------------------------------------------------
 
 	public Comment create() {
-		userService.checkAuthority();
+		this.userService.checkAuthority();
 		Comment result;
 		result = new Comment();
 		result.setReplies(new ArrayList<Comment>());
@@ -66,7 +67,8 @@ public class CommentService {
 	}
 
 	public Comment save(final Comment comment) {
-		userService.checkAuthority();
+		this.userService.checkAuthority();
+		Assert.isTrue(comment.getRendezvous().getAttendant().contains(this.userService.findByPrincipal()));
 		Comment result;
 		Assert.notNull(comment);
 		if (comment.getId() == 0) {
@@ -75,77 +77,72 @@ public class CommentService {
 			comment.setMomentMade(momentMade);
 		}
 		result = this.commentRepository.saveAndFlush(comment);
-		if (comment.getParent() != null) {
+		if (comment.getParent() != null)
 			this.updatePadre(comment.getParent(), result);
-		}
 		this.updateRendezvous(comment.getRendezvous(), result);
 		this.updateUser(result);
 
 		return result;
 	}
-	
+
 	public void delete(final Comment comment) {
 		Assert.notNull(comment);
 		Assert.isTrue(comment.getId() != 0);
 		this.commentRepository.delete(comment);
 	}
-	
-	
-	
+
 	public Comment deleteAdmin(final Comment comment) {
 		this.administratorService.checkAuthority();
 		Comment res;
 		Comment result;
 		Assert.notNull(comment);
-		result= this.commentRepository.findOne(comment.getId());
+		result = this.commentRepository.findOne(comment.getId());
 		result.setText("this comment has been deleted, este comentario ha sido borrado");
 		result.setPicture(null);
 		res = this.commentRepository.saveAndFlush(result);
-		
+
 		return res;
 	}
 	// Other business method --------------------------------------------------
 
-	private void updatePadre(Comment padre, Comment hijo) {
-		ArrayList<Comment> replies = new ArrayList<Comment>();
-		if (padre.getReplies() != null) {
+	private void updatePadre(final Comment padre, final Comment hijo) {
+		final ArrayList<Comment> replies = new ArrayList<Comment>();
+		if (padre.getReplies() != null)
 			replies.addAll(padre.getReplies());
-		}
 		replies.add(hijo);
 		padre.setReplies(replies);
 		this.commentRepository.saveAndFlush(padre);
 	}
-	
-	private void updateUser(Comment comment) {
+
+	private void updateUser(final Comment comment) {
 		User user;
-		user = userService.findByPrincipal();
-		
+		user = this.userService.findByPrincipal();
+
 		Collection<Comment> comments = new ArrayList<Comment>();
 		comments = user.getComment();
-		
+
 		comments.add(comment);
 		user.setComment(comments);
-		
-		userService.save(user);
+
+		this.userService.save(user);
 	}
 
-
-	public Collection<Comment> findCommentsByRendezvous(int id) {
-		Collection<Comment> res = new ArrayList<Comment>();
-		res.addAll(commentRepository.findCommentsByRendezvous(id));
+	public Collection<Comment> findCommentsByRendezvous(final int id) {
+		final Collection<Comment> res = new ArrayList<Comment>();
+		res.addAll(this.commentRepository.findCommentsByRendezvous(id));
 		Assert.notNull(res);
 		return res;
 
 	}
 
-	public void updateRendezvous(Rendezvous rendezvous, Comment comment) {
-		Rendezvous save = this.rendezvousService.findOne(rendezvous.getId());
-		ArrayList<Comment> comments = new ArrayList<>(save.getComment());
+	public void updateRendezvous(final Rendezvous rendezvous, final Comment comment) {
+		final Rendezvous save = this.rendezvousService.findOne(rendezvous.getId());
+		final ArrayList<Comment> comments = new ArrayList<>(save.getComment());
 		comments.add(comment);
 		save.setComment(comments);
 		this.rendezvousService.save(save);
 	}
-	
+
 	public void flush() {
 		this.commentRepository.flush();
 	}

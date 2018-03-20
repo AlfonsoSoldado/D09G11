@@ -36,7 +36,6 @@ public class CommentTest extends AbstractTest {
 	 * An actor who is authenticated as a user must be able to comment on the rendezvouses that he or she has RSVPd.
 	 */
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void commentUser() {
 		final Object testingData[][] = {
@@ -49,13 +48,16 @@ public class CommentTest extends AbstractTest {
 				"user1", "a comment", "http://www.foto.com", "rendezvous1", null, null
 			}, {
 				//User comment a rendezvous that he or she hasn't RSVPd.
-				"user2", "another comment", "http://www.foto.com", "rendezvous1", null, null
+				"user2", "another comment", "http://www.foto.com", "rendezvous1", null, IllegalArgumentException.class
 			}, {
 				//Unauthenticated user comment a rendezvous.		
 				null, "another more comment", "http://www.foto.com", "rendezvous1", null, IllegalArgumentException.class
 			}, {
-				//User reply a comment
-				"user2", "reply", "http://www.foto.com", "rendezvous1", "comment1", null
+				//User reply a comment of a rendezvous that he or she has RSVPd
+				"user1", "reply", "http://www.foto.com", "rendezvous1", "comment1", null
+			}, {
+				//User reply a comment of a rendezvous that he or she hasn't RSVPd
+				"user2", "reply", "http://www.foto.com", "rendezvous1", "comment1", IllegalArgumentException.class
 			}
 		};
 
