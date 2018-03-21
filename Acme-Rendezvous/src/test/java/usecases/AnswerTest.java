@@ -35,16 +35,11 @@ public class AnswerTest extends AbstractTest {
 	public void answerTest() {
 		final Object testingData[][] = {
 
-			//An actor who is authenticated as a user must be able to :
-			//Manage the questions that are associated with a rendezvous that he or she is created previously.
 			{
-				//User creates a question for a rendezvous that he or she has created.
 				"user1", "an answer", "question1", null
 			}, {
-				//User creates a question for a rendezvous that he or she has not created.
 				"user2", "another answer", "question1", IllegalArgumentException.class
 			}, {
-				//Unauthenticated actor creates a question.		
 				null, "another more answer", "question1", IllegalArgumentException.class
 			}
 		};
@@ -58,7 +53,7 @@ public class AnswerTest extends AbstractTest {
 		caught = null;
 		try {
 
-			//-----------------Question-------------------
+			//-----------------Answer-------------------
 			this.authenticate(user);
 			final Answer answer = this.answerService.create();
 			answer.setText(text);
