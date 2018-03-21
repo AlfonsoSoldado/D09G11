@@ -270,5 +270,9 @@ public class AdministratorService {
 	public Collection<Services> topSellingServices() {
 		return this.administratorRepository.topSellingServices();
 	}
+	
+	public void flush() {
+		this.administratorRepository.flush();
+	}
 
 }

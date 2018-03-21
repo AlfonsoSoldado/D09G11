@@ -179,5 +179,9 @@ public class ManagerService {
 		this.validator.validate(managerFinal, binding);
 		return managerFinal;
 	}
+	
+	public void flush() {
+		this.managerRepository.flush();
+	}
 
 }

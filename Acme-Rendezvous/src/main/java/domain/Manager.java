@@ -3,6 +3,7 @@ package domain;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -15,6 +16,7 @@ public class Manager extends Actor {
 	private String VAT;
 
 	@NotBlank
+	@Pattern(regexp = "^[\\w-]+$")
 	public String getVAT() {
 		return VAT;
 	}

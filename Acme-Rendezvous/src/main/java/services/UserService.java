@@ -255,4 +255,8 @@ public class UserService {
 		this.validator.validate(userFinal, binding);
 		return userFinal;
 	}
+	
+	public void flush() {
+		this.userRepository.flush();
+	}
 }

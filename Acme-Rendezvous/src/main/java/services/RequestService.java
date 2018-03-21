@@ -139,4 +139,8 @@ public class RequestService {
 		
 		return creditcCards;
 	}
+	
+	public void flush() {
+		this.requestRepository.flush();
+	}
 }
