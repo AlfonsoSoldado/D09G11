@@ -27,7 +27,7 @@ public class CategoryTest extends AbstractTest {
 	 */
 
 	@Test
-	public void CategoryAdminCreate() {
+	public void CategoryAdminTest() {
 		final Object testingData[][] = {
 
 				{
