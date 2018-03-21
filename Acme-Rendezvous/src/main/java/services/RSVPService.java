@@ -60,6 +60,7 @@ public class RSVPService {
 
 	public RSVP save(final RSVP rsvp) {
 		this.userService.checkAuthority();
+		Assert.isTrue(this.userService.findCreator(rsvp.getRendezvous().getId()) == this.userService.findByPrincipal());
 		RSVP result = rsvp;
 		Assert.notNull(rsvp);
 		Assert.isTrue(rsvp.getConfirmed() == true);
