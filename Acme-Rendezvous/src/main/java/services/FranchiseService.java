@@ -20,6 +20,9 @@ public class FranchiseService {
 	private FranchiseRepository franchiseRepository;
 
 	// Supporting services ----------------------------------------------------
+	
+	@Autowired
+	private AdministratorService	administratorService;
 
 	// Constructor ------------------------------------------------------------
 
@@ -50,16 +53,10 @@ public class FranchiseService {
 
 	public Franchise save(Franchise franchise) {
 		Assert.notNull(franchise);
+		this.administratorService.checkAuthority();
 		Franchise res;
 		res = this.franchiseRepository.save(franchise);
 		return res;
-	}
-
-	public void delete(Franchise franchise) {
-		Assert.notNull(franchise);
-		Assert.isTrue(franchise.getId() != 0);
-		Assert.isTrue(this.franchiseRepository.exists(franchise.getId()));
-		this.franchiseRepository.delete(franchise);
 	}
 
 	// Other business method --------------------------------------------------
@@ -68,6 +65,10 @@ public class FranchiseService {
 		Integer res;
 		res = franchiseRepository.resId();
 		return res;
+	}
+	
+	public void flush() {
+		this.franchiseRepository.flush();
 	}
 
 }
