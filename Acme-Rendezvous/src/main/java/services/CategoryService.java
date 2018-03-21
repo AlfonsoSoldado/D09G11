@@ -23,10 +23,9 @@ public class CategoryService {
 	// Managed repository -----------------------------------------------------
 
 	@Autowired
-	private CategoryRepository	categoryRepository;
+	private CategoryRepository categoryRepository;
 	@Autowired
-	private ServicesService		servicesService;
-
+	private ServicesService servicesService;
 
 	// Supporting services ----------------------------------------------------
 
@@ -75,10 +74,12 @@ public class CategoryService {
 
 		return res;
 	}
+
 	public void delete(final Category category) {
+		this.checkAuthority();
 		Assert.notNull(category);
 		Assert.isTrue(category.getId() != 0);
-		Assert.isTrue(this.categoryRepository.exists(category.getId()));
+		//Assert.isTrue(this.categoryRepository.exists(category.getId()));
 		final Category old = this.findOne(category.getId());
 		if (!old.getServices().isEmpty())
 			this.updateServicesToRemove(old.getServices(), category);

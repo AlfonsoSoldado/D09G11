@@ -105,7 +105,6 @@ public class ServicesService {
 
 			r.setServices(res);
 		} else {
-			Assert.isTrue(services.getManager() == this.managerService.findByPrincipal());
 			Request request;
 			request = this.requestByServices(services.getId());
 			request.setServices(services);
@@ -200,7 +199,10 @@ public class ServicesService {
 		Assert.notNull(authority);
 		final Authority res = new Authority();
 		res.setAuthority("MANAGER");
-		Assert.isTrue(authority.contains(res));
+		//necesario para poder borrar una categoria
+		final Authority admin = new Authority();
+		res.setAuthority("ADMIN");
+		Assert.isTrue(authority.contains(res)||authority.contains(admin));
 	}
 
 	public void flush() {
