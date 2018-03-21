@@ -57,6 +57,7 @@ public class AnswerService {
 
 	public Answer save(final Answer answer) {
 		userService.checkAuthority();
+		Assert.isTrue(this.userService.findUserByQuestion(answer.getQuestion().getId()) == this.userService.findByPrincipal());
 		Answer result = answer;
 		Assert.notNull(answer);
 		result = this.answerRepository.save(result);
@@ -89,6 +90,10 @@ public class AnswerService {
 		user.setAnswer(answers);
 		
 		userService.save(user);
+	}
+	
+	public void flush() {
+		this.answerRepository.flush();
 	}
 
 }

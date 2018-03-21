@@ -10,66 +10,66 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
+import services.AnswerService;
 import services.QuestionService;
-import services.RendezvousService;
 import utilities.AbstractTest;
+import domain.Answer;
 import domain.Question;
-import domain.Rendezvous;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 	"classpath:spring/junit.xml"
 })
 @Transactional
-public class QuestionTest extends AbstractTest {
+public class AnswerTest extends AbstractTest {
 
 	@Autowired
-	private QuestionService		questionService;
+	private AnswerService		answerService;
 
 	@Autowired
-	private RendezvousService	rendezvousService;
+	private QuestionService	questionService;
 
 
 	// Test---------------------------------------------------------------
 	@Test
-	public void questionTest() {
+	public void answerTest() {
 		final Object testingData[][] = {
 
 			//An actor who is authenticated as a user must be able to :
 			//Manage the questions that are associated with a rendezvous that he or she is created previously.
 			{
 				//User creates a question for a rendezvous that he or she has created.
-				"user1", "a question", "rendezvous1", null
+				"user1", "an answer", "question1", null
 			}, {
 				//User creates a question for a rendezvous that he or she has not created.
-				"user2", "another question", "rendezvous1", IllegalArgumentException.class
+				"user2", "another answer", "question1", IllegalArgumentException.class
 			}, {
 				//Unauthenticated actor creates a question.		
-				null, "another more question", "rendezvous1", IllegalArgumentException.class
+				null, "another more answer", "question1", IllegalArgumentException.class
 			}
 		};
 
 		for (int i = 0; i < testingData.length; i++)
-			this.createQuestionTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
+			this.createAnswerTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
 
 	}
-	protected void createQuestionTemplate(final String user, final String text, final String rendezvous, final Class<?> expected) {
+	protected void createAnswerTemplate(final String user, final String text, final String question, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
 		try {
 
 			//-----------------Question-------------------
 			this.authenticate(user);
-			final Question question = this.questionService.create();
-			question.setText(text);
-			final int rendezvousId = this.getEntityId(rendezvous);
-			final Rendezvous rdv = this.rendezvousService.findOne(rendezvousId);
-			Assert.notNull(rdv);
-			question.setRendezvous(rdv);
+			final Answer answer = this.answerService.create();
+			answer.setText(text);
+			final int questionId = this.getEntityId(question);
+			final Question que = this.questionService.findOne(questionId);
+			Assert.notNull(que);
+			answer.setQuestion(que);
 
-			this.questionService.save(question);
+			this.answerService.save(answer);
 			this.unauthenticate();
-			this.questionService.flush();
+			this.answerService.flush();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
