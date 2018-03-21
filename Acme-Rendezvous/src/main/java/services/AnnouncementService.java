@@ -109,5 +109,9 @@ public class AnnouncementService {
 		final Collection<Announcement> res = this.announcementRepository.findAnnouncementsByUser(userId);
 		return res;
 	}
+	
+	public void flush() {
+		this.announcementRepository.flush();
+	}
 
 }
