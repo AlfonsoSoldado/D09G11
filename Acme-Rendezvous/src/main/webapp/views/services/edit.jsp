@@ -19,7 +19,15 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<form:form action="services/manager/edit.do" modelAttribute="services">
+<script type="text/javascript">
+window.onload = function(){ 
+	document.getElementsByTagName("select")[0].removeAttribute("multiple");
+	document.getElementsByTagName("select")[1].removeAttribute("multiple");
+	document.getElementsByTagName("select")[2].removeAttribute("multiple");
+}
+</script>
+
+<form:form action="services/manager/edit.do" modelAttribute="services" >
 	<security:authorize access="hasRole('MANAGER')">
 
 		<form:hidden path="id" />
@@ -27,10 +35,10 @@
 		<form:hidden path="manager" />
 		<form:hidden path="canceled"/>
 		<form:hidden path="rendezvous"/>
-
-		<acme:select items="${categories1 }" itemLabel="name" code="services.category" path="category"/>
-		<acme:select items="${categories2 }" itemLabel="name" code="services.category" path="category"/>
-		<acme:select items="${categories3 }" itemLabel="name" code="services.category" path="category"/>
+		
+		<acme:select items="${categories1 }" itemLabel="name" code="services.category1" path="category"/>
+		<acme:select items="${categories2 }" itemLabel="name" code="services.category2" path="category"/>
+		<acme:select items="${categories3 }" itemLabel="name" code="services.category3" path="category"/>
 
 		<acme:textbox path="name" code="services.name" />
 		<acme:textbox path="description" code="services.description" />

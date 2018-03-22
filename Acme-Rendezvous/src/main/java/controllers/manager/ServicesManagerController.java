@@ -29,7 +29,7 @@ import domain.Services;
 @Controller
 @RequestMapping("/services/manager")
 public class ServicesManagerController extends AbstractController {
-	
+
 	private Request requestAttribute;
 
 	@Autowired
@@ -46,23 +46,23 @@ public class ServicesManagerController extends AbstractController {
 
 	@Autowired
 	private ManagerService managerService;
-	
+
 	@Autowired
 	private RequestService requestService;
-	
+
 	// Creation ---------------------------------------------------------------
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int requestId) {
 		ModelAndView res;
-		
+
 		requestAttribute = requestService.findOne(requestId);
-		
+
 		Services services = this.servicesService.create();
 		Rendezvous rendezvous = rendezvousService.findRendezvousByRequest(requestAttribute);
-		
+
 		services.setRendezvous(rendezvous);
-		
+
 		res = this.createEditModelAndView(services);
 
 		return res;
@@ -99,24 +99,34 @@ public class ServicesManagerController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid Services services, final BindingResult binding) {
-		ModelAndView res;
+		ModelAndView res = null;
 		this.managerService.checkAuthority();
+		services.getCategory().remove(null);
 		services = this.servicesService.reconstruct(services, binding);
 		
 		Manager manager = managerService.findByPrincipal();
 		Rendezvous rendezvous = services.getRendezvous();
 
 		services.setManager(manager);
-		
-		if (binding.hasErrors())
+
+		if (binding.hasErrors()) {
 			res = this.createEditModelAndView(services, "services.params.error");
-		else
+		} else if (services.getCategory().size() <= 3 && services.getCategory().size() > 1) {
+			ArrayList<Category> categories = new ArrayList<>();
+			categories.addAll(services.getCategory());
+			if (categories.get(0).getLevel() == categories.get(1).getLevel()
+					|| categories.get(0).getLevel() == categories.get(2).getLevel()
+					|| categories.get(1).getLevel() == categories.get(2).getLevel()) {
+				res = this.createEditModelAndView(services, "services.params.error");
+
+			}
+		} else
 			try {
 				Services saved = this.servicesService.save(services);
 				rendezvous.setServices(saved);
 				requestAttribute.setServices(saved);
 				requestService.save(requestAttribute);
-				
+
 				res = new ModelAndView("redirect:../../");
 			} catch (final Throwable oops) {
 				System.out.println(oops.getMessage());
@@ -159,11 +169,11 @@ public class ServicesManagerController extends AbstractController {
 		Collection<Category> category1 = new ArrayList<Category>();
 		Collection<Category> category2 = new ArrayList<Category>();
 		Collection<Category> category3 = new ArrayList<Category>();
-		
+
 		category1 = categoryService.findCategoryByLevel(1);
 		category2 = categoryService.findCategoryByLevel(2);
 		category3 = categoryService.findCategoryByLevel(3);
-		
+
 		result = new ModelAndView("services/manager/edit");
 		result.addObject("services", services);
 		result.addObject("categories1", category1);
