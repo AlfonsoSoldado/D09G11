@@ -1,7 +1,5 @@
 package usecases;
 
-import java.util.Date;
-
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -14,16 +12,15 @@ import services.RequestService;
 import utilities.AbstractTest;
 import domain.CreditCard;
 import domain.Request;
-import domain.Services;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/junit.xml" })
 @Transactional
 public class RequestTest extends AbstractTest {
-	
+
 	@Autowired
-	private RequestService		requestService;
-	
+	private RequestService requestService;
+
 	// Test---------------------------------------------------------------
 	@Test
 	public void requestTest() {
@@ -35,40 +32,53 @@ public class RequestTest extends AbstractTest {
 				// must specify a valid credit card in every request for a
 				// service. Optionally, he or she
 				// can provide some comments in the request.
-
-
 				{
-						// Manager creates a request.
-						"manager1", "comment", "moment1", null, IllegalArgumentException.class },
-				{
+						// Listing requests.
+						"user1", null }, {
+						// Listing requests.
+						"user2", null }, {
+						// User edit a request.
+						"user1", "a comment", "request1", null }, {
+						// User edit a request.
+						"user2", "another comment", "request2", null }, {
+						// User edit the request of other user.
+						"user1", "another comment", "request2", IllegalArgumentException.class }, {
 						// User creates a request.
-						"user1", "comment", "moment1", null, null } };
+						"user1", "comment", null }, {
+						// User creates a request.
+						"user2", "comment", null }, {
+						// User delete a request.
+						"user1", "request1", null }, {
+						// User delete a request.
+						"user2", "request2", null } };
 
-//		for (int i = 0; i < 3; i++)
-//			this.listTemplate((String) testingData[i][0],
-//					(Class<?>) testingData[i][1]);
+		for (int i = 0; i < 2; i++)
+			this.listTemplate((String) testingData[i][0],
+					(Class<?>) testingData[i][1]);
+
+		for (int i = 2; i < 5; i++)
+			this.editTemplate((String) testingData[i][0],
+					(String) testingData[i][1], (String) testingData[i][2],
+					(Class<?>) testingData[i][3]);
 //
-		for (int i = 3; i < 5; i++)
-			this.createTemplate((String) testingData[i][0], (String) testingData[i][2],
-					(Date) testingData[i][3], (Services) testingData[i][4], (Class<?>) testingData[i][6]);
-//
-//		// for (int i = 5; i < 8; i++)
-//		// this.editTemplate((String) testingData[i][0], (String)
-//		// testingData[i][1], (String) testingData[i][2], (Class<?>)
-//		// testingData[i][3]);
-//
-//		for (int i = 8; i < testingData.length; i++)
-//			this.deleteTemplate((String) testingData[i][0],
+//		for (int i = 5; i < 7; i++)
+//			this.createTemplate((String) testingData[i][0],
 //					(String) testingData[i][1], (Class<?>) testingData[i][2]);
+
+		// for (int i = 7; i < testingData.length; i++)
+		// this.deleteTemplate((String) testingData[i][0],
+		// (String) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
-	
-	protected void createTemplate(final String user, final String comment, final Date moment, Services services, final Class<?> expected) {
+
+	protected void createTemplate(final String user, final String comment,
+			final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
 		try {
 
-			//-----------------Create Request-------------------
+			// -----------------Create Request-------------------
 			this.authenticate(user);
+
 			CreditCard cc = new CreditCard();
 			cc.setBrandName("MasterCard");
 			cc.setCVV(334);
@@ -76,15 +86,67 @@ public class RequestTest extends AbstractTest {
 			cc.setExpirationYear(2019);
 			cc.setHolderName("Raul");
 			cc.setNumber("5574588374439106");
-			
+
 			Request request = requestService.create();
 			request.setCreditCard(cc);
 			request.setComment(comment);
-			request.setMoment(moment);
 
 			this.requestService.save(request);
 			this.unauthenticate();
 			this.requestService.flush();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
+
+	protected void listTemplate(final String user, final Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+		try {
+
+			// -----------------List Requests-------------------
+			this.authenticate(user);
+			this.requestService.findAll();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
+
+	protected void editTemplate(final String user, final String comment,
+			final String request, final Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+		try {
+
+			// -----------------Edit Request-------------------
+			this.authenticate(user);
+			final int requestId = this.getEntityId(request);
+			final Request requestFinded = this.requestService
+					.findOne(requestId);
+			requestFinded.setComment(comment);
+			this.requestService.save(requestFinded);
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
+
+	protected void deleteTemplate(final String user, final String request,
+			final Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+		try {
+
+			// -----------------Delete Request-------------------
+			this.authenticate(user);
+			final int requestId = this.getEntityId(request);
+			final Request requestFinded = this.requestService
+					.findOne(requestId);
+			this.requestService.delete(requestFinded);
+			this.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
