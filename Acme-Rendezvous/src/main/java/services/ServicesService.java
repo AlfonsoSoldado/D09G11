@@ -92,7 +92,7 @@ public class ServicesService {
 	public Services save(final Services services) {
 		Assert.notNull(services);
 		this.checkAuthority();
-
+		Assert.isTrue(services.getManager() == this.managerService.findByPrincipal());
 		Services res;
 
 		final Rendezvous r = services.getRendezvous();
@@ -126,7 +126,7 @@ public class ServicesService {
 	public void delete(final Services services) {
 		Assert.notNull(services);
 		Assert.isTrue(services.getId() != 0);
-		Assert.isTrue(this.servicesRepository.exists(services.getId()));
+//		Assert.isTrue(this.servicesRepository.exists(services.getId()));
 		this.checkAuthority();
 		Assert.isTrue(services.getManager() == this.managerService.findByPrincipal());
 		
