@@ -121,20 +121,19 @@ public class ServicesManagerController extends AbstractController {
 			ArrayList<Category> categories = new ArrayList<>();
 			categories.addAll(services.getCategory());
 
-				if (categories.size() == 1 && categories.get(0).getLevel() != 1) {
-					res = this.createEditModelAndView(services, "services.params.error");
+			if (categories.size() == 1 && categories.get(0).getLevel() != 1) {
+				res = this.createEditModelAndView(services, "services.params.error");
 
-				} else if (categories.size() == 2 && (categories.get(0).getLevel() == categories.get(1).getLevel()
-						|| (categories.get(0).getLevel() != 1 && categories.get(1).getLevel() != 1)
-						|| (categories.get(0).getLevel() != 2 && categories.get(1).getLevel() != 2))) {
-					res = this.createEditModelAndView(services, "services.params.error");
+			} else if (categories.size() == 2 && (categories.get(0).getLevel() == categories.get(1).getLevel()
+					|| (categories.get(0).getLevel() != 1 && categories.get(1).getLevel() != 1)
+					|| (categories.get(0).getLevel() != 2 && categories.get(1).getLevel() != 2))) {
+				res = this.createEditModelAndView(services, "services.params.error");
 
-				} else if (categories.size() == 3 && (categories.get(0).getLevel() == categories.get(1).getLevel()
-						|| categories.get(0).getLevel() == categories.get(2).getLevel()
-						|| categories.get(1).getLevel() == categories.get(2).getLevel())) {
-					res = this.createEditModelAndView(services, "services.params.error");
-				}
-			 else {
+			} else if (categories.size() == 3 && (categories.get(0).getLevel() == categories.get(1).getLevel()
+					|| categories.get(0).getLevel() == categories.get(2).getLevel()
+					|| categories.get(1).getLevel() == categories.get(2).getLevel())) {
+				res = this.createEditModelAndView(services, "services.params.error");
+			} else {
 
 				try {
 					Services saved = this.servicesService.save(services);
@@ -163,8 +162,20 @@ public class ServicesManagerController extends AbstractController {
 	public ModelAndView delete(@Valid final Services services, final BindingResult binding) {
 		ModelAndView res;
 		try {
-			this.servicesService.delete(services);
-			res = new ModelAndView("redirect:../../");
+			if (services.getRendezvous().getDeleted()) {
+				this.servicesService.delete(services);
+				res = new ModelAndView("redirect:../../");
+
+
+			} else {
+				services.setCategory(new ArrayList<Category>());
+				res = this.createEditModelAndView(services, "services.commit.errorNotCanceled");
+				Collection<Rendezvous> rendezvous1 = this.rendezvousService.findRendezvousNotCancelled();
+				res.addObject("rendezvous", rendezvous1);
+				Collection<Category> categories = this.categoryService.findAll();
+				res.addObject("categories", categories);
+
+			}
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
 			System.out.println(oops.getCause());

@@ -129,7 +129,7 @@ public class ServicesService {
 		Assert.isTrue(this.servicesRepository.exists(services.getId()));
 		this.checkAuthority();
 		Assert.isTrue(services.getManager() == this.managerService.findByPrincipal());
-
+		
 		Request request;
 		request = this.requestByServices(services.getId());
 		request.setServices(null);
