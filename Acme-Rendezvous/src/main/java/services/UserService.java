@@ -31,12 +31,13 @@ import forms.UserForm;
 public class UserService {
 
 	// Managed repository -----------------------------------------------------
-	
+
 	@Autowired
 	private UserRepository	userRepository;
-	
+
 	@Autowired
-	private Validator validator;
+	private Validator		validator;
+
 
 	// Constructor ------------------------------------------------------------
 
@@ -79,6 +80,16 @@ public class UserService {
 		User result = user;
 		Assert.notNull(user);
 		if (user.getId() == 0) {
+			Class<?> caught;
+			caught = null;
+			try {
+				LoginService.getPrincipal();
+			} catch (final Throwable oops) {
+				caught = oops.getClass();
+			}
+			this.checkExceptions(IllegalArgumentException.class, caught);
+		}
+		if (user.getId() == 0) {
 			String pass = user.getUserAccount().getPassword();
 			final Md5PasswordEncoder code = new Md5PasswordEncoder();
 			pass = code.encodePassword(pass, null);
@@ -88,12 +99,21 @@ public class UserService {
 		return result;
 	}
 
+	protected void checkExceptions(final Class<?> expected, final Class<?> caught) {
+		if (expected != null && caught == null)
+			throw new RuntimeException(expected.getName() + " was expected");
+		else if (expected == null && caught != null)
+			throw new RuntimeException(caught.getName() + " was unexpected");
+		else if (expected != null && caught != null && !expected.equals(caught))
+			throw new RuntimeException(expected.getName() + " was expected, but " + caught.getName() + " was thrown");
+	}
+
 	public void delete(final User user) {
 		Assert.notNull(user);
 		Assert.isTrue(user.getId() != 0);
 		this.userRepository.delete(user);
 	}
-	
+
 	// Other business method --------------------------------------------------
 
 	public User findByPrincipal() {
@@ -131,13 +151,13 @@ public class UserService {
 		res = this.userRepository.findUserByQuestion(questionId);
 		return res;
 	}
-	
+
 	public User findUserByComment(final int commentId) {
 		User res;
 		res = this.userRepository.findUserByComment(commentId);
 		return res;
 	}
-	
+
 	public User findUserByAnswer(final int answerId) {
 		User res;
 		res = this.userRepository.findUserByAnswer(answerId);
@@ -176,18 +196,18 @@ public class UserService {
 			result = true;
 		return result;
 	}
-	
+
 	public void checkAuthority() {
 		UserAccount userAccount;
 		userAccount = LoginService.getPrincipal();
 		Assert.notNull(userAccount);
-		Collection<Authority> authority = userAccount.getAuthorities();
+		final Collection<Authority> authority = userAccount.getAuthorities();
 		Assert.notNull(authority);
-		Authority res = new Authority();
+		final Authority res = new Authority();
 		res.setAuthority("USER");
 		Assert.isTrue(authority.contains(res));
 	}
-	
+
 	public UserForm reconstruct(final UserForm userForm, final BindingResult binding) {
 		User res;
 		UserForm userFinal = null;
@@ -227,7 +247,7 @@ public class UserService {
 		this.validator.validate(userFinal, binding);
 		return userFinal;
 	}
-	
+
 	public User reconstruct(final User user, final BindingResult binding) {
 		User res;
 		User userFinal;
@@ -255,7 +275,7 @@ public class UserService {
 		this.validator.validate(userFinal, binding);
 		return userFinal;
 	}
-	
+
 	public void flush() {
 		this.userRepository.flush();
 	}
