@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -62,7 +63,7 @@ public class ServicesTest extends AbstractTest {
 				"manager1", "name1", "description1", false, 1, "rendezvous1", null
 			}, {
 				//User creates a service.
-				"user1", "name2", "description2", false, 1, "rendezvous1", IllegalArgumentException.class
+				"user1", "name2", "description2", false, 1, "rendezvous1", DataIntegrityViolationException.class
 			}, {
 				//Manager updates a service that she or he has created.
 				"manager1", "nameEdit", "services1", null
@@ -87,8 +88,8 @@ public class ServicesTest extends AbstractTest {
 		for (int i = 3; i < 5; i++)
 			this.createTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (boolean) testingData[i][3], (int) testingData[i][4], (String) testingData[i][5], (Class<?>) testingData[i][6]);
 
-		//		for (int i = 5; i < 8; i++)
-		//			this.editTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
+		for (int i = 5; i < 8; i++)
+			this.editTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
 
 		for (int i = 8; i < testingData.length; i++)
 			this.deleteTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
