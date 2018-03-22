@@ -47,10 +47,11 @@ public class RequestTest extends AbstractTest {
 						"user1", "comment", null }, {
 						// User creates a request.
 						"user2", "comment", null }, {
-						// User delete a request.
-						"user1", "request1", null }, {
-						// User delete a request.
-						"user2", "request2", null } };
+//						// User delete a request.
+//						"user1", "request1", null }, {
+//						// User delete a request.
+//						"user2", "request2", null 
+						} };
 
 		for (int i = 0; i < 2; i++)
 			this.listTemplate((String) testingData[i][0],
@@ -60,14 +61,14 @@ public class RequestTest extends AbstractTest {
 			this.editTemplate((String) testingData[i][0],
 					(String) testingData[i][1], (String) testingData[i][2],
 					(Class<?>) testingData[i][3]);
-//
-//		for (int i = 5; i < 7; i++)
-//			this.createTemplate((String) testingData[i][0],
-//					(String) testingData[i][1], (Class<?>) testingData[i][2]);
 
-		// for (int i = 7; i < testingData.length; i++)
-		// this.deleteTemplate((String) testingData[i][0],
-		// (String) testingData[i][1], (Class<?>) testingData[i][2]);
+		for (int i = 5; i < 7; i++)
+			this.createTemplate((String) testingData[i][0],
+					(String) testingData[i][1], (Class<?>) testingData[i][2]);
+
+//		for (int i = 7; i < testingData.length; i++)
+//			this.deleteTemplate((String) testingData[i][0],
+//					(String) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
 	protected void createTemplate(final String user, final String comment,
@@ -99,7 +100,7 @@ public class RequestTest extends AbstractTest {
 		}
 		this.checkExceptions(expected, caught);
 	}
-
+	
 	protected void listTemplate(final String user, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
@@ -134,23 +135,23 @@ public class RequestTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 	}
 
-	protected void deleteTemplate(final String user, final String request,
-			final Class<?> expected) {
-		Class<?> caught;
-		caught = null;
-		try {
-
-			// -----------------Delete Request-------------------
-			this.authenticate(user);
-			final int requestId = this.getEntityId(request);
-			final Request requestFinded = this.requestService
-					.findOne(requestId);
-			this.requestService.delete(requestFinded);
-			this.unauthenticate();
-		} catch (final Throwable oops) {
-			caught = oops.getClass();
-		}
-		this.checkExceptions(expected, caught);
-	}
+//	protected void deleteTemplate(final String user, final String request,
+//			final Class<?> expected) {
+//		Class<?> caught;
+//		caught = null;
+//		try {
+//
+//			// -----------------Delete Request-------------------
+//			this.authenticate(user);
+//			final int requestId = this.getEntityId(request);
+//			final Request requestFinded = this.requestService
+//					.findOne(requestId);
+//			this.requestService.delete(requestFinded);
+//			this.unauthenticate();
+//		} catch (final Throwable oops) {
+//			caught = oops.getClass();
+//		}
+//		this.checkExceptions(expected, caught);
+//	}
 
 }

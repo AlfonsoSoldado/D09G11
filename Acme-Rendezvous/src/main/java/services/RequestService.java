@@ -13,7 +13,6 @@ import repositories.RequestRepository;
 import domain.CreditCard;
 import domain.Rendezvous;
 import domain.Request;
-import domain.Services;
 import domain.User;
 
 @Service
@@ -44,11 +43,11 @@ public class RequestService {
 	public Request create() {
 		User user = userService.findByPrincipal();
 		final Request request;
-		Services services = new Services();
+//		Services services = new Services();
 		Collection<CreditCard> creditCards = new ArrayList<CreditCard>();
 		request = new Request();
 		creditCards = this.findAllCreditCard(user.getId());
-		request.setServices(services);
+//		request.setServices(services);
 		if (creditCards.size() > 0)
 			request.setCreditCard(creditCards.iterator().next());
 		return request;
@@ -69,12 +68,13 @@ public class RequestService {
 
 	public Request save(Request request) {
 		Assert.notNull(request);
-		
 		Request res;
 		if (request.getId() == 0) {
 			Date moment;
 			moment = new Date(System.currentTimeMillis() - 1000);
 			request.setMoment(moment);
+		} else {
+			Assert.isTrue(this.findRequestByUser(userService.findByPrincipal().getId()).contains(request));
 		}
 		res = this.requestRepository.save(request);
 		
