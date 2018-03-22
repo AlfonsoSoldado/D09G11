@@ -65,6 +65,7 @@ public class RequestUserController extends AbstractController {
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView create(@CookieValue(value = "creditCard", defaultValue = "") String creditCard, HttpServletResponse response, @RequestParam final int rendezvousId) {
+		
 		ModelAndView res;
 		String addString;
 		User user = userService.findByPrincipal();
@@ -84,11 +85,11 @@ public class RequestUserController extends AbstractController {
 		response.addCookie(newCookie);
 		
 		Rendezvous r = rendezvousService.findOne(rId);
-
+		
 		Collection<Rendezvous> rendezvous = new ArrayList<Rendezvous>();
 		rendezvous = user.getRendezvous();
 
-		if (r == null || !(rendezvous.contains(r)))
+		if (r == null || !(rendezvous.contains(r)) || r.getDeleted()==true)
 			res = new ModelAndView("redirect:../../");
 		else {
 			final Request request = this.requestService.create();
