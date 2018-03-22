@@ -27,23 +27,22 @@ public class ServicesService {
 	// Managed repository -----------------------------------------------------
 
 	@Autowired
-	private ServicesRepository	servicesRepository;
+	private ServicesRepository servicesRepository;
 
 	@Autowired
-	private ManagerService		managerService;
+	private ManagerService managerService;
 
 	@Autowired
-	private ActorService		actorService;
+	private ActorService actorService;
 
 	@Autowired
-	private RendezvousService	rendezvousService;
+	private RendezvousService rendezvousService;
 
 	@Autowired
-	private CategoryService		categoryService;
+	private CategoryService categoryService;
 
 	@Autowired
-	private RequestService		requestService;
-
+	private RequestService requestService;
 
 	// Supporting services ----------------------------------------------------
 
@@ -80,6 +79,7 @@ public class ServicesService {
 		res = this.servicesRepository.findAll();
 		return res;
 	}
+
 	public Services findOne(final int services) {
 		Assert.isTrue(services != 0);
 		Services res;
@@ -92,7 +92,7 @@ public class ServicesService {
 	public Services save(final Services services) {
 		Assert.notNull(services);
 		this.checkAuthority();
-
+		Assert.isTrue(services.getManager() == this.managerService.findByPrincipal());
 		Services res;
 
 		final Rendezvous r = services.getRendezvous();
@@ -104,11 +104,6 @@ public class ServicesService {
 			services.setCanceled(false);
 
 			r.setServices(res);
-		} else {
-			Request request;
-			request = this.requestByServices(services.getId());
-			request.setServices(services);
-			this.requestService.save(request);
 		}
 
 		return res;
@@ -116,9 +111,13 @@ public class ServicesService {
 
 	private Integer updateLevel(final Services services) {
 		Integer res = 5;
-		for (final Category category : services.getCategory())
-			if (category.getLevel() < res)
-				res = category.getLevel();
+		if (services.getCategory() != null || !services.getCategory().isEmpty()) {
+
+			for (final Category category : services.getCategory()) {
+				if (category.getLevel() < res)
+					res = category.getLevel();
+			}
+		}
 		if (res == 5)
 			res = null;
 		return res;
@@ -127,10 +126,10 @@ public class ServicesService {
 	public void delete(final Services services) {
 		Assert.notNull(services);
 		Assert.isTrue(services.getId() != 0);
-		Assert.isTrue(this.servicesRepository.exists(services.getId()));
+//		Assert.isTrue(this.servicesRepository.exists(services.getId()));
 		this.checkAuthority();
 		Assert.isTrue(services.getManager() == this.managerService.findByPrincipal());
-
+		
 		Request request;
 		request = this.requestByServices(services.getId());
 		request.setServices(null);
@@ -175,6 +174,10 @@ public class ServicesService {
 			services.setManager((Manager) this.actorService.findByPrincipal());
 			serviceFinal.setRendezvous(services.getRendezvous());
 			serviceFinal.setCategory(services.getCategory());
+			serviceFinal.setCanceled(services.getCanceled());
+			serviceFinal.setDescription(services.getDescription());
+			serviceFinal.setName(services.getName());
+			serviceFinal.setPicture(services.getPicture());
 			res = serviceFinal;
 		}
 
@@ -199,10 +202,11 @@ public class ServicesService {
 		Assert.notNull(authority);
 		final Authority res = new Authority();
 		res.setAuthority("MANAGER");
-		//necesario para poder borrar una categoria
+		// necesario para poder borrar una categoria
 		final Authority admin = new Authority();
-		res.setAuthority("ADMIN");
-		Assert.isTrue(authority.contains(res)||authority.contains(admin));
+		admin.setAuthority("ADMIN");
+		boolean s = authority.contains(res) || authority.contains(admin);
+		Assert.isTrue(s);
 	}
 
 	public void flush() {

@@ -107,8 +107,11 @@
 
 
 	<display:column>
+			<jstl:if test="${row.deleted == false}">
+	
 		<acme:links url="request/user/edit.do?rendezvousId=${row.id}"
 			code="rendezvous.request" />
+			</jstl:if>
 	</display:column>
 
 </display:table>

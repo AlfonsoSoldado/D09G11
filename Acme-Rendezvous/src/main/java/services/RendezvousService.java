@@ -77,9 +77,11 @@ public class RendezvousService {
 	}
 
 	public Rendezvous save(final Rendezvous rendezvous) {
-		this.userService.checkAuthority();
+		this.checkAuthorityUser();
 		Assert.notNull(rendezvous);
-		if (rendezvous.getId() != 0) {
+		Authority admin = new Authority();
+		admin.setAuthority("ADMIN");
+		if (rendezvous.getId() != 0 && !this.actorService.findByPrincipal().getUserAccount().getAuthorities().contains(admin)) {
 			Assert.isTrue(this.userService.findCreator(rendezvous.getId()) == this.userService.findByPrincipal());
 			Assert.isTrue(this.findOne(rendezvous.getId()).getFinalMode() == false);
 		}
@@ -180,6 +182,19 @@ public class RendezvousService {
 		return this.rendezvousRepository.findRendezvousByRequest(request);
 	}
 
+	
+	public void checkAuthorityUser() {
+		UserAccount userAccount;
+		userAccount = LoginService.getPrincipal();
+		Assert.notNull(userAccount);
+		Collection<Authority> authority = userAccount.getAuthorities();
+		Assert.notNull(authority);
+		Authority res = new Authority();
+		res.setAuthority("USER");
+		Authority admin = new Authority();
+		admin.setAuthority("ADMIN");
+		Assert.isTrue(authority.contains(res)||authority.contains(admin));
+	}
 	public boolean checkAuthority() {
 		boolean ret;
 		UserAccount userAccount;

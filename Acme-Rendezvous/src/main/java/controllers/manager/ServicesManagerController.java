@@ -101,41 +101,60 @@ public class ServicesManagerController extends AbstractController {
 	public ModelAndView save(@Valid Services services, final BindingResult binding) {
 		ModelAndView res = null;
 		this.managerService.checkAuthority();
-		services.getCategory().remove(null);
-		services = this.servicesService.reconstruct(services, binding);
-		
-		Manager manager = managerService.findByPrincipal();
-		Rendezvous rendezvous = services.getRendezvous();
-
-		services.setManager(manager);
-
+		Rendezvous rendezvous = null;
 		if (binding.hasErrors()) {
+			services.setCategory(new ArrayList<Category>());
 			res = this.createEditModelAndView(services, "services.params.error");
-		} else if (services.getCategory().size() <= 3 && services.getCategory().size() > 1) {
+			Collection<Rendezvous> rendezvous1 = this.rendezvousService.findRendezvousNotCancelled();
+			res.addObject("rendezvous", rendezvous1);
+			Collection<Category> categories = this.categoryService.findAll();
+			res.addObject("categories", categories);
+		} else {
+			services.getCategory().remove(null);
+			services = this.servicesService.reconstruct(services, binding);
+
+			Manager manager = managerService.findByPrincipal();
+			rendezvous = services.getRendezvous();
+
+			services.setManager(manager);
+
 			ArrayList<Category> categories = new ArrayList<>();
 			categories.addAll(services.getCategory());
-			if (categories.get(0).getLevel() == categories.get(1).getLevel()
-					|| categories.get(0).getLevel() == categories.get(2).getLevel()
-					|| categories.get(1).getLevel() == categories.get(2).getLevel()) {
+
+			if (categories.size() == 1 && categories.get(0).getLevel() != 1) {
 				res = this.createEditModelAndView(services, "services.params.error");
 
-			}
-		} else
-			try {
-				Services saved = this.servicesService.save(services);
-				rendezvous.setServices(saved);
-				requestAttribute.setServices(saved);
-				requestService.save(requestAttribute);
+			} else if (categories.size() == 2 && (categories.get(0).getLevel() == categories.get(1).getLevel()
+					|| (categories.get(0).getLevel() != 1 && categories.get(1).getLevel() != 1)
+					|| (categories.get(0).getLevel() != 2 && categories.get(1).getLevel() != 2))) {
+				res = this.createEditModelAndView(services, "services.params.error");
 
-				res = new ModelAndView("redirect:../../");
-			} catch (final Throwable oops) {
-				System.out.println(oops.getMessage());
-				System.out.println(oops.getCause());
-				System.out.println(oops.getLocalizedMessage());
-				System.out.println(oops.getStackTrace());
-				System.out.println(oops.getSuppressed());
-				res = this.createEditModelAndView(services, "services.commit.error");
+			} else if (categories.size() == 3 && (categories.get(0).getLevel() == categories.get(1).getLevel()
+					|| categories.get(0).getLevel() == categories.get(2).getLevel()
+					|| categories.get(1).getLevel() == categories.get(2).getLevel())) {
+				res = this.createEditModelAndView(services, "services.params.error");
+			} else {
+
+				try {
+					Services saved = this.servicesService.save(services);
+
+					if (services.getId() == 0) {
+						requestAttribute.setServices(saved);
+						requestService.save(requestAttribute);
+						rendezvous.setServices(saved);
+					}
+
+					res = new ModelAndView("redirect:../../");
+				} catch (final Throwable oops) {
+					System.out.println(oops.getMessage());
+					System.out.println(oops.getCause());
+					System.out.println(oops.getLocalizedMessage());
+					System.out.println(oops.getStackTrace());
+					System.out.println(oops.getSuppressed());
+					res = this.createEditModelAndView(services, "services.commit.error");
+				}
 			}
+		}
 		return res;
 	}
 
@@ -143,8 +162,20 @@ public class ServicesManagerController extends AbstractController {
 	public ModelAndView delete(@Valid final Services services, final BindingResult binding) {
 		ModelAndView res;
 		try {
-			this.servicesService.delete(services);
-			res = new ModelAndView("redirect:../../");
+			if (services.getRendezvous().getDeleted()) {
+				this.servicesService.delete(services);
+				res = new ModelAndView("redirect:../../");
+
+
+			} else {
+				services.setCategory(new ArrayList<Category>());
+				res = this.createEditModelAndView(services, "services.commit.errorNotCanceled");
+				Collection<Rendezvous> rendezvous1 = this.rendezvousService.findRendezvousNotCancelled();
+				res.addObject("rendezvous", rendezvous1);
+				Collection<Category> categories = this.categoryService.findAll();
+				res.addObject("categories", categories);
+
+			}
 		} catch (final Throwable oops) {
 			System.out.println(oops.getMessage());
 			System.out.println(oops.getCause());

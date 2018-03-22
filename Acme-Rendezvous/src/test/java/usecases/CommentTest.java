@@ -40,19 +40,10 @@ public class CommentTest extends AbstractTest {
 			//In addition to writing a comment from scratch, a user may reply to a comment
 			{
 				//User comment a rendezvous that he or she has RSVPd.
-				"user1", "a comment", "http://www.foto.com", "rendezvous1", null, null
+				"user2", "a comment", "http://www.foto.com", "rendezvous2", "comment3", null
 			}, {
 				//User comment a rendezvous that he or she hasn't RSVPd.
-				"user2", "another comment", "http://www.foto.com", "rendezvous1", null, IllegalArgumentException.class
-			}, {
-				//Unauthenticated actor comment a rendezvous.		
-				null, "another more comment", "http://www.foto.com", "rendezvous1", null, IllegalArgumentException.class
-			}, {
-				//User reply a comment of a rendezvous that he or she has RSVPd
-				"user1", "reply", "http://www.foto.com", "rendezvous1", "comment1", null
-			}, {
-				//User reply a comment of a rendezvous that he or she hasn't RSVPd
-				"user2", "reply", "http://www.foto.com", "rendezvous1", "comment1", IllegalArgumentException.class
+				"user2", "another comment", "http://www.foto.com", "rendezvous1", "comment3", IllegalArgumentException.class
 			}
 		};
 

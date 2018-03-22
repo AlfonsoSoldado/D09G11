@@ -56,5 +56,4 @@
 
 </display:table>
 
-<acme:links url="services/manager/create.do" code="services.create" />
 
