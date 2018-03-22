@@ -59,6 +59,7 @@ public class AdministratorService {
 	}
 
 	public Administrator save(final Administrator administrator) {
+		this.checkAuthority();
 		Administrator result = administrator;
 		Assert.notNull(administrator);
 		result = this.administratorRepository.save(result);
