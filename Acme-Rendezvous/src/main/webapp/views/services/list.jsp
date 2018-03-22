@@ -38,6 +38,13 @@
 	<display:column>
 		<img class="imagenesComment" src="${row.picture}">
 	</display:column>
+		<security:authorize access="hasRole('ADMIN')">
+	
+<display:column>
+			<acme:links url="services/administrator/cancel.do?servicesId=${row.id }"
+				code="services.cancel" />
+	</display:column>
+	</security:authorize>
 </display:table>
 
 

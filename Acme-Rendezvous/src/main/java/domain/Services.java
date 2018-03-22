@@ -100,7 +100,7 @@ public class Services extends DomainEntity {
 	}
 
 	@Valid
-	@OneToOne(optional = false)
+	@OneToOne(optional = true)
 	public Rendezvous getRendezvous() {
 		return rendezvous;
 	}
