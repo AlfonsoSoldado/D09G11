@@ -1,42 +1,5 @@
 #./src/main/resources/Entities.map
-<<<<<<< HEAD
-<<<<<<< HEAD
-#Fri Mar 23 12:11:00 CET 2018
-=======
-#Fri Mar 23 12:14:57 CET 2018
->>>>>>> ebb6536640acbc70e990ed9865d4bbfe3ff214ed
-=======
-#Fri Mar 23 12:46:32 CET 2018
->>>>>>> 8fed760b71c6a8079186d92c6d3c356f7b7c6f8e
-Announcement2=49
-Announcement1=48
-admin1=34
-question2=55
-question1=54
-services2=61
-services1=59
-manager2=42
-manager1=41
-userAccount5=38
-answer2=57
-userAccount4=37
-answer1=56
-userAccount3=36
-request2=63
-userAccount2=35
-request1=62
-userAccount1=33
-rendezvous3=45
-rendezvous2=44
-rendezvous1=43
-comment4=53
-category2=60
-comment3=52
-RSVP2=47
-category1=58
-comment2=51
-RSVP1=46
-franchise1=64
-comment1=50
-user2=40
-user1=39
+#Fri Mar 23 13:23:51 CET 2018
+admin1=5
+userAccount1=4
+franchise1=6
