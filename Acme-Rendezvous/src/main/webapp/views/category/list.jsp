@@ -27,7 +27,7 @@
 	<acme:column property="description" code="category.description" />
 	<acme:column property="level" code="category.level" />
 	<display:column>
-		<acme:links url="rendezvous/list.do?=${row.id }"
+		<acme:links url="rendezvous/listByCategory.do?categoryId=${row.id }"
 			code="category.rendezvous" />
 	</display:column>
 
