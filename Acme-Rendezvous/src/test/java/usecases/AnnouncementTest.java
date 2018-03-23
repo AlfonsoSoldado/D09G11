@@ -39,9 +39,9 @@ public class AnnouncementTest extends AbstractTest {
 				//Listing announcement (with authentication)
 				"user1", null },{ 
 				//Deleting announcement (Admin)
-				"admin1", "announcement1", null },{ 
+				"admin", "Announcement1", null },{ 
 				//Deleting announcement (User)
-				"user1", "announcement1", IllegalArgumentException.class }};
+				"user1", "Announcement2", IllegalArgumentException.class }};
 
 		for (int i = 0; i < 2; i++)
 			this.createAnnouncementTemplate((String) testingData[i][0],
@@ -51,6 +51,9 @@ public class AnnouncementTest extends AbstractTest {
 		for (int i = 2; i < 4; i++)
 			this.listTemplate((String) testingData[i][0],
 					(Class<?>) testingData[i][1]);
+		
+		for (int i = 4; i < testingData.length; i++)
+			this.deleteTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
 
 	}
 
