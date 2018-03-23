@@ -36,15 +36,18 @@ public class RSVPTest extends AbstractTest {
 				"user1", true, "rendezvous1", null}, 
 				{// User1 create a question for another rendezvous.
 				"user2", false, "rendezvous2", IllegalArgumentException.class}, {
-				// User cancel rsvp
-				"user1", "RSVP2", IllegalArgumentException.class
+				// Not authenticated list rsvp
+				null, null
+				}, {
+				// Authenticated not existing user
+				"user28", IllegalArgumentException.class
 				},
 			};
 			for (int i = 0; i < 2; i++)
 				this.templateRSVPCreateSave((String) testingData[i][0], (boolean) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
 			
 			for (int i = 2; i < testingData.length; i++)
-				this.editTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
+				this.listTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
 		}
 
 	private void templateRSVPCreateSave(final String user, boolean confirmed, String rendezvous, Class<?> expected) {
@@ -69,18 +72,14 @@ public class RSVPTest extends AbstractTest {
 		this.checkExceptions(expected, caught);
 	}
 	
-	protected void editTemplate(final String user, final String rsvp, final Class<?> expected) {
+	protected void listTemplate(final String user, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
 		try {
 
-			// -----------------Edit Request-------------------
+			//-----------------List RSVP-------------------
 			this.authenticate(user);
-			final int rsvpId = this.getEntityId(rsvp);
-			final RSVP rsvpFinded = this.rsvpService.findOne(rsvpId);
-			rsvpFinded.setConfirmed(false);
-			this.rsvpService.save(rsvpFinded);
-			this.unauthenticate();
+			this.rsvpService.findAll();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}

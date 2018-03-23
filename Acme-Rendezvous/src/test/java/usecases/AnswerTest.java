@@ -6,18 +6,15 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
 
 import services.AnswerService;
 import services.QuestionService;
-import services.UserService;
 import utilities.AbstractTest;
 import domain.Answer;
 import domain.Question;
-import domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -32,8 +29,6 @@ public class AnswerTest extends AbstractTest {
 	@Autowired
 	private QuestionService	questionService;
 
-	@Autowired
-	private UserService userService;
 	// Test---------------------------------------------------------------
 	@Test
 	public void answerTest() {
