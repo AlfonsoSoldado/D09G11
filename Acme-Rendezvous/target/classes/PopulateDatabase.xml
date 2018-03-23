@@ -94,6 +94,8 @@
 		<property name="rendezvous">
 			<list>
 				<ref bean="rendezvous1" />
+				<ref bean="rendezvous3" />
+
 			</list>
 		</property>
 
