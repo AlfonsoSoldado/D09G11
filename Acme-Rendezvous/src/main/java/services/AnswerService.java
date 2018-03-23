@@ -57,7 +57,11 @@ public class AnswerService {
 
 	public Answer save(final Answer answer) {
 		userService.checkAuthority();
-		Assert.isTrue(this.userService.findUserByQuestion(answer.getQuestion().getId()) == this.userService.findByPrincipal());
+		if (answer.getId() == 0) {
+			Assert.isTrue(this.userService.findUserByQuestion(answer.getQuestion().getId()) == userService.findByPrincipal());
+		} else {
+			Assert.isTrue(this.userService.findUserByAnswer(answer.getId()).equals(userService.findByPrincipal().getId()));
+		}
 		Answer result = answer;
 		Assert.notNull(answer);
 		result = this.answerRepository.save(result);
