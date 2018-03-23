@@ -36,7 +36,7 @@
 		<form:hidden path="canceled" />
 		<form:hidden path="rendezvous" />
 
-		<jstl:if test="${fn:length(categories1)>1 }">
+		<jstl:if test="${fn:length(categories1)>=1 }">
 
 			<acme:select items="${categories1 }" itemLabel="name"
 				code="services.category1" path="category" />

@@ -62,7 +62,7 @@ CREATE TABLE `administrator` (
 
 LOCK TABLES `administrator` WRITE;
 /*!40000 ALTER TABLE `administrator` DISABLE KEYS */;
-INSERT INTO `administrator` VALUES (5,0,'admin@admin.com','Admin','666666666',41015,'Admin',4);
+INSERT INTO `administrator` VALUES (6,0,'admin@admin.com','Admin','666666666',41015,'Admin',5);
 /*!40000 ALTER TABLE `administrator` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,6 +146,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
+INSERT INTO `category` VALUES (8,0,'Default category',1,'Default');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,7 +232,7 @@ CREATE TABLE `franchise` (
 
 LOCK TABLES `franchise` WRITE;
 /*!40000 ALTER TABLE `franchise` DISABLE KEYS */;
-INSERT INTO `franchise` VALUES (6,0,'https://tinyurl.com/adventure-meetup','Adventure meetups','Your place to organise your adventure meetups!','Tu sitio para organizar quedadas de aventura');
+INSERT INTO `franchise` VALUES (7,0,'https://tinyurl.com/adventure-meetup','Adventure meetups','Your place to organise your adventure meetups!','Tu sitio para organizar quedadas de aventura');
 /*!40000 ALTER TABLE `franchise` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -762,7 +763,7 @@ CREATE TABLE `useraccount` (
 
 LOCK TABLES `useraccount` WRITE;
 /*!40000 ALTER TABLE `useraccount` DISABLE KEYS */;
-INSERT INTO `useraccount` VALUES (4,0,'21232f297a57a5a743894a0e4a801fc3','admin');
+INSERT INTO `useraccount` VALUES (5,0,'21232f297a57a5a743894a0e4a801fc3','admin');
 /*!40000 ALTER TABLE `useraccount` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -787,7 +788,7 @@ CREATE TABLE `useraccount_authorities` (
 
 LOCK TABLES `useraccount_authorities` WRITE;
 /*!40000 ALTER TABLE `useraccount_authorities` DISABLE KEYS */;
-INSERT INTO `useraccount_authorities` VALUES (4,'ADMIN');
+INSERT INTO `useraccount_authorities` VALUES (5,'ADMIN');
 /*!40000 ALTER TABLE `useraccount_authorities` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -800,6 +801,6 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-03-23 13:42:52
+-- Dump completed on 2018-03-23 15:32:19
 
 commit;
