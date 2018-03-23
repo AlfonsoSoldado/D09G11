@@ -15,7 +15,8 @@ public class Franchise extends DomainEntity {
 	
 	private String businessName;
 	private String banner;
-	private String welcomeMessage;
+	private String welcomeEnglishMessage;
+	private String welcomeSpanishMessage;
 	
 	@NotBlank
 	public String getBusinessName() {
@@ -37,12 +38,21 @@ public class Franchise extends DomainEntity {
 	}
 	
 	@NotBlank
-	public String getWelcomeMessage() {
-		return welcomeMessage;
+	public String getWelcomeEnglishMessage() {
+		return welcomeEnglishMessage;
 	}
 	
-	public void setWelcomeMessage(String welcomeMessage) {
-		this.welcomeMessage = welcomeMessage;
+	public void setWelcomeEnglishMessage(String welcomeEnglishMessage) {
+		this.welcomeEnglishMessage = welcomeEnglishMessage;
+	}
+	
+	@NotBlank
+	public String getWelcomeSpanishMessage() {
+		return welcomeSpanishMessage;
+	}
+	
+	public void setWelcomeSpanishMessage(String welcomeSpanishMessage) {
+		this.welcomeSpanishMessage = welcomeSpanishMessage;
 	}
 	
 	// Relationships -----------------------------------------------

@@ -29,7 +29,8 @@
 	
 	<acme:textbox code="franchise.businessName" path="businessName" />
 	<acme:textbox code="franchise.banner" path="banner" />
-	<acme:textbox code="franchise.welcomeMessage" path="welcomeMessage" />
+	<acme:textbox code="franchise.welcomeEnglishMessage" path="welcomeEnglishMessage" />
+	<acme:textbox code="franchise.welcomeSpanishMessage" path="welcomeSpanishMessage" />
 	
 	<acme:submit name="save" code="franchise.save" />
 	<acme:cancel url="/" code="franchise.cancel" />

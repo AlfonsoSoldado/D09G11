@@ -52,5 +52,23 @@ public class AbstractController {
 		
 		return banner;
 	}
+	
+	@ModelAttribute(value = "welcomeEnglishMessage")
+	protected String getWelcomeEnglishMessage(){
+		String res;
+
+		res = this.franchiseService.findAll().iterator().next().getWelcomeEnglishMessage();
+		
+		return res;
+	}
+	
+	@ModelAttribute(value = "welcomeSpanishMessage")
+	protected String getWelcomeSpanishMessage(){
+		String res;
+
+		res = this.franchiseService.findAll().iterator().next().getWelcomeSpanishMessage();
+		
+		return res;
+	}
 
 }
