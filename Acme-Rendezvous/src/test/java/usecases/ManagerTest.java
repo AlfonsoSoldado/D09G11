@@ -35,8 +35,10 @@ public class ManagerTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
+				// Login as a manager
 				"manager1", null
 			}, {
+				// Login with a not existing user
 				"manager28", IllegalArgumentException.class
 			}, {
 				//A unauthenticated actor create a user
