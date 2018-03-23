@@ -1,8 +1,6 @@
 
 package usecases;
 
-import java.util.Collection;
-
 import javax.transaction.Transactional;
 
 import org.junit.Test;
@@ -11,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import domain.Rendezvous;
-import domain.Services;
 import services.RendezvousService;
 import services.ServicesService;
 import utilities.AbstractTest;
+import domain.Rendezvous;
+import domain.Services;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring/junit.xml" })
@@ -170,7 +168,7 @@ public class ServicesTest extends AbstractTest {
 
 			// -----------------List Services-------------------
 			this.authenticate(user);
-			Collection<Services> services = this.servicesService.findAll();
+			this.servicesService.findAll();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}

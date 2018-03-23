@@ -41,9 +41,6 @@ public class ServicesService {
 	@Autowired
 	private CategoryService categoryService;
 
-	@Autowired
-	private RequestService requestService;
-
 	// Supporting services ----------------------------------------------------
 
 	// Constructor ------------------------------------------------------------
