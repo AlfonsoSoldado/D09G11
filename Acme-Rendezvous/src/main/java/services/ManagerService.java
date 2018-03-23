@@ -69,6 +69,16 @@ public class ManagerService {
 		Assert.notNull(manager);
 		Manager res;
 		if (manager.getId() == 0) {
+			Class<?> caught;
+			caught = null;
+			try {
+				LoginService.getPrincipal();
+			} catch (final Throwable oops) {
+				caught = oops.getClass();
+			}
+			this.checkExceptions(IllegalArgumentException.class, caught);
+		}
+		if (manager.getId() == 0) {
 			String pass = manager.getUserAccount().getPassword();
 			final Md5PasswordEncoder code = new Md5PasswordEncoder();
 			pass = code.encodePassword(pass, null);
@@ -118,8 +128,16 @@ public class ManagerService {
 		
 		for (int i = 0; i < 8; i++)
 			VAT = VAT + letters.charAt(r.nextInt(letters.length()));
-		System.out.println(VAT);
 		return VAT;
+	}
+	
+	protected void checkExceptions(final Class<?> expected, final Class<?> caught) {
+		if (expected != null && caught == null)
+			throw new RuntimeException(expected.getName() + " was expected");
+		else if (expected == null && caught != null)
+			throw new RuntimeException(caught.getName() + " was unexpected");
+		else if (expected != null && caught != null && !expected.equals(caught))
+			throw new RuntimeException(expected.getName() + " was expected, but " + caught.getName() + " was thrown");
 	}
 
 	public ManagerForm reconstruct(final ManagerForm managerForm, final BindingResult binding) {
