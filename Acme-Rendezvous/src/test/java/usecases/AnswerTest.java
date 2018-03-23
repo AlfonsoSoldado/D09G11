@@ -66,6 +66,25 @@ public class AnswerTest extends AbstractTest {
 			this.deleteAnswerTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
 
 	}
+	
+	private void editAnswerTemplate(final String user, final String answery, final Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+		try {
+			super.authenticate(user);
+			int answerId = this.getEntityId(answery);
+			Answer answer = this.answerService.findOne(answerId);
+			answer.setText("something");
+			this.answerService.save(answer);
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+	
 	protected void createAnswerTemplate(final String user, final String text, final String question, final Class<?> expected) {
 		Class<?> caught;
 		caught = null;
@@ -87,24 +106,6 @@ public class AnswerTest extends AbstractTest {
 			caught = oops.getClass();
 		}
 		this.checkExceptions(expected, caught);
-	}
-	
-	private void editAnswerTemplate(final String user, final String answery, final Class<?> expected) {
-		Class<?> caught;
-		caught = null;
-		try {
-			super.authenticate(user);
-			int answerId = this.getEntityId(answery);
-			Answer answer = this.answerService.findOne(answerId);
-			answer.setText("something");
-			this.answerService.save(answer);
-			this.unauthenticate();
-		} catch (final Throwable oops) {
-			caught = oops.getClass();
-		}
-
-		this.checkExceptions(expected, caught);
-
 	}
 	
 	private void deleteAnswerTemplate(final String user, final String answery, final Class<?> expected) {
