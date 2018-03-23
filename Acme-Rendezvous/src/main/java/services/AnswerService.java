@@ -70,6 +70,7 @@ public class AnswerService {
 	}
 
 	public void delete(final Answer answer) {
+		userService.checkAuthority();
 		Assert.notNull(answer);
 		Assert.isTrue(answer.getId() != 0);
 		this.answerRepository.delete(answer);

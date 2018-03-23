@@ -6,6 +6,7 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.Assert;
@@ -42,20 +43,29 @@ public class AnswerTest extends AbstractTest {
 				"user2", "another answer", "question1", IllegalArgumentException.class
 			}, {
 				null, "another more answer", "question1", IllegalArgumentException.class
-			} , {
+			}, {
 				// Edit one of his answer
 				"user1", "answer1", null
 			}, {
 				// Edit another answer
-				"user1", "answer2", IllegalArgumentException.class
+				"user1", "answer2", DataIntegrityViolationException.class
+			}, {
+				// Delete one of his answer
+				"user1", "answer1", null
+			}, {
+				// Delete another answer
+				"user1", "answer2", null
 			}
 		};
 
 		for (int i = 0; i < 3; i++)
 			this.createAnswerTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
 		
-		for (int i = 3; i < testingData.length; i++)
+		for (int i = 3; i < 5; i++)
 			this.editAnswerTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
+		
+		for (int i = 5; i < testingData.length; i++)
+			this.deleteAnswerTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
 
 	}
 	protected void createAnswerTemplate(final String user, final String text, final String question, final Class<?> expected) {
@@ -90,6 +100,23 @@ public class AnswerTest extends AbstractTest {
 			Answer answer = this.answerService.findOne(answerId);
 			answer.setText("something");
 			this.answerService.save(answer);
+			this.unauthenticate();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+
+		this.checkExceptions(expected, caught);
+
+	}
+	
+	private void deleteAnswerTemplate(final String user, final String answery, final Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+		try {
+			super.authenticate(user);
+			int answerId = this.getEntityId(answery);
+			Answer answer = this.answerService.findOne(answerId);
+			this.answerService.delete(answer);
 			this.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
