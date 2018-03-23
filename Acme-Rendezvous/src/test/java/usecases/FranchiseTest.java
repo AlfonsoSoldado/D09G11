@@ -30,13 +30,11 @@ public class FranchiseTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
+				// Editing franchise
 				"admin", "name 1", "https://foto.com/", "hello", null
 			}, {
+				// Leaving blank businessName
 				"admin", "", "https://foto.com/", "hello", javax.validation.ConstraintViolationException.class
-			}, {
-				"admin", "name 3", "", "hello", javax.validation.ConstraintViolationException.class
-			}, {
-				"admin", "name 4", "https://foto.com/", "", javax.validation.ConstraintViolationException.class
 			}
 		};
 		for (int i = 0; i < testingData.length; i++)

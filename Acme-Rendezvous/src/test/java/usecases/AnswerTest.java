@@ -38,6 +38,7 @@ public class AnswerTest extends AbstractTest {
 				// Answer the questions that are associated with a rendezvous that he or she RSVPing now.
 				"user1", "an answer", "question1", null
 			}, {
+				// Answer another questions that are associated with a rendezvous that he or she RSVPing now.
 				"user2", "another answer", "question1", IllegalArgumentException.class
 			}, {
 				null, "another more answer", "question1", IllegalArgumentException.class
@@ -50,9 +51,6 @@ public class AnswerTest extends AbstractTest {
 			}, {
 				// Delete one of his answer
 				"user1", "answer1", null
-			}, {
-				// Delete another answer
-				"user1", "answer2", null
 			}
 		};
 

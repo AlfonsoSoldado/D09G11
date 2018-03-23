@@ -60,9 +60,7 @@ public class AnswerService {
 		if (answer.getId() == 0) {
 			Assert.isTrue(this.userService.findUserByQuestion(answer.getQuestion().getId()) == userService.findByPrincipal());
 		} else {
-//			Assert.isTrue(this.userService.findUserByAnswer(answer.getId()).equals(userService.findByPrincipal().getId()));
-			boolean a=this.userService.findByPrincipal().getAnswer().contains(answer);
-			Assert.isTrue(a);
+			Assert.isTrue(this.userService.findByPrincipal().getAnswer().contains(answer));
 		}
 		Answer result = answer;
 		Assert.notNull(answer);

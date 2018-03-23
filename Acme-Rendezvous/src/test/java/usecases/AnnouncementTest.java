@@ -29,19 +29,24 @@ public class AnnouncementTest extends AbstractTest {
 	@Test
 	public void announcementTest() {
 		final Object testingData[][] = {
-
-				// Create an announcement of his/her rendezvous
-				{ "user1", "title 1", "description 1", "rendezvous1", null },{ 
-				// Create an announcement of other rendezvous
-				"user1", "title 2", "description 2", "rendezvous2", IllegalArgumentException.class }, { 
-				//Listing announcement (without authentication)
-				null, null },{ 
-				//Listing announcement (with authentication)
-				"user1", null },{ 
-				//Deleting announcement (Admin)
-				"admin", "Announcement1", null },{ 
-				//Deleting announcement (User)
-				"user1", "Announcement2", IllegalArgumentException.class }};
+					{ 
+					// Create an announcement of his/her rendezvous
+					"user1", "title 1", "description 1", "rendezvous1", null 
+				}, { 
+					// Create an announcement of other rendezvous
+					"user1", "title 2", "description 2", "rendezvous2", IllegalArgumentException.class 
+				}, { 
+					// Listing announcement (without authentication)
+					null, null 
+				}, { 
+					// Listing announcement (with authentication)
+					"user1", null 
+				}, { 
+					// Deleting announcement (Admin)
+					"admin", "Announcement1", null 
+				}, { 
+					// Deleting announcement (User)
+					"user1", "Announcement2", IllegalArgumentException.class }};
 
 		for (int i = 0; i < 2; i++)
 			this.createAnnouncementTemplate((String) testingData[i][0],

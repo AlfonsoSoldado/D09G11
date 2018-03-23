@@ -30,20 +30,18 @@ public class AdministratorTest extends AbstractTest {
 
 		final Object testingData[][] = {
 			{
+				// Login as admin
 				"admin", null
 			}, {
+				// Login as not existing admin
 				"adminNotRegister", IllegalArgumentException.class
 			}, {
+				// Edit admin personal info
 				"admin", "name", "surname", "mail@mail.com", 41008, "2825665161", null
 			}, {
+				// Leaving blank the name when editing
 				"admin", "", "surname", "mail@mail.com", 41008, "2825665161", javax.validation.ConstraintViolationException.class
-			}, {
-				"admin", null, "surname", "mail@mail.com", 41008, "2825665161", javax.validation.ConstraintViolationException.class
-			}, {
-				"admin", "name", "", "mail@mail.com", 41008, "2825665161", javax.validation.ConstraintViolationException.class
-			}, {
-				"admin", "name", null, "mail@mail.com", 41008, "2825665161", javax.validation.ConstraintViolationException.class
-			}
+			},
 		};
 
 		for (int i = 0; i < 2; i++)
@@ -58,6 +56,7 @@ public class AdministratorTest extends AbstractTest {
 		Class<?> caught;
 		caught = null;
 		try {
+			// -----------------Login admin-------------------
 			this.authenticate(user);
 			this.unauthenticate();
 		} catch (final Throwable oops) {
@@ -71,6 +70,7 @@ public class AdministratorTest extends AbstractTest {
 		Class<?> caught;
 		caught = null;
 		try {
+			// -----------------Editing admin-------------------
 			this.authenticate("admin");
 			Administrator administrator = this.administratorService.findOne(administratorService.findByPrincipal().getId());
 			administrator.setName(name);
