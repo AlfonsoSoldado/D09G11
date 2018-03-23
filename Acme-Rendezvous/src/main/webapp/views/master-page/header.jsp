@@ -44,6 +44,8 @@
 
 			<li><a class="fNiv" href="administrator/display.do"><spring:message
 						code="master.page.admin.display" /></a></li>
+			<li><a class="fNiv" href="services/list.do"><spring:message
+						code="master.page.services" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('USER')">
@@ -86,8 +88,6 @@
 			</a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="actor/user/edit.do"><spring:message
-								code="master.page.actorEdit" /></a></li>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
 				</ul></li>
