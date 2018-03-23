@@ -31,18 +31,18 @@ public class FranchiseTest extends AbstractTest {
 		final Object testingData[][] = {
 			{
 				// Editing franchise
-				"admin", "name 1", "https://foto.com/", "hello", null
+				"admin", "name 1", "https://foto.com/", "hello", "hola", null
 			}, {
 				// Leaving blank businessName
-				"admin", "", "https://foto.com/", "hello", javax.validation.ConstraintViolationException.class
+				"admin", "", "https://foto.com/", "hello", "hola", javax.validation.ConstraintViolationException.class
 			}
 		};
 		for (int i = 0; i < testingData.length; i++)
 			this.createFranchiseTemplate((String) testingData[i][0], (String) testingData[i][1], 
-					(String) testingData[i][2], (String) testingData[i][3], (Class<?>) testingData[i][4]);
+					(String) testingData[i][2], (String) testingData[i][3],(String) testingData[i][4], (Class<?>) testingData[i][5]);
 	}
 
-	public void createFranchiseTemplate(final String user, final String businessName, final String banner, final String welcomeMessage, final Class<?> expected) {
+	public void createFranchiseTemplate(final String user, final String businessName, final String banner, final String welcomeEnglishMessage, final String welcomeSpanishMessage, final Class<?> expected) {
 		Franchise franchise;
 		Class<?> caught;
 		caught = null;
@@ -51,7 +51,8 @@ public class FranchiseTest extends AbstractTest {
 			franchise = franchiseService.findAll().iterator().next();
 			franchise.setBusinessName(businessName);
 			franchise.setBanner(banner);
-			franchise.setWelcomeMessage(welcomeMessage);
+			franchise.setWelcomeEnglishMessage(welcomeEnglishMessage);
+			franchise.setWelcomeSpanishMessage(welcomeSpanishMessage);
 			this.unauthenticate();
 			this.franchiseService.flush();
 		} catch (final Throwable oops) {

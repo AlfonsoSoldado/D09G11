@@ -33,6 +33,545 @@
 		<property name="userAccount" ref="userAccount1" />
 	</bean>
 
+	<bean id="userAccount2" class="security.UserAccount">
+		<property name="username" value="user1" />
+		<property name="password" value="24c9e15e52afc47c225b757e7bee1f9d" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="USER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount3" class="security.UserAccount">
+		<property name="username" value="user2" />
+		<property name="password" value="7e58d63b60197ceb55a1c487989a3720" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="USER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount4" class="security.UserAccount">
+		<property name="username" value="manager1" />
+		<property name="password" value="c240642ddef994358c96da82c0361a58" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MANAGER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAccount5" class="security.UserAccount">
+		<property name="username" value="manager2" />
+		<property name="password" value="8df5127cd164b5bc2d2b78410a7eea0c" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="MANAGER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="user1" class="domain.User">
+		<property name="name" value="Javi" />
+		<property name="surname" value="López Vázquez" />
+		<property name="email" value="javilv@gmail.com" />
+		<property name="phoneNumber" value="6664323536" />
+		<property name="postalAddress" value="41013" />
+		<property name="dateBorn" value="25/10/2010" />
+		<property name="userAccount" ref="userAccount2" />
+
+		<property name="rendezvous">
+			<list>
+				<ref bean="rendezvous1" />
+				<ref bean="rendezvous3" />
+
+			</list>
+		</property>
+
+		<property name="rsvp">
+			<list>
+				<ref bean="RSVP1" />
+			</list>
+		</property>
+
+		<property name="comment">
+			<list>
+				<ref bean="comment1" />
+				<ref bean="comment2" />
+
+			</list>
+		</property>
+
+
+		<property name="question">
+			<list>
+				<ref bean="question1" />
+
+			</list>
+		</property>
+		<property name="answer">
+			<list>
+				<ref bean="answer1" />
+
+			</list>
+		</property>
+
+	</bean>
+
+	<bean id="user2" class="domain.User">
+		<property name="name" value="Rojassss" />
+		<property name="surname" value="Rojas Rojas" />
+		<property name="email" value="rojas@gmail.com" />
+		<property name="phoneNumber" value="6664323536" />
+		<property name="postalAddress" value="41013" />
+		<property name="dateBorn" value="25/10/2000" />
+		<property name="userAccount" ref="userAccount3" />
+
+		<property name="rendezvous">
+			<list>
+				<ref bean="rendezvous2" />
+			</list>
+		</property>
+
+		<property name="rsvp">
+			<list>
+				<ref bean="RSVP2" />
+			</list>
+		</property>
+
+		<property name="comment">
+			<list>
+				<ref bean="comment3" />
+				<ref bean="comment4" />
+
+			</list>
+		</property>
+		<property name="question">
+			<list>
+				<ref bean="question2" />
+
+			</list>
+		</property>
+		<property name="answer">
+			<list>
+				<ref bean="answer2" />
+
+			</list>
+		</property>
+
+	</bean>
+
+	<!-- MANAGERS -->
+
+	<bean id="manager1" class="domain.Manager">
+		<property name="name" value="Alfonso" />
+		<property name="surname" value="Soldado Caro" />
+		<property name="email" value="alfonso@gmail.com" />
+		<property name="phoneNumber" value="666666666" />
+		<property name="postalAddress" value="41007" />
+		<property name="VAT" value="123123EFS1345" />
+		<property name="userAccount" ref="userAccount4" />
+	</bean>
+
+	<bean id="manager2" class="domain.Manager">
+		<property name="name" value="Daniel" />
+		<property name="surname" value="Rodríguez López" />
+		<property name="email" value="dani@gmail.com" />
+		<property name="phoneNumber" value="666666666" />
+		<property name="postalAddress" value="41008" />
+		<property name="VAT" value="FFFAS1356AS12" />
+		<property name="userAccount" ref="userAccount5" />
+	</bean>
+
+	<!-- RENDEZVOUS -->
+
+	<bean id="rendezvous1" class="domain.Rendezvous">
+		<property name="name" value="rendezvous1" />
+		<property name="description"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" />
+		<property name="moment" value="10/25/2020" />
+		<property name="gpsCoordinate" ref="gps1" />
+		<property name="picture"
+			value="https://image.freepik.com/free-photo/cute-cat-picture_1122-449.jpg" />
+		<property name="attendant">
+			<list>
+				<ref bean="user1" />
+			</list>
+		</property>
+		<property name="finalMode" value="true" />
+		<property name="adultOnly" value="true" />
+		<property name="deleted" value="false" />
+
+		<property name="comment">
+			<list>
+				<ref bean="comment1" />
+				<ref bean="comment2" />
+			</list>
+		</property>
+		<property name="Announcement">
+			<list>
+				<ref bean="Announcement1" />
+			</list>
+		</property>
+		<property name="similar">
+			<list>
+				<ref bean="rendezvous2" />
+			</list>
+		</property>
+		<property name="services" ref="services1" />
+		<property name="requests">
+			<list>
+				<ref bean="request1" />
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="rendezvous2" class="domain.Rendezvous">
+		<property name="name" value="rendezvous2" />
+		<property name="description"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" />
+		<property name="moment" value="10/30/2020" />
+		<property name="gpsCoordinate" ref="gps2" />
+		<property name="picture"
+			value="https://image.freepik.com/free-photo/cute-cat-picture_1122-449.jpg" />
+		<property name="attendant">
+			<list>
+				<ref bean="user2" />
+			</list>
+		</property>
+		<property name="finalMode" value="false" />
+		<property name="adultOnly" value="false" />
+		<property name="deleted" value="false" />
+		<property name="comment">
+			<list>
+				<ref bean="comment3" />
+				<ref bean="comment4" />
+
+			</list>
+		</property>
+		<property name="Announcement">
+			<list>
+				<ref bean="Announcement2" />
+			</list>
+		</property>
+		<property name="similar">
+			<list>
+				<ref bean="rendezvous1" />
+			</list>
+		</property>
+		<property name="services" ref="services2" />
+		<property name="requests">
+			<list>
+				<ref bean="request2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="rendezvous3" class="domain.Rendezvous">
+		<property name="name" value="rendezvous3" />
+		<property name="description"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" />
+		<property name="moment" value="10/25/2020" />
+		<property name="gpsCoordinate" ref="gps1" />
+		<property name="picture"
+			value="https://image.freepik.com/free-photo/cute-cat-picture_1122-449.jpg" />
+		<property name="attendant">
+			<list>
+				<ref bean="user1" />
+			</list>
+		</property>
+		<property name="finalMode" value="true" />
+		<property name="adultOnly" value="true" />
+		<property name="deleted" value="false" />
+
+		<property name="comment">
+			<list>
+
+			</list>
+		</property>
+		<property name="Announcement">
+			<list>
+
+			</list>
+		</property>
+		<property name="similar">
+			<list>
+
+			</list>
+		</property>
+
+		<property name="requests">
+			<list>
+
+			</list>
+		</property>
+	</bean>
+
+	<!-- RSVP -->
+
+	<bean id="RSVP1" class="domain.RSVP">
+		<property name="confirmed" value="true" />
+		<property name="rendezvous" ref="rendezvous1" />
+	</bean>
+
+	<bean id="RSVP2" class="domain.RSVP">
+		<property name="confirmed" value="false" />
+		<property name="rendezvous" ref="rendezvous2" />
+
+	</bean>
+
+	<!-- GPS -->
+
+	<bean id="gps1" class="domain.GPS">
+		<property name="latitude" value="10.0" />
+		<property name="longitude" value="10.0" />
+		<property name="namePlace" value="gps1" />
+
+	</bean>
+
+
+	<bean id="gps2" class="domain.GPS">
+		<property name="latitude" value="10.0" />
+		<property name="longitude" value="10.0" />
+		<property name="namePlace" value="gps2" />
+
+	</bean>
+
+	<!-- ANNOUNCEMENTS -->
+
+	<bean id="Announcement1" class="domain.Announcement">
+		<property name="title" value="Announcement1" />
+		<property name="description"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" />
+		<property name="momentMade" value="10/10/2010" />
+		<property name="rendezvous" ref="rendezvous1" />
+
+	</bean>
+
+	<bean id="Announcement2" class="domain.Announcement">
+		<property name="title" value="Announcement2" />
+		<property name="description"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod" />
+		<property name="momentMade" value="10/10/2010" />
+		<property name="rendezvous" ref="rendezvous2" />
+
+	</bean>
+
+	<!-- COMMENTS -->
+
+	<bean id="comment1" class="domain.Comment">
+		<property name="text"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad min" />
+		<property name="momentMade" value="10/10/2010" />
+		<property name="picture"
+			value="https://image.freepik.com/free-photo/cute-cat-picture_1122-449.jpg" />
+		<property name="replies">
+			<list>
+				<ref bean="comment2" />
+			</list>
+		</property>
+		<property name="rendezvous" ref="rendezvous1"></property>
+	</bean>
+
+
+	<bean id="comment2" class="domain.Comment">
+		<property name="text"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et dolore magna aliqua. Ut enim" />
+		<property name="momentMade" value="10/10/2010" />
+		<property name="picture"
+			value="https://image.freepik.com/free-photo/cute-cat-picture_1122-449.jpg" />
+		<property name="replies">
+			<list>
+			</list>
+		</property>
+		<property name="parent" ref="comment1" />
+		<property name="rendezvous" ref="rendezvous1"></property>
+
+	</bean>
+
+
+	<bean id="comment3" class="domain.Comment">
+		<property name="text"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, aborum." />
+		<property name="momentMade" value="10/10/2010" />
+		<property name="picture"
+			value="https://image.freepik.com/free-photo/cute-cat-picture_1122-449.jpg" />
+		<property name="replies">
+			<list>
+				<ref bean="comment4" />
+			</list>
+		</property>
+		<property name="rendezvous" ref="rendezvous2"></property>
+
+	</bean>
+
+
+	<bean id="comment4" class="domain.Comment">
+		<property name="text"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+		tempor incididunt ut labore et do" />
+		<property name="momentMade" value="10/10/2010" />
+		<property name="picture"
+			value="https://image.freepik.com/free-photo/cute-cat-picture_1122-449.jpg" />
+		<property name="replies">
+			<list>
+			</list>
+		</property>
+		<property name="parent" ref="comment2" />
+
+		<property name="rendezvous" ref="rendezvous2"></property>
+
+	</bean>
+
+	<!-- QUESTIONS -->
+
+	<bean id="question1" class="domain.Question">
+		<property name="text"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod?" />
+		<property name="answer">
+			<list>
+				<ref bean="answer1" />
+			</list>
+		</property>
+		<property name="rendezvous" ref="rendezvous1" />
+	</bean>
+
+	<bean id="question2" class="domain.Question">
+		<property name="text"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod?" />
+		<property name="answer">
+			<list>
+				<ref bean="answer2" />
+			</list>
+		</property>
+		<property name="rendezvous" ref="rendezvous2" />
+	</bean>
+
+	<!-- ANSWERS -->
+
+	<bean id="answer1" class="domain.Answer">
+		<property name="text"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod?" />
+		<property name="question" ref="question1" />
+	</bean>
+
+	<bean id="answer2" class="domain.Answer">
+		<property name="text"
+			value="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod?" />
+		<property name="question" ref="question2" />
+
+	</bean>
+
+	<!-- CATEGORY -->
+
+	<bean id="category1" class="domain.Category">
+		<property name="name" value="Football" />
+		<property name="description"
+			value="This is the description of the Football category" />
+		<property name="services">
+			<list>
+				<ref bean="services1" />
+			</list>
+		</property>
+		<property name="level" value="1" />
+	</bean>
+
+	<bean id="category2" class="domain.Category">
+		<property name="name" value="Sevilla FC" />
+		<property name="description"
+			value="This is the description of the Sevilla FC category" />
+		<property name="services">
+			<list>
+				<ref bean="services2" />
+			</list>
+		</property>
+		<property name="level" value="1" />
+
+	</bean>
+
+	<!-- CREDIT CARD -->
+
+	<bean id="creditCard1" class="domain.CreditCard">
+		<property name="holderName" value="BBVA" />
+		<property name="brandName" value="MasterCard" />
+		<property name="number" value="4099537775843795" />
+		<property name="expirationMonth" value="02" />
+		<property name="expirationYear" value="2019" />
+		<property name="CVV" value="123" />
+	</bean>
+
+	<bean id="creditCard2" class="domain.CreditCard">
+		<property name="holderName" value="Caixa" />
+		<property name="brandName" value="VISA" />
+		<property name="number" value="38642556792047" />
+		<property name="expirationMonth" value="05" />
+		<property name="expirationYear" value="2020" />
+		<property name="CVV" value="223" />
+	</bean>
+
+	<!-- REQUEST -->
+
+	<bean id="request1" class="domain.Request">
+		<property name="creditCard" ref="creditCard1" />
+		<property name="comment" value="This is an optional comment" />
+		<property name="moment" value="10/10/2010 18:24" />
+		<property name="services" ref="services1" />
+	</bean>
+
+	<bean id="request2" class="domain.Request">
+		<property name="creditCard" ref="creditCard2" />
+		<property name="comment" value="This is an optional comment" />
+		<property name="moment" value="10/10/2010 18:25" />
+		<property name="services" ref="services2" />
+	</bean>
+
+	<!-- SERVICES -->
+
+	<bean id="services1" class="domain.Services">
+		<property name="name" value="Express service" />
+		<property name="description" value="This is a description" />
+		<property name="picture" value="http://www.google.com" />
+		<property name="canceled" value="false" />
+		<property name="manager" ref="manager1" />
+		<property name="category">
+			<list>
+				<ref bean="category1" />
+			</list>
+		</property>
+		<property name="rendezvous" ref="rendezvous1" />
+		<property name="level" value="1" />
+	</bean>
+
+	<bean id="services2" class="domain.Services">
+		<property name="name" value="Extra service" />
+		<property name="description" value="This is a description" />
+		<property name="picture" value="http://www.google.es" />
+		<property name="canceled" value="false" />
+		<property name="manager" ref="manager2" />
+		<property name="category">
+			<list>
+				<ref bean="category2" />
+			</list>
+		</property>
+		<property name="rendezvous" ref="rendezvous2" />
+		<property name="level" value="1" />
+
+	</bean>
+
 	<!-- FRANCHISE -->
 
 	<bean id="franchise1" class="domain.Franchise">
@@ -40,8 +579,7 @@
 		<property name="banner" value="https://tinyurl.com/adventure-meetup" />
 		<property name="welcomeEnglishMessage"
 			value="Your place to organise your adventure meetups!" />
-		<property name="welcomeSpanishMessage"
-			value="Tu sitio para organizar quedadas de aventura" />
+		<property name="welcomeSpanishMessage" value="Tu sitio para organizar quedadas de aventura" />
 	</bean>
 
 
