@@ -210,4 +210,8 @@ public class RendezvousService {
 			ret = false;
 		return ret;
 	}
+	
+	public void flush() {
+		this.rendezvousRepository.flush();
+	}
 }

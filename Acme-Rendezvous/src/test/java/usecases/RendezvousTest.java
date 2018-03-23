@@ -135,6 +135,7 @@ public class RendezvousTest extends AbstractTest {
 			rendezvousFinded.setName(name);
 			this.rendezvousService.save(rendezvousFinded);
 			this.unauthenticate();
+			this.rendezvousService.flush();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
