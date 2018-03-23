@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import services.CategoryService;
 import services.RendezvousService;
 import utilities.AbstractTest;
+import domain.Category;
 import domain.Rendezvous;
+import domain.Services;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -24,6 +27,9 @@ public class RendezvousTest extends AbstractTest {
 
 	@Autowired
 	private RendezvousService	rendezvousService;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 
 	// Test---------------------------------------------------------------
@@ -54,6 +60,27 @@ public class RendezvousTest extends AbstractTest {
 			}, {
 				//User list rendezvous.
 				"user1", null
+			}, {
+				//User not created list rendezvous.
+				"user3", IllegalArgumentException.class
+			}, {
+				//Not authenticated actor list rendezvous by category.
+				null, "category1", null
+			}, {
+				//User list rendezvous by category.
+				"user1", "category1", null
+			}, {
+				//User not created list rendezvous by category.
+				"user3", "category1", IllegalArgumentException.class
+			}, {
+				//Not authenticated actor list similar rendezvous.
+				null, "rendezvous1", null
+			}, {
+				//User list similar rendezvous.
+				"user1", "rendezvous1", null
+			}, {
+				//User not created list similar rendezvous.
+				"user3", "rendezvous1", IllegalArgumentException.class
 			}, {
 				//User creates rendezvous.
 				"user2", "name", "description", "2021/05/04 22:00", false, false, null
@@ -93,16 +120,22 @@ public class RendezvousTest extends AbstractTest {
 			}
 		};
 
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 3; i++)
 			this.listTemplate((String) testingData[i][0], (Class<?>) testingData[i][1]);
+		
+		for (int i = 3; i < 6; i++)
+			this.listByCategoryTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
+		
+		for (int i = 6; i < 9; i++)
+			this.listSimilarTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
 
-		for (int i = 2; i < 7; i++)
+		for (int i = 9; i < 14; i++)
 			this.createTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (boolean) testingData[i][4], (boolean) testingData[i][5], (Class<?>) testingData[i][6]);
 
-		for (int i = 7; i < 11; i++)
+		for (int i = 14; i < 18; i++)
 			this.editTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (Class<?>) testingData[i][3]);
 
-		for (int i = 11; i < testingData.length; i++)
+		for (int i = 18; i < testingData.length; i++)
 			this.deleteTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
 	}
 
@@ -173,6 +206,43 @@ public class RendezvousTest extends AbstractTest {
 			//-----------------List Rendezvous-------------------
 			this.authenticate(user);
 			this.rendezvousService.findAll();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
+	
+	
+	protected void listByCategoryTemplate(final String user, final String category, final Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+		try {
+
+			//-----------------List Rendezvous-------------------
+			this.authenticate(user);
+			final int categoryId = this.getEntityId(category);
+			final Category categoryFinded = this.categoryService.findOne(categoryId);
+			
+			for(Services s: categoryFinded.getServices()){
+				rendezvousService.findRendezvousByServices(s.getId());
+			}
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
+	
+	
+	protected void listSimilarTemplate(final String user, final String rendezvous, final Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+		try {
+
+			//-----------------List Rendezvous-------------------
+			this.authenticate(user);
+			final int rendezvousId = this.getEntityId(rendezvous);
+			final Rendezvous rendezvousFinded = this.rendezvousService.findOne(rendezvousId);
+			rendezvousFinded.getSimilar();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
