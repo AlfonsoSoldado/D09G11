@@ -44,11 +44,18 @@ public class CommentTest extends AbstractTest {
 			}, {
 				//User comment a rendezvous that he or she hasn't RSVPd.
 				"user2", "another comment", "http://www.foto.com", "rendezvous1", "comment3", IllegalArgumentException.class
-			}
-		};
+			},{ 
+				//Deleting comment (Admin)
+				"admin", "comment1", null },{ 
+				//Deleting announcement (User)
+				"user1", "comment2", IllegalArgumentException.class }};
 
-		for (int i = 0; i < testingData.length; i++)
-			this.createCommentTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], (String) testingData[i][3], (String) testingData[i][4], (Class<?>) testingData[i][5]);
+		for (int i = 0; i < 2; i++)
+			this.createCommentTemplate((String) testingData[i][0], (String) testingData[i][1], (String) testingData[i][2], 
+					(String) testingData[i][3], (String) testingData[i][4], (Class<?>) testingData[i][5]);
+		
+		for (int i = 4; i < testingData.length; i++)
+			this.deleteTemplate((String) testingData[i][0], (String) testingData[i][1], (Class<?>) testingData[i][2]);
 
 	}
 	protected void createCommentTemplate(final String user, final String text, final String picture, final String rendezvous, final String parent, final Class<?> expected) {
@@ -75,6 +82,23 @@ public class CommentTest extends AbstractTest {
 			this.commentService.save(comment);
 			this.unauthenticate();
 			this.commentService.flush();
+		} catch (final Throwable oops) {
+			caught = oops.getClass();
+		}
+		this.checkExceptions(expected, caught);
+	}
+	
+	protected void deleteTemplate(final String user, final String comment, final Class<?> expected) {
+		Class<?> caught;
+		caught = null;
+		try {
+
+			//-----------------Delete Rendezvous-------------------
+			this.authenticate(user);
+			final int commentId = this.getEntityId(comment);
+			final Comment commentFinded = this.commentService.findOne(commentId);
+			this.commentService.delete(commentFinded);
+			this.unauthenticate();
 		} catch (final Throwable oops) {
 			caught = oops.getClass();
 		}
