@@ -13,9 +13,11 @@ import org.springframework.util.Assert;
 
 import services.AnswerService;
 import services.QuestionService;
+import services.UserService;
 import utilities.AbstractTest;
 import domain.Answer;
 import domain.Question;
+import domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
@@ -30,7 +32,8 @@ public class AnswerTest extends AbstractTest {
 	@Autowired
 	private QuestionService	questionService;
 
-
+	@Autowired
+	private UserService userService;
 	// Test---------------------------------------------------------------
 	@Test
 	public void answerTest() {
@@ -44,11 +47,11 @@ public class AnswerTest extends AbstractTest {
 			}, {
 				null, "another more answer", "question1", IllegalArgumentException.class
 			}, {
+				// Edit another answer
+				"user2", "answer1", IllegalArgumentException.class
+			}, {
 				// Edit one of his answer
 				"user1", "answer1", null
-			}, {
-				// Edit another answer
-				"user1", "answer2", DataIntegrityViolationException.class
 			}, {
 				// Delete one of his answer
 				"user1", "answer1", null
