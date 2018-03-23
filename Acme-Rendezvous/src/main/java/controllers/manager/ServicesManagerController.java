@@ -55,16 +55,22 @@ public class ServicesManagerController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create(@RequestParam final int requestId) {
 		ModelAndView res;
-
+			
+		
 		requestAttribute = requestService.findOne(requestId);
 
 		Services services = this.servicesService.create();
 		Rendezvous rendezvous = rendezvousService.findRendezvousByRequest(requestAttribute);
-
+		if (rendezvous.getServices()==null) {
+			
+		
 		services.setRendezvous(rendezvous);
 
 		res = this.createEditModelAndView(services);
-
+		}else {
+			res=new ModelAndView("services/listMyServices");
+		}
+		
 		return res;
 	}
 
@@ -102,6 +108,7 @@ public class ServicesManagerController extends AbstractController {
 		ModelAndView res = null;
 		this.managerService.checkAuthority();
 		Rendezvous rendezvous = null;
+		
 		if (binding.hasErrors()) {
 			services.setCategory(new ArrayList<Category>());
 			res = this.createEditModelAndView(services, "services.params.error");

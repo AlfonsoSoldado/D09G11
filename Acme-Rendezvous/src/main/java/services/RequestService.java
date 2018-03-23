@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import repositories.RequestRepository;
+import security.Authority;
+import security.LoginService;
+import security.UserAccount;
 import domain.CreditCard;
 import domain.Rendezvous;
 import domain.Request;
@@ -28,10 +31,9 @@ public class RequestService {
 
 	@Autowired
 	private RendezvousService rendezvousService;
-	
+
 	@Autowired
 	private UserService userService;
-
 	// Constructor ------------------------------------------------------------
 
 	public RequestService() {
@@ -43,11 +45,11 @@ public class RequestService {
 	public Request create() {
 		User user = userService.findByPrincipal();
 		final Request request;
-//		Services services = new Services();
+		// Services services = new Services();
 		Collection<CreditCard> creditCards = new ArrayList<CreditCard>();
 		request = new Request();
 		creditCards = this.findAllCreditCard(user.getId());
-//		request.setServices(services);
+		// request.setServices(services);
 		if (creditCards.size() > 0)
 			request.setCreditCard(creditCards.iterator().next());
 		return request;
@@ -74,14 +76,26 @@ public class RequestService {
 			moment = new Date(System.currentTimeMillis() - 1000);
 			request.setMoment(moment);
 		} else {
-			Assert.isTrue(this.findRequestByUser(userService.findByPrincipal().getId()).contains(request));
+			Authority manager = new Authority();
+			manager.setAuthority("MANAGER");
+			Authority user = new Authority();
+			user.setAuthority("USER");
+			UserAccount userAccount = LoginService.getPrincipal();
+			final Collection<Authority> authority = userAccount.getAuthorities();
+			if (userAccount.getAuthorities().contains(user)) {
+				Assert.isTrue(this.findRequestByUser(userService.findByPrincipal().getId()).contains(request));
+			} else {
+				boolean a = authority.contains(manager);
+				
+				Assert.isTrue(a);
+			}
 		}
 		res = this.requestRepository.save(request);
-		
-		//Rendezvous rendezvous;
-		//rendezvous = this.rendezvousService.findRendezvousByRequest(res);
-		//Assert.isTrue(rendezvous.getServices() == null);
-		
+
+		// Rendezvous rendezvous;
+		// rendezvous = this.rendezvousService.findRendezvousByRequest(res);
+		// Assert.isTrue(rendezvous.getServices() == null);
+
 		return res;
 	}
 
@@ -126,20 +140,20 @@ public class RequestService {
 
 	public Collection<Request> findRequestByUser(int userId) {
 		Collection<Request> requests = new ArrayList<Request>();
-		
+
 		requests = requestRepository.findRequestByUser(userId);
-		
+
 		return requests;
 	}
-	
+
 	public Collection<CreditCard> findAllCreditCard(int userId) {
 		Collection<CreditCard> creditcCards = new ArrayList<CreditCard>();
-		
+
 		creditcCards = requestRepository.findAllCreditCard(userId);
-		
+
 		return creditcCards;
 	}
-	
+
 	public void flush() {
 		this.requestRepository.flush();
 	}
