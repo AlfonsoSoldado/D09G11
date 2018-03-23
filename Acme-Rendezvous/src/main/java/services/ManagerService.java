@@ -133,7 +133,7 @@ public class ManagerService {
 			userAccount = managerForm.getManager().getUserAccount();
 			authority = new Authority();
 			managerForm.getManager().setUserAccount(userAccount);
-			authority.setAuthority(Authority.USER);
+			authority.setAuthority(Authority.MANAGER);
 			userAccount.addAuthority(authority);
 			managerForm.getManager().setVAT(VAT);
 			managerFinal = managerForm;

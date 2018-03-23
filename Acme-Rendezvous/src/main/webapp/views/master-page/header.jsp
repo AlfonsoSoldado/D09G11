@@ -44,6 +44,8 @@
 
 			<li><a class="fNiv" href="administrator/display.do"><spring:message
 						code="master.page.admin.display" /></a></li>
+			<li><a class="fNiv" href="services/list.do"><spring:message
+						code="master.page.services" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('USER')">
