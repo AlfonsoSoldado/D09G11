@@ -106,7 +106,6 @@ public class CategoryService {
 
 	}
 
-	// TODO intentar cambiar los bucles
 	private void updateServices(final Collection<Services> servicesWithThisCategory, final Category category) {
 		final Collection<Services> categoryServices = category.getServices();
 
